@@ -1,0 +1,13 @@
+{
+  "name": "1_carry_sum",
+  "version": "0.0.1",
+  "dependencies": {},
+  "scripts": {
+    "testWatch": "mocha tests --recursive --watch",
+    "test": "mocha tests --recursive"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}
