@@ -1,0 +1,4 @@
+.idea/*
+.idea/vcs.xml
+javascript/1-carry_sum/node_modules/*
+javascript/1-carry_sum/.idea/*
