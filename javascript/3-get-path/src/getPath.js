@@ -1,11 +1,16 @@
 function getClasses(element) {
     const classes = [];
     element.classList.forEach((cls) => {
-        if (cls.search(/[~!@$%^&*()+=,.\/';:"?><\[\]\\{}|`#]/) === -1) {
+        if (checkSelectorString(cls)) {
             classes.push(cls);
         }
     });
     return classes.length > 0 ? `.${classes.join('.')}` : '';
+}
+
+
+function checkSelectorString(str){
+    return str.search(/[~!@$%^&*()+=,.\/';:"?><\[\]\\{}|`#]/) === -1;
 }
 
 function findSameNestedNode(element, selector) {
@@ -14,6 +19,8 @@ function findSameNestedNode(element, selector) {
 
 function getPath(element, document) {
 
+    document = document || window.document; // akondakov - for browser;
+
     let path = '';
     let currentElement = element;
 
@@ -21,16 +28,17 @@ function getPath(element, document) {
         const parent = currentElement.parentElement;
         const id = currentElement.getAttribute('id');
         let itemPath;
-        if (id) {
-            itemPath = findSameNestedNode(parent, `#${id}`).length === 1 ? `#${id}` : undefined;
+        if (id) { // try to use the id
+            itemPath = (checkSelectorString(id) && findSameNestedNode(parent, `#${id}`).length === 1) ? `#${id}` : undefined;
         }
-        if (!itemPath && currentElement.classList.length > 0) {
+        if (!itemPath && currentElement.classList.length > 0) {  // try to use the css classes
             const classes = getClasses(currentElement);
             const sameChilds = findSameNestedNode(parent, `${currentElement.tagName}${classes}`);
             itemPath = sameChilds.length === 1 ? currentElement.tagName + classes : undefined;
         }
-        if (!itemPath) {
-            const index = (parent && findSameNestedNode(parent, `${currentElement.tagName}`).length > 1) ? Array.from(parent.children).indexOf(currentElement) + 1 : null;
+        if (!itemPath) { // use the tag and nth-child
+            const index = (parent && findSameNestedNode(parent, `${currentElement.tagName}`).length > 1) ?
+                Array.from(parent.children).indexOf(currentElement) + 1 : undefined;
             itemPath = `${currentElement.tagName}${index ? `:nth-child(${index})` : ''}`;
         }
 
