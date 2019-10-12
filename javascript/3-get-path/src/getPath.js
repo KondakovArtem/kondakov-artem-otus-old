@@ -1,23 +1,24 @@
-function getClasses(element) {
-    const classes = [];
-    element.classList.forEach((cls) => {
-        if (checkSelectorString(cls)) {
-            classes.push(cls);
-        }
-    });
-    return classes.length > 0 ? `.${classes.join('.')}` : '';
-}
-
-
-function checkSelectorString(str){
-    return str.search(/[~!@$%^&*()+=,.\/';:"?><\[\]\\{}|`#]/) === -1;
-}
-
-function findSameNestedNode(element, selector) {
-    return Array.from(element.children).filter(e => e.matches(selector))
-}
 
 function getPath(element, document) {
+
+    function getClasses(element) {
+        const classes = [];
+        element.classList.forEach((cls) => {
+            if (checkSelectorString(cls)) {
+                classes.push(cls);
+            }
+        });
+        return classes.length > 0 ? `.${classes.join('.')}` : '';
+    }
+
+
+    function checkSelectorString(str){
+        return str.search(/[~!@$%^&*()+=,.\/';:"?><\[\]\\{}|`#]/) === -1;
+    }
+
+    function findSameNestedNode(element, selector) {
+        return Array.from(element.children).filter(e => e.matches(selector))
+    }
 
     document = document || window.document; // akondakov - for browser;
 
