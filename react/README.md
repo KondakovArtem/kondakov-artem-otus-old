@@ -11,10 +11,11 @@ react-5
 3. Заставить работать TypeScript через babel (+1 бал) 
 4. Написать хелло ворлд (todo app или любое другое), сделать базовую верстку вашего приложения, поработать с JSX (+2 бал)
 
+
 # How to
 
 npm install
 
-npm test
+npm run start
 
 # Notes
