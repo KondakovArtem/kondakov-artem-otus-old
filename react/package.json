@@ -1,0 +1,43 @@
+{
+  "name": "react-1",
+  "version": "1.0.0",
+  "description": "react home task 1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dev": "webpack -d --mode development",
+    "build-prod": "webpack -p --mode production",
+    "start": "webpack-dev-server --hot --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KondakovArtem/kondakov-artem-otus.git"
+  },
+  "author": "Kondakov Artem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KondakovArtem/kondakov-artem-otus/issues"
+  },
+  "homepage": "https://github.com/KondakovArtem/kondakov-artem-otus#readme",
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-hot-loader": "^4.12.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@hot-loader/react-dom": "^16.10.2+4.12.15",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
