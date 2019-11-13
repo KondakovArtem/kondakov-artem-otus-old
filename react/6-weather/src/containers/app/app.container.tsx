@@ -13,15 +13,12 @@ interface IState {
     messages: IMessage[];
 }
 
-interface IProps {
-
-}
 
 const STORAGE_KEY = 'cityIds';
 
 const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
 
-    class AppContainer extends React.Component<IProps, IState> {
+    class AppContainer extends React.Component<{}, IState> {
         constructor(props) {
             super(props);
             this.state = {
@@ -78,7 +75,7 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
         // message part
         addMessage(message: {
             text: string;
-            variant: keyof typeof variantIcon
+            variant: keyof typeof variantIcon;
         }) {
             const { messages } = this.state;
             this.setState({

@@ -25,7 +25,7 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
 
     class CitySearchContainer extends React.Component<IProps, IState> {
         private fetchDelay: ((query: any) => Promise<void>) & Cancelable;
-        
+
         constructor(props) {
             super(props);
             this.state = {
@@ -37,16 +37,16 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
             this.inputChange = this.inputChange.bind(this);
         }
 
-        componentDidMount(){
+        componentDidMount() {
             this.fetchDelay = debounce(async (query) => {
-                this.setState({loading: true});
+                this.setState({ loading: true });
                 try {
                     const data = await findCityWeatherByName(query);
-                    this.setState({options: data.list});
+                    this.setState({ options: data.list });
                 } catch (e) {
                     console.error(e)
                 }
-                this.setState({loading: false});
+                this.setState({ loading: false });
             }, 500);
         }
 
@@ -61,15 +61,15 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
             if (newValue && newValue !== '') {
                 this.fetchDelay(newValue);
             }
-        };
-        
+        }
+
         render() {
-            const {state, inputChange, props: {
+            const { state, inputChange, props: {
                 className,
                 placeholder,
                 onSelect
-            }} = this;
-            
+            } } = this;
+
 
             return (
                 <Cmp

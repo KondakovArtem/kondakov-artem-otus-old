@@ -14,13 +14,12 @@ interface IProps {
 }
 
 export const MessageComponent: FunctionComponent<IProps> = (props: IProps) => {
-    const {variant, text, id} = props;
+    const { variant, text, id } = props;
 
-    function onCloseMessage(){
+    function onCloseMessage(): void {
         props.onCloseMessage(id);
     }
-    
-    
+
     return (
         <Snackbar
             anchorOrigin={{

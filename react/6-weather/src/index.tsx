@@ -7,5 +7,5 @@ import ReactDOM from "react-dom";
 
 import { AppContainer } from "./containers/app/app.container";
 
-var mountNode = document.getElementById("app");
+const mountNode = document.getElementById("app");
 ReactDOM.render(<AppContainer />, mountNode);

@@ -4,14 +4,14 @@ import CardContent from "@material-ui/core/CardContent"
 import Zoom from '@material-ui/core/Zoom';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 import { CityWeatherInfo } from "./city-weather-info.component"
 import { IWeather } from "../../models/weather.model"
 
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   iconButton: {
     position: 'absolute',
     right: '4px',
@@ -29,16 +29,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IProps {
   className?: string;
-  onClose: (data: IWeather) => void,
+  onClose: (data: IWeather) => void;
   show: boolean;
-  children: IWeather
+  children: IWeather;
 }
 
 export const CityWeatherCard: React.FunctionComponent<IProps> = (props: IProps) => {
   const classes = useStyles(props);
-  const {children, className, onClose, show} = props;
+  const { children, className, onClose, show } = props;
 
-  function onCloseClick(){
+  function onCloseClick() {
     onClose(children);
   }
 

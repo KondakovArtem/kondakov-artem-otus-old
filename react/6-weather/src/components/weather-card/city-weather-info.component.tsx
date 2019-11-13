@@ -1,16 +1,16 @@
 import React from 'react';
 import { IWeather } from "../../models/weather.model"
-import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
-import {round} from 'lodash-es';
+import { round } from 'lodash-es';
 
 interface IProps {
-    children: IWeather
+    children: IWeather;
 }
 
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100%',
@@ -47,33 +47,33 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-const NoBrake = (props: {children: any}) =>{
-    const {children} = props;
+const NoBrake = (props: { children: any }) => {
+    const { children } = props;
     const classes = useStyles(props);
     return (<span className={classes.nobr}>{children}</span>);
 }
 
 export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) => {
-    
+
     const classes = useStyles(props);
-    const {children: {
-        main: { temp, temp_max, temp_min, pressure},
+    const { children: {
+        main: { temp, temp_max, temp_min, pressure },
         clouds: { all: cloudsAll },
         wind: { speed },
         name,
         sys: { country },
-        weather: [ {description, icon} ]
-    }} = props;
+        weather: [{ description, icon }]
+    } } = props;
 
-    function getCelsius(temp: number){
-        return round((temp - 273.15),2)
+    function getCelsius(temp: number) {
+        return round((temp - 273.15), 2)
     }
 
-    
+
     return (
         <div className={classes.root}>
-            <img className={classes.weatherIcon} 
-                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} width="50" height="50" 
+            <img className={classes.weatherIcon}
+                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} width="50" height="50"
             />
             <div className={classes.body}>
                 <div>
@@ -85,9 +85,9 @@ export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) 
                 </div>
                 <div>
                     <div className={classes.telemetry}>
-                        
-                        <Typography component={'div'}> 
-                            <Chip color="primary" size="small" label={`${getCelsius(temp)} °С`}></Chip> temperature 
+
+                        <Typography component={'div'}>
+                            <Chip color="primary" size="small" label={`${getCelsius(temp)} °С`}></Chip> temperature
                             <NoBrake> from {getCelsius(temp_min)} °С</NoBrake>
                             <NoBrake> to {getCelsius(temp_max)} °С,</NoBrake>
                             <NoBrake>wind {speed} m/s,</NoBrake>
@@ -97,7 +97,7 @@ export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) 
                     </div>
                 </div>
             </div>
-            
+
         </div>
     );
 }

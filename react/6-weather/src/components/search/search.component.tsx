@@ -50,13 +50,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-
 export interface IAbstractProps {
     className?: string;
-    onSelect: (data: any) => void,
+    onSelect: (data: any) => void;
     onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder: string;
-    options: any[];
+    options: any;
     loading: boolean;
     inputValue: string;
 }
@@ -66,10 +65,10 @@ export interface IProps extends IAbstractProps {
 }
 
 export interface IRenderInputProps extends IAbstractProps {
-    children: RenderInputParams
+    children: RenderInputParams;
 }
 
-const RenderInput = (props: IRenderInputProps) => {
+const RenderInput: React.FunctionComponent<IRenderInputProps> = (props: IRenderInputProps) => {
     const classes = useStyles(props);
     const { 
         loading, 
@@ -114,7 +113,7 @@ export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps) 
                 classes={{
                     inputRoot: classes.inputRoot
                 }}
-                onChange={(event, value: IWeather) => {
+                onChange={(event, value: IWeather): void => {
                     value && onSelect(value);
                 }}
                 getOptionLabel={(option: IWeather) => option.name}
