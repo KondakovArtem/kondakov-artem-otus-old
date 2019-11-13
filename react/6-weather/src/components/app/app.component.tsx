@@ -47,10 +47,9 @@ const AppComponent: React.FunctionComponent<IProps> = (props: IProps) => {
                             <CityWeatherCard
                                 key={cityWeather.id}
                                 className={classes.card}
-                                data={cityWeather}
                                 onClose={props.onRemoveCityWeather}
                                 show={!props.hiddenItems.includes(cityWeather)}
-                            ></CityWeatherCard>
+                        >{cityWeather}</CityWeatherCard>
                         ))
                     }
                 </Container>

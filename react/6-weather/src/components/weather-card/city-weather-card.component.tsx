@@ -28,29 +28,30 @@ const useStyles = makeStyles((theme: Theme) => ({
 ));
 
 interface IProps {
-  data: IWeather;
   className?: string;
   onClose: (data: IWeather) => void,
   show: boolean;
+  children: IWeather
 }
 
 export const CityWeatherCard: React.FunctionComponent<IProps> = (props: IProps) => {
   const classes = useStyles(props);
+  const {children, className, onClose} = props;
 
-  function onClose(){
-    props.onClose(props.data);
+  function onCloseClick(){
+    props.onClose(children);
   }
 
   return (
     <Zoom in={props.show}>
-      <Card className={clsx(classes.root,props.className)}>
+      <Card className={clsx(classes.root, className)}>
 
-        <IconButton className={classes.iconButton} key="close" aria-label="close" color="inherit" onClick={onClose}>
+        <IconButton className={classes.iconButton} key="close" aria-label="close" color="inherit" onClick={onCloseClick}>
           <CloseIcon className={classes.icon} />
         </IconButton>
 
         <CardContent>
-          <CityWeatherInfo data={props.data}></CityWeatherInfo>
+          <CityWeatherInfo>{children}</CityWeatherInfo>
         </CardContent>
       </Card>
     </Zoom>)

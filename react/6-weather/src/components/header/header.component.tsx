@@ -39,7 +39,7 @@ export const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                     className={classes.grow} 
                     onSelect={props.onSelectCity} 
                     placeholder={'Search city...'}
-                ></CitySearchContainer>
+                />
             </Toolbar>
         </AppBar>
     );

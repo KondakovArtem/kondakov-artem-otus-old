@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import {round} from 'lodash-es';
 
 interface IProps {
-    data: IWeather
+    children: IWeather
 }
 
 
@@ -55,7 +55,15 @@ const NoBrake = (props: {children: any}) =>{
 export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) => {
     
     const classes = useStyles(props);
-    
+    const {children: {
+        main: { temp, temp_max, temp_min, pressure},
+        clouds: { all: cloudsAll },
+        wind: { speed },
+        name,
+        sys: { country },
+        weather: [ {description, icon} ]
+    }} = props;
+
     function getCelsius(temp: number){
         return round((temp - 273.15),2)
     }
@@ -64,26 +72,26 @@ export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) 
     return (
         <div className={classes.root}>
             <img className={classes.weatherIcon} 
-                src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`} width="50" height="50" 
+                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} width="50" height="50" 
             />
             <div className={classes.body}>
                 <div>
                     <div className={classes.name}>
-                        <Typography>{props.data.name}, {props.data.sys.country}</Typography>
-                        <img className={classes.flag} src={`https://www.countryflags.io/${props.data.sys.country}/shiny/24.png`} />
-                        <Typography className={classes.description} variant="caption">{props.data.weather[0].description}</Typography>
+                        <Typography>{name}, {country}</Typography>
+                        <img className={classes.flag} src={`https://www.countryflags.io/${country}/shiny/24.png`} />
+                        <Typography className={classes.description} variant="caption">{description}</Typography>
                     </div>
                 </div>
                 <div>
                     <div className={classes.telemetry}>
                         
                         <Typography component={'div'}> 
-                            <Chip color="primary" size="small" label={`${getCelsius(props.data.main.temp)} °С`}></Chip> temperature 
-                            <NoBrake> from {getCelsius(props.data.main.temp_max)} °С</NoBrake>
-                            <NoBrake> to {getCelsius(props.data.main.temp_max)} °С,</NoBrake>
-                            <NoBrake>wind {props.data.wind.speed} m/s,</NoBrake>
-                            <NoBrake>clouds {props.data.clouds.all} %,</NoBrake>
-                            <NoBrake>{props.data.main.pressure} hpa</NoBrake>
+                            <Chip color="primary" size="small" label={`${getCelsius(temp)} °С`}></Chip> temperature 
+                            <NoBrake> from {getCelsius(temp_min)} °С</NoBrake>
+                            <NoBrake> to {getCelsius(temp_max)} °С,</NoBrake>
+                            <NoBrake>wind {speed} m/s,</NoBrake>
+                            <NoBrake>clouds {cloudsAll} %,</NoBrake>
+                            <NoBrake>{pressure} hpa</NoBrake>
                         </Typography>
                     </div>
                 </div>

@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export interface IProps {
+
+export interface IAbstractProps {
     className?: string;
     onSelect: (data: any) => void,
     onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -58,52 +59,67 @@ export interface IProps {
     options: any[];
     loading: boolean;
     inputValue: string;
+}
+
+export interface IProps extends IAbstractProps {
     children: (option: any) => ReactNode;
 }
 
+export interface IRenderInputProps extends IAbstractProps {
+    children: RenderInputParams
+}
 
-const RenderInput = (params: RenderInputParams, props: IProps) => {
+const RenderInput = (props: IRenderInputProps) => {
     const classes = useStyles(props);
+    const { 
+        loading, 
+        children, 
+        inputValue, 
+        onInputChange, 
+        placeholder 
+    } = props;
+
+
     return (
         <div className={classes.search}>
             <div className={classes.searchIcon}>
-                {!props.loading && <SearchIcon />}
-                {props.loading && <RefreshIcon className={classes.spin} />}
+                {!loading && <SearchIcon />}
+                {loading && <RefreshIcon className={classes.spin} />}
             </div>
             <TextField
-                {...params}
-                value={props.inputValue}
+                {...children}
+                value={inputValue}
                 fullWidth
                 variant={'outlined'}
-                onChange={props.onInputChange}
-                placeholder={props.placeholder}
+                onChange={onInputChange}
+                placeholder={placeholder}
             />
         </div>
     )
-} 
+}
 
 
 export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles(props);
+    const {options, onSelect, children} = props;
 
     return (
         <div className={props.className}>
-
             <Autocomplete
                 autoComplete
                 includeInputInList
                 freeSolo
-                options={props.options}
+                options={options}
                 // disableOpenOnFocus
                 classes={{
                     inputRoot: classes.inputRoot
                 }}
                 onChange={(event, value: IWeather) => {
-                    value && props.onSelect(value);
+                    value && onSelect(value);
                 }}
                 getOptionLabel={(option: IWeather) => option.name}
-                renderInput={(params) => (RenderInput(params, props))}
-                renderOption={props.children}
+                renderInput={(params) => (<RenderInput {...props}>{params}</RenderInput>)}
+                renderOption={children}
             />
         </div >
     );

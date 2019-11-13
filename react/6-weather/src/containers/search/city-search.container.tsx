@@ -72,7 +72,7 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
                     placeholder={this.props.placeholder}
                     onSelect={this.props.onSelect}
                 >
-                    {(option: IWeather) => (<CityWeatherInfo data={option} />)}
+                    {(option: IWeather) => (<CityWeatherInfo>{option}</CityWeatherInfo>)}
                 </Cmp>
             );
         }
