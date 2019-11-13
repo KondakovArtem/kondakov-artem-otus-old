@@ -28,7 +28,8 @@ interface IProps {
 
 export const Header: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles(props);
-    
+    const {onSelectCity} = props;
+
     return (
         <AppBar  position="static">
             <Toolbar className={classes.flex}>
@@ -37,7 +38,7 @@ export const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 </Typography>
                 <CitySearchContainer 
                     className={classes.grow} 
-                    onSelect={props.onSelectCity} 
+                    onSelect={onSelectCity} 
                     placeholder={'Search city...'}
                 />
             </Toolbar>

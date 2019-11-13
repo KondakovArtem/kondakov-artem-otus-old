@@ -101,10 +101,10 @@ const RenderInput = (props: IRenderInputProps) => {
 
 export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles(props);
-    const {options, onSelect, children} = props;
+    const {options, onSelect, children, className} = props;
 
     return (
-        <div className={props.className}>
+        <div className={className}>
             <Autocomplete
                 autoComplete
                 includeInputInList

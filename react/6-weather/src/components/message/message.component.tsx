@@ -14,9 +14,10 @@ interface IProps {
 }
 
 export const MessageComponent: FunctionComponent<IProps> = (props: IProps) => {
-    
+    const {variant, text, id} = props;
+
     function onCloseMessage(){
-        props.onCloseMessage(props.id);
+        props.onCloseMessage(id);
     }
     
     
@@ -31,9 +32,9 @@ export const MessageComponent: FunctionComponent<IProps> = (props: IProps) => {
         >
             <MessageContent
                 onClose={onCloseMessage}
-                variant={props.variant}
+                variant={variant}
             >
-                {props.text}
+                {text}
             </MessageContent>
         </Snackbar>
     )

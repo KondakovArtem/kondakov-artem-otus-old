@@ -36,14 +36,14 @@ interface IProps {
 
 export const CityWeatherCard: React.FunctionComponent<IProps> = (props: IProps) => {
   const classes = useStyles(props);
-  const {children, className, onClose} = props;
+  const {children, className, onClose, show} = props;
 
   function onCloseClick(){
-    props.onClose(children);
+    onClose(children);
   }
 
   return (
-    <Zoom in={props.show}>
+    <Zoom in={show}>
       <Card className={clsx(classes.root, className)}>
 
         <IconButton className={classes.iconButton} key="close" aria-label="close" color="inherit" onClick={onCloseClick}>

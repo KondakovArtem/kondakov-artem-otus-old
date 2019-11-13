@@ -64,13 +64,20 @@ const withData = (Cmp: React.FunctionComponent<IComponentProps>) =>
         };
         
         render() {
+            const {state, inputChange, props: {
+                className,
+                placeholder,
+                onSelect
+            }} = this;
+            
+
             return (
                 <Cmp
-                    {...this.state}
-                    onInputChange={this.inputChange}
-                    className={this.props.className}
-                    placeholder={this.props.placeholder}
-                    onSelect={this.props.onSelect}
+                    {...state}
+                    onInputChange={inputChange}
+                    className={className}
+                    placeholder={placeholder}
+                    onSelect={onSelect}
                 >
                     {(option: IWeather) => (<CityWeatherInfo>{option}</CityWeatherInfo>)}
                 </Cmp>

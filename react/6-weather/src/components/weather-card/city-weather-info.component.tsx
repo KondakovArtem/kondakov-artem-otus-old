@@ -48,8 +48,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const NoBrake = (props: {children: any}) =>{
+    const {children} = props;
     const classes = useStyles(props);
-    return (<span className={classes.nobr}>{props.children}</span>);
+    return (<span className={classes.nobr}>{children}</span>);
 }
 
 export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) => {

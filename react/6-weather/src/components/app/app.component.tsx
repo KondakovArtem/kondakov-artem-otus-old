@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { hot } from "react-hot-loader/root";
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
-import {makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { theme } from '../../services/theme/theme.service';
 import { Header } from '../header/header.component';
@@ -36,28 +36,37 @@ export interface IProps {
 
 const AppComponent: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles({});
+    const { 
+        onRemoveCityWeather, 
+        hiddenItems, 
+        messages, 
+        onCloseMessage, 
+        onAddCityWeather, 
+        cityWeathers 
+    } = props;
+    
     return (
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Header onSelectCity={props.onAddCityWeather}></Header>
+                <Header onSelectCity={onAddCityWeather}></Header>
                 <Container maxWidth="md">
                     {
-                        props.cityWeathers.map((cityWeather) => (
+                        cityWeathers.map((cityWeather) => (
                             <CityWeatherCard
                                 key={cityWeather.id}
                                 className={classes.card}
-                                onClose={props.onRemoveCityWeather}
-                                show={!props.hiddenItems.includes(cityWeather)}
-                        >{cityWeather}</CityWeatherCard>
+                                onClose={onRemoveCityWeather}
+                                show={!hiddenItems.includes(cityWeather)}
+                            >{cityWeather}</CityWeatherCard>
                         ))
                     }
                 </Container>
-                {props.messages.map(message => (
-                    <MessageComponent 
-                        key={message.id} 
+                {messages.map(message => (
+                    <MessageComponent
+                        key={message.id}
                         {...message}
-                        onCloseMessage={props.onCloseMessage} 
+                        onCloseMessage={onCloseMessage}
                     />
                 ))}
             </ThemeProvider>
