@@ -35,7 +35,7 @@ export interface IWeather {
     weather: IWeatherItem[];
 }
 
-export interface IWeatherResponse {
+export type IWeatherResponse = {
     message: string;
     cod: string;
     count: number;

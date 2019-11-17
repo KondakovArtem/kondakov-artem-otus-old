@@ -10,8 +10,12 @@ export const variantIcon = {
     info: InfoIcon
 };
 
-export interface IMessage {
+export interface IMessageData {
     text: string;
     variant: keyof typeof variantIcon;
+}
+
+export interface IMessage extends IMessageData {
     id: string;
 }
+

@@ -1,40 +1,38 @@
 import React from 'react';
-import { FunctionComponent } from "react"
+import { FunctionComponent } from "react";
 import Snackbar from "@material-ui/core/Snackbar"
 
 import { MessageContent } from "./message-content.component"
-import { variantIcon } from '../../models/message.model';
-
-
+import { IMessage } from '../../models/message.model';
 interface IProps {
-    onCloseMessage: (id: string) => void;
-    variant: keyof typeof variantIcon;
-    text: string;
-    id: string;
+    onCloseMessage: (message: IMessage) => void;
+    messages: IMessage[];
 }
 
 export const MessageComponent: FunctionComponent<IProps> = (props: IProps) => {
-    const { variant, text, id } = props;
-
-    function onCloseMessage(): void {
-        props.onCloseMessage(id);
-    }
-
+    const { onCloseMessage, messages } = props;
     return (
-        <Snackbar
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={true}
-            onClose={onCloseMessage}
-        >
-            <MessageContent
-                onClose={onCloseMessage}
-                variant={variant}
-            >
-                {text}
-            </MessageContent>
-        </Snackbar>
+        <>
+            {messages.map(message => {
+                const { id, variant, text } = message;
+                const onClose = () => onCloseMessage(message);
+                return (
+                    <Snackbar
+                        key={id}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={true}
+                        onClose={onClose}
+                    >
+                        <MessageContent
+                            onClose={onClose}
+                            variant={variant}
+                        >{text}</MessageContent>
+                    </Snackbar>
+                )
+            })}
+        </>
     )
 };

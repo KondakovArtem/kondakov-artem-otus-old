@@ -8,7 +8,6 @@ import clsx from 'clsx';
 
 import { variantIcon } from "../../models/message.model";
 
-
 const useStyles = makeStyles((theme: Theme) => ({
   success: {
     backgroundColor: green[600],

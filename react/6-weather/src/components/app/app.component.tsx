@@ -9,8 +9,7 @@ import { theme } from '../../services/theme/theme.service';
 import { Header } from '../header/header.component';
 import { IWeather } from '../../models/weather.model';
 import { CityWeatherCard } from '../weather-card/city-weather-card.component';
-import { MessageComponent } from '../message/message.component';
-import { IMessage } from '../../models/message.model';
+import { MessageContainer } from '../../containers/message/message.container';
 
 const useStyles = makeStyles(() => createStyles({
     card: {
@@ -20,23 +19,23 @@ const useStyles = makeStyles(() => createStyles({
     }
 }));
 
+
+export interface IHandlers {
+    onAddCityWeather: (newCityWeathers: IWeather) => void;
+    onRemoveCityWeather: (cityWeather: IWeather) => void;
+}
+
 export interface IProps {
     cityWeathers: IWeather[];
     hiddenItems: IWeather[];
-    messages: IMessage[];
-    onAddCityWeather: (newCityWeathers: IWeather) => void;
-    onRemoveCityWeather: (cityWeather: IWeather) => void;
-    onCloseMessage: (id: string) => void;
 }
 
 
-const AppComponent: React.FunctionComponent<IProps> = (props: IProps) => {
+export const AppComponent: React.FunctionComponent<IHandlers & IProps> = hot((props: IHandlers & IProps) => {
     const classes = useStyles({});
     const {
         onRemoveCityWeather,
         hiddenItems,
-        messages,
-        onCloseMessage,
         onAddCityWeather,
         cityWeathers
     } = props;
@@ -55,15 +54,9 @@ const AppComponent: React.FunctionComponent<IProps> = (props: IProps) => {
                         >{cityWeather}</CityWeatherCard>
                     ))}
                 </Container>
-                {messages.map(message => (
-                    <MessageComponent
-                        key={message.id} {...message}
-                        onCloseMessage={onCloseMessage}
-                    />
-                ))}
+                <MessageContainer />
             </ThemeProvider>
         </>
     );
-}
+})
 
-export default hot(AppComponent);

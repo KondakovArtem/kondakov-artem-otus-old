@@ -52,30 +52,33 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface IAbstractProps {
     className?: string;
-    onSelect: (data: any) => void;
-    onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder: string;
+    placeholder?: string;
     options: any;
     loading: boolean;
     inputValue: string;
 }
 
 export interface IProps extends IAbstractProps {
-    children: (option: any) => ReactNode;
+    children?: (option: any) => ReactNode;
+}
+
+export interface IHandlers {
+    onSelect: (data: any) => void;
+    onInputChange: (value: string) => void;
 }
 
 export interface IRenderInputProps extends IAbstractProps {
     children: RenderInputParams;
 }
 
-const RenderInput: React.FunctionComponent<IRenderInputProps> = (props: IRenderInputProps) => {
+const RenderInput: React.FunctionComponent<IRenderInputProps> = (props: IRenderInputProps & IHandlers) => {
     const classes = useStyles(props);
-    const { 
-        loading, 
-        children, 
-        inputValue, 
-        onInputChange, 
-        placeholder 
+    const {
+        loading,
+        children,
+        inputValue,
+        onInputChange,
+        placeholder
     } = props;
 
 
@@ -90,7 +93,7 @@ const RenderInput: React.FunctionComponent<IRenderInputProps> = (props: IRenderI
                 value={inputValue}
                 fullWidth
                 variant={'outlined'}
-                onChange={onInputChange}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => onInputChange(event.target.value)}
                 placeholder={placeholder}
             />
         </div>
@@ -98,9 +101,9 @@ const RenderInput: React.FunctionComponent<IRenderInputProps> = (props: IRenderI
 }
 
 
-export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps) => {
+export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps & IHandlers) => {
     const classes = useStyles(props);
-    const {options, onSelect, children, className} = props;
+    const { options, onSelect, children, className } = props;
 
     return (
         <div className={className}>

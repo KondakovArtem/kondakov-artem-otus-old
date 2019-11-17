@@ -33,3 +33,9 @@ export async function getCityWeatherByIds(ids: number[]) {
     const data: IWeatherResponse = await response.json();
     return data;
 }
+
+
+export default ({
+    getCityWeatherByIds,
+    findCityWeatherByName
+})
