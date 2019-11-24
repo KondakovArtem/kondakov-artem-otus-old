@@ -11,14 +11,15 @@ const config = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js'
+    filename: '[name].[contenthash].js',
+    publicPath : '/'
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
         template: require('html-webpack-template'),
         inject: false,
-        appMountId: 'app',
+        appMountId: 'app'
       })
   ],
   optimization: {

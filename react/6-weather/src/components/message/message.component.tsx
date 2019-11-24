@@ -4,12 +4,17 @@ import Snackbar from "@material-ui/core/Snackbar"
 
 import { MessageContent } from "./message-content.component"
 import { IMessage } from '../../models/message.model';
-interface IProps {
-    onCloseMessage: (message: IMessage) => void;
+
+export interface IProps {
     messages: IMessage[];
 }
 
-export const MessageComponent: FunctionComponent<IProps> = (props: IProps) => {
+export interface IHandlers {
+    onCloseMessage: (message: IMessage) => void;
+}
+
+
+export const MessageComponent: FunctionComponent<IProps & IHandlers> = (props: IProps & IHandlers) => {
     const { onCloseMessage, messages } = props;
     return (
         <>

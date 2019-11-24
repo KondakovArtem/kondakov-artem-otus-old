@@ -1,9 +1,9 @@
 import { Action } from 'redux-actions';
 import { createMock } from 'ts-auto-mock';
 
-import { reducer, IStore, Actions } from './message.ducks';
+import { reducer, IStore, Actions, ActionTypes } from './message.ducks';
 import { IMessage } from '../../models/message.model';
-import ActionsTypes from './action.types';
+
 
 jest.mock('lodash-es', () => {
     return {
@@ -16,14 +16,14 @@ describe('reducers', () => {
         it('should add message', () => {
             const message: IMessage = createMock<IMessage>();
             const storeMock = createMock<IStore>();
-            expect(reducer(storeMock, { type: ActionsTypes.ADD, payload: message } as Action<IMessage>))
+            expect(reducer(storeMock, { type: ActionTypes.ADD, payload: message } as Action<IMessage>))
                 .toEqual([message])
         })
         it('should remove message', () => {
             const message: IMessage = createMock<IMessage>();
             const storeMock = createMock<IStore>();
             storeMock.push(message);
-            expect(reducer(storeMock, { type: ActionsTypes.REMOVE, payload: message } as Action<IMessage>)).toHaveLength(0);
+            expect(reducer(storeMock, { type: ActionTypes.REMOVE, payload: message } as Action<IMessage>)).toHaveLength(0);
         })
     })
 })
