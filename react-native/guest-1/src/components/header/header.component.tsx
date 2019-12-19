@@ -42,16 +42,6 @@ export const HeaderComponent: React.FunctionComponent<IProps & IHandlers> = (pro
                 rightComponent={{ text: `Всего ${guestTotal}`, style: { color: '#fff' } }}
             />
             <View>
-                <ButtonGroup
-                    selectedIndex={guestFilter}
-                    selectedTextStyle = {{
-                        color: 'white'
-                    }}
-                    onPress={(idx: number) => updateGuestFilter(idx)}
-                    buttons={buttons}
-                />
-            </View>
-            <View>
                 <Input
                     value={inputValue}
                     onChangeText={setInputValue}
@@ -66,6 +56,17 @@ export const HeaderComponent: React.FunctionComponent<IProps & IHandlers> = (pro
                         color: '#517fa4'
                     }} />
             </View>
+            <View>
+                <ButtonGroup
+                    selectedIndex={guestFilter}
+                    selectedTextStyle = {{
+                        color: 'white'
+                    }}
+                    onPress={(idx: number) => updateGuestFilter(idx)}
+                    buttons={buttons}
+                />
+            </View>
+            
         </>
     );
 }
