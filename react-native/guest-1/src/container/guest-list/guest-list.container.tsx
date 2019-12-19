@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 
 import { IConfiguredStore } from '../../redux/store';
 import { GuestListComponent } from './../../components/guest-list/guest-list.component';
-import {IProps as IComponentProps, IHandlers as IComponentHandlers} from './../../components/guest-list/guest-list.component';
-import { Actions as guestsActions } from '../../redux/guests/guests.ducks';
+import {IProps as IComponentProps} from './../../components/guest-list/guest-list.component';
 
-export const GuestList = connect<IComponentProps, IComponentHandlers>(
+export const GuestList = connect<IComponentProps, {}>(
     (state): IComponentProps => {
-        const { guests: { list} } = state as IConfiguredStore;
+        const { guests: { list } } = state as IConfiguredStore;
         return {
             list
         }
-    }, {
-        onDeleteGuest: guestsActions.removeGuest,
-        onToggleCouple: guestsActions.toggleCouple,
     }
 )(GuestListComponent);

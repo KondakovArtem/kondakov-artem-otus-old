@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 
 import { HeaderContainer } from '../../container/header/header.container';
 import { GuestList } from '../../container/guest-list/guest-list.container';
-import { View, StyleProp, ViewStyle, Text } from 'react-native';
 
 
 const GuestListContainer = styled.View`

@@ -28,8 +28,9 @@ export const HeaderComponent: React.FunctionComponent<IProps & IHandlers> = (pro
                 <Input
                     value={inputValue}
                     onChangeText={setInputValue}
+                    onSubmitEditing={(e) => {onAddGuest(e.nativeEvent.text)}}
                     placeholder="Новый гость"
-                    containerStyle={{ marginBottom: 0 }}
+                    containerStyle={{ marginBottom: 5 }}
                     rightIcon={{
                         Component: TouchableOpacity,
                         onPress: () => { onAddGuest(inputValue) },
