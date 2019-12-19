@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { IConfiguredStore } from '../../redux/store';
 import { GuestListComponent } from './../../components/guest-list/guest-list.component';
 import {IProps as IComponentProps} from './../../components/guest-list/guest-list.component';
+import { filterGuest } from '../../redux/guests/guests.ducks';
 
 export const GuestList = connect<IComponentProps, {}>(
     (state): IComponentProps => {
-        const { guests: { list } } = state as IConfiguredStore;
+        const { guests: { list, filter } } = state as IConfiguredStore;
         return {
-            list
+            list: filterGuest(list, filter)
         }
     }
 )(GuestListComponent);

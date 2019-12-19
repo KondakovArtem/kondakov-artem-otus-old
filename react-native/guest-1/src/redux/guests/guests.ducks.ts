@@ -6,23 +6,46 @@ import { IGuest } from '../../model/guest';
 import { IConfiguredStore, GetStore } from '../store';
 
 
+export enum FilterTypes {
+    ALL = 0,
+    WITH_PARTNER = 1,
+    WITHOUT_PARTNER = 2
+}
+
+
 export const ActionTypes = {
     ADD: '@guest/ADD',
     REMOVE: '@guest/remove',
     TOGGLE_COUPLE: '@guest/TOGGLE_COUPLE',
     SET_EDITABLE_GUEST: '@guest/SET_EDITABLE_GUEST',
-    UPDATE_GUEST_NAME: '@guest/UPDATE_GUEST_NAME'
+    UPDATE_GUEST_NAME: '@guest/UPDATE_GUEST_NAME',
+    UPDATE_FILTER: '@guest/UPDATE_FILTER',
 };
 
 // STORE
 export interface IStore {
     list: IGuest[];
     editGuest?: IGuest;
+    filter: number;
 }
 
 const initialState: IStore = {
     list: [],
+    filter: 0
 };
+
+export function filterGuest(list: IGuest[], filter: FilterTypes): IGuest[]{
+    if (filter === FilterTypes.ALL){
+        return list;
+    }
+    if (filter === FilterTypes.WITH_PARTNER){
+        return list.filter((item) => !!item.withPartner)
+    }
+    if (filter === FilterTypes.WITHOUT_PARTNER){
+        return list.filter((item) => !item.withPartner)
+    }
+    return list;
+}
 
 /// ACTIONS
 const addGuest = createAction(ActionTypes.ADD, (guest: IGuest) => guest)<IGuest>();
@@ -33,6 +56,7 @@ const updateGuestName = createAction(ActionTypes.UPDATE_GUEST_NAME, (uid: string
     newName,
     uid
 }})();
+const updateGuestFilter = createAction(ActionTypes.UPDATE_FILTER, (idx: number) => idx)();
 
 export const Actions = {
     addGuest: (guest: IGuest) => {
@@ -59,6 +83,9 @@ export const Actions = {
             dispatch(updateGuestName(uid, newName));
             dispatch(setEditableGuest());
         }
+    },
+    updateGuestFilter: (idx: number) => (dispatch: Dispatch, getStore: GetStore) => {
+        dispatch(updateGuestFilter(idx));
     }
 };
 
@@ -111,4 +138,10 @@ export const reducer = createReducer<IStore, Action>(initialState)
             }),
             editGuest: undefined
         };
-    });
+    })
+    .handleAction(updateGuestFilter, (state, { payload }) => {
+        return {
+            ...state,
+            filter: payload
+        }
+    })

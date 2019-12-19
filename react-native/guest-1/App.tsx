@@ -11,7 +11,7 @@ const App = () => {
     <>
       <Provider store = {configuredStore}>
         <SafeAreaView style={{flex: 1}}>
-          <AppComponent />
+          <AppComponent/>
         </SafeAreaView>
       </Provider>
     </>

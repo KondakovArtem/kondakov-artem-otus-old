@@ -8,7 +8,7 @@ import { GuestList } from '../../container/guest-list/guest-list.container';
 const GuestListContainer = styled.View`
     flex: 2;
     background: white;
-`
+`;
 
 export const AppComponent: React.FunctionComponent<{}> = ((props: {}) => {
     return (
