@@ -1,9 +1,9 @@
-import React from "react";
-import { FlatList, View, Text } from 'react-native';
-import styled from "styled-components/native";
+import React, {FunctionComponent} from 'react';
+import {FlatList} from 'react-native';
+import styled from 'styled-components/native';
 
-import { IGuest } from "../../model/guest";
-import { GuestItemContainer } from "../../container/guest-list/guest-list-item.container";
+import {IGuest} from '../../model/guest';
+import {GuestItemContainer} from '../../container/guest-list/guest-list-item.container';
 
 export interface IProps {
   list: IGuest[];
@@ -11,28 +11,27 @@ export interface IProps {
 
 const NorRecordWrapper = styled.View`
   flex: 1;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
 `;
 
 const NoRecordText = styled.Text`
   color: #f2f2f2;
   font-size: 30px;
-`
+`;
 
-export const GuestListComponent: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { list } = props;
+const keyExtractor = (item: IGuest) => item.uid;
+const renderItem = ({item}: {item: IGuest}) => (
+  <GuestItemContainer>{item}</GuestItemContainer>
+);
 
-  return (
-
-    list.length ?
-      (<FlatList
-        data={list}
-        keyExtractor={item => item.uid}
-        renderItem={({ item }) => <GuestItemContainer>{item}</GuestItemContainer>}
-      />) : 
-      (<NorRecordWrapper>
-        <NoRecordText>Нет записей</NoRecordText>
-      </NorRecordWrapper>)
+export const GuestListComponent: FunctionComponent<IProps> = props => {
+  const {list} = props;
+  return list.length ? (
+    <FlatList data={list} keyExtractor={keyExtractor} renderItem={renderItem} />
+  ) : (
+    <NorRecordWrapper>
+      <NoRecordText>Нет записей</NoRecordText>
+    </NorRecordWrapper>
   );
-}
+};

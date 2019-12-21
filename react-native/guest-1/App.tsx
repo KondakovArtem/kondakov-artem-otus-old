@@ -1,20 +1,21 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import { Provider } from 'react-redux';
-import { AppComponent } from './src/components/app/app.component';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {Provider} from 'react-redux';
 
-import configuredStore from "./src/redux/store";
+import {MainScreen} from './src/screens/main/main.screen';
+import configuredStore from './src/redux/store';
 
+const styles = StyleSheet.create({
+  safeArea: {flex: 1},
+});
 
 const App = () => {
   return (
-    <>
-      <Provider store = {configuredStore}>
-        <SafeAreaView style={{flex: 1}}>
-          <AppComponent/>
-        </SafeAreaView>
-      </Provider>
-    </>
+    <Provider store={configuredStore}>
+      <SafeAreaView style={styles.safeArea}>
+        <MainScreen />
+      </SafeAreaView>
+    </Provider>
   );
 };
 
