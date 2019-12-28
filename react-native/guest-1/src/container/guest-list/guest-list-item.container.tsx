@@ -9,18 +9,13 @@ import {
   IHandlers as IComponentHandlers,
 } from '../../components/guest-list/guest-list-item.component';
 import {Actions as guestsActions} from '../../redux/guests/guests.ducks';
-import {IGuest} from '../../model/guest';
+import {IGuest} from '../../model/guest.model';
 
 interface IOwnProps {
   children: IGuest;
 }
 
-export const GuestItemContainer = connect<
-  IComponentProps,
-  IComponentHandlers,
-  IOwnProps,
-  IConfiguredStore
->(
+export const GuestItemContainer = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
   (state, props) => {
     const {guests} = state;
     const {editGuest} = guests;
@@ -31,7 +26,7 @@ export const GuestItemContainer = connect<
   },
   {
     onDeleteGuest: guestsActions.removeGuest,
-    onToggleCouple: guestsActions.toggleCouple,
+    onTogglePartner: guestsActions.togglePartner,
     setEditableGuest: guestsActions.setEditableGuest,
     updateGuestName: guestsActions.updateGuestName,
   },

@@ -1,9 +1,10 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, memo} from 'react';
 import {ListItem, CheckBox} from 'react-native-elements';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
+import {isEqual} from 'lodash-es';
 
-import {IGuest} from '../../model/guest';
+import {IGuest} from '../../model/guest.model';
 
 export interface IProps {
   children: IGuest;
@@ -12,7 +13,7 @@ export interface IProps {
 
 export interface IHandlers {
   onDeleteGuest: (guest: IGuest) => void;
-  onToggleCouple: (guest: IGuest) => void;
+  onTogglePartner: (guest: IGuest) => void;
   setEditableGuest: (guest?: IGuest) => void;
   updateGuestName: (uid: string, text: string) => void;
 }
@@ -45,11 +46,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const GuestItem: FunctionComponent<IProps & IHandlers> = ({
+export const GuestItemComponent: FunctionComponent<IProps & IHandlers> = ({
   children: guest,
   editGuest,
   onDeleteGuest,
-  onToggleCouple,
+  onTogglePartner,
   setEditableGuest,
   updateGuestName,
 }) => {
@@ -58,7 +59,7 @@ export const GuestItem: FunctionComponent<IProps & IHandlers> = ({
   function NameElement() {
     return editGuest && editGuest.uid === uid ? (
       <EditNameTextInput
-        placeholder="Введите новое имя"
+        placeholder="Enter a new name"
         defaultValue={name}
         onEndEditing={e => updateGuestName(guest.uid, e.nativeEvent.text)}
         onSubmitEditing={e => updateGuestName(guest.uid, e.nativeEvent.text)}
@@ -70,16 +71,15 @@ export const GuestItem: FunctionComponent<IProps & IHandlers> = ({
       <NameText onLongPress={() => setEditableGuest(guest)}>{name}</NameText>
     );
   }
-
   return (
     <ListItem
       title={<NameElement />}
       containerStyle={styles.listItemContainer}
       subtitle={
         <CheckBox
-          title="С парой"
+          title="with partner"
           checked={withPartner}
-          onPress={() => onToggleCouple(guest)}
+          onPress={() => onTogglePartner(guest)}
           containerStyle={styles.checkBoxContainer}
         />
       }
@@ -95,3 +95,9 @@ export const GuestItem: FunctionComponent<IProps & IHandlers> = ({
     />
   );
 };
+
+export const GuestItem = memo(GuestItemComponent, (prevProps, nextProps) => {
+  const {children: preData, editGuest: preEdit} = prevProps;
+  const {children: nextData, editGuest: nextEdit} = nextProps;
+  return !(!isEqual(preData, nextData) || (!preEdit && !!nextEdit && nextEdit.uid === nextData.uid));
+});

@@ -4,15 +4,22 @@ import {connect} from 'react-redux';
 
 import {IConfiguredStore} from '../../redux/store';
 import {GuestListComponent} from './../../components/guest-list/guest-list.component';
-import {IProps as IComponentProps} from './../../components/guest-list/guest-list.component';
+import {Actions as guestActions} from '../../redux/guests/guests.ducks';
+import {
+  IProps as IComponentProps,
+  IHandlers as IComponentHandlers,
+} from './../../components/guest-list/guest-list.component';
 import {filterGuest} from '../../redux/guests/guests.ducks';
 
-export const GuestList = connect<IComponentProps, {}, {}, IConfiguredStore>(
+export const GuestList = connect<IComponentProps, IComponentHandlers, {}, IConfiguredStore>(
   state => {
     const {guests} = state;
     const {list, filter} = guests;
     return {
       list: filterGuest(list, filter),
     };
+  },
+  {
+    onInit: guestActions.initGuest,
   },
 )(GuestListComponent);
