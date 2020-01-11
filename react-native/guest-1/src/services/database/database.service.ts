@@ -25,7 +25,9 @@ export const removeGuest = async (userUid: string, data: IGuest) => {
 };
 
 export const getGuests = async (userUid: string, filterProps?: any): Promise<IGuest[]> => {
-  let ref: FirebaseDatabaseTypes.Query | FirebaseDatabaseTypes.Reference = database().ref(`${Paths.INTITES}/${userUid}`);
+  let ref: FirebaseDatabaseTypes.Query | FirebaseDatabaseTypes.Reference = database().ref(
+    `${Paths.INTITES}/${userUid}`,
+  );
 
   each(filterProps, (value, key) => {
     if (value != null) {
