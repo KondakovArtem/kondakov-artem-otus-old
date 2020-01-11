@@ -1,7 +1,4 @@
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
-import DataSnapshot = FirebaseDatabaseTypes.DataSnapshot;
-import Query = FirebaseDatabaseTypes.Query;
-import Reference = FirebaseDatabaseTypes.Reference;
 import {IGuest, IGuestMutateSubscription, IGuestData} from '../../model/guest.model';
 import {each} from 'lodash-es';
 
@@ -28,7 +25,7 @@ export const removeGuest = async (userUid: string, data: IGuest) => {
 };
 
 export const getGuests = async (userUid: string, filterProps?: any): Promise<IGuest[]> => {
-  let ref: Query | Reference = database().ref(`${Paths.INTITES}/${userUid}`);
+  let ref: FirebaseDatabaseTypes.Query | FirebaseDatabaseTypes.Reference = database().ref(`${Paths.INTITES}/${userUid}`);
 
   each(filterProps, (value, key) => {
     if (value != null) {
@@ -50,17 +47,17 @@ export const subscribeGuestMutation = (userUid: string, mutateSubscription: IGue
   // Get a firebase generated key, based on current time
   const startKey = (ref.push() as any).key;
 
-  const addedFn = (snapshot: DataSnapshot) =>
+  const addedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
     added({
       uid: snapshot.key,
       ...(snapshot.val() as IGuestData),
     });
-  const changedFn = (snapshot: DataSnapshot) =>
+  const changedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
     changed({
       uid: snapshot.key,
       ...(snapshot.val() as IGuestData),
     });
-  const removedFn = (snapshot: DataSnapshot) =>
+  const removedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
     removed({
       uid: snapshot.key,
       ...(snapshot.val() as IGuestData),
