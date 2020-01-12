@@ -1,6 +1,5 @@
 import React, {FunctionComponent, useEffect} from 'react';
-import {FlatList} from 'react-native';
-import styled from 'styled-components/native';
+import {FlatList, View, StyleSheet, Text} from 'react-native';
 
 import {IGuest} from '../../model/guest.model';
 import {GuestItemContainer} from '../../container/guest-list/guest-list-item.container';
@@ -13,16 +12,17 @@ export interface IHandlers {
   onInit: () => Function;
 }
 
-const NoRecordWrapper = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const NoRecordText = styled.Text`
-  color: #f2f2f2;
-  font-size: 30px;
-`;
+const styles = StyleSheet.create({
+  noRecordWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRecordText: {
+    color: '#f2f2f2',
+    fontSize: 30,
+  },
+});
 
 const keyExtractor = (item: IGuest) => item.uid;
 const renderItem = ({item}: {item: IGuest}) => <GuestItemContainer>{item}</GuestItemContainer>;
@@ -33,7 +33,8 @@ export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props =
   useEffect(() => {
     const unsubscribe = onInit && onInit();
     return () => unsubscribe();
-  }, [onInit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <FlatList
@@ -42,9 +43,9 @@ export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props =
       renderItem={renderItem}
       initialNumToRender={10}
       ListEmptyComponent={
-        <NoRecordWrapper>
-          <NoRecordText>No records</NoRecordText>
-        </NoRecordWrapper>
+        <View style={styles.noRecordWrapper}>
+          <Text style={styles.noRecordText}>No records</Text>
+        </View>
       }
     />
   );

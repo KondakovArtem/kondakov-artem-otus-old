@@ -1,10 +1,12 @@
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
 
-import {ActionTypes as commonActionsTypes} from '../common/common.ducks';
-import {IGuest} from '../../model/guest.model';
+import {ActionTypes as commonActionsTypes, Actions as commonActions} from '../common/common.ducks';
+import {IGuest, IGuestMeta, IGuestData} from '../../model/guest.model';
 import {GetStore} from '../store';
 import * as db from '../../services/database/database.service';
+import {NavAliases} from '../../model/navigation.model';
+const {GUEST_DETAILS_SCREEN} = NavAliases;
 
 export enum FilterTypes {
   ALL = 0,
@@ -14,26 +16,30 @@ export enum FilterTypes {
 
 export const ActionTypes = {
   ADD: '@guest/ADD',
-  REMOVE: '@guest/remove',
+  REMOVE: '@guest/REMOVE',
   TOGGLE_COUPLE: '@guest/TOGGLE_COUPLE',
   SET_EDITABLE_GUEST: '@guest/SET_EDITABLE_GUEST',
   UPDATE_GUEST_NAME: '@guest/UPDATE_GUEST_NAME',
   UPDATE_GUEST: '@guest/UPDATE_GUEST',
   UPDATE_FILTER: '@guest/UPDATE_FILTER',
   FILL: '@guest/FILL',
+  TO_REMOVED: '@guest/TO_REMOVED',
+  SET_EDIT_DETAILS: '@guest/SET_EDIT_DETAILS',
 };
 
 // STORE
 export interface IStore {
   list: IGuest[];
-  editGuest?: IGuest;
+  editGuest?: IGuestMeta;
   filter: FilterTypes;
+  removedUids: string[];
 }
 
 const initialState: IStore = {
   list: [],
   filter: 0,
   editGuest: undefined,
+  removedUids: [],
 };
 
 export function filterGuest(list: IGuest[], filter: FilterTypes): IGuest[] {
@@ -54,8 +60,9 @@ export function filterGuest(list: IGuest[], filter: FilterTypes): IGuest[] {
 /////////////////////////////////////////////
 const addGuest = createAction(ActionTypes.ADD, (guest: IGuest) => guest)();
 const removeGuest = createAction(ActionTypes.REMOVE, (guest: IGuest) => guest)();
+const markToRemoveGuest = createAction(ActionTypes.TO_REMOVED, (guest: IGuest) => guest)();
 const toggleCouple = createAction(ActionTypes.TOGGLE_COUPLE, (guest: IGuest) => guest)();
-const setEditableGuest = createAction(ActionTypes.SET_EDITABLE_GUEST, (guest?: IGuest) => guest)();
+const setEditableGuest = createAction(ActionTypes.SET_EDITABLE_GUEST, (guestMeta?: IGuestMeta) => guestMeta)();
 const updateGuestName = createAction(ActionTypes.UPDATE_GUEST_NAME, (uid: string, newName: string) => ({
   newName,
   uid,
@@ -63,11 +70,12 @@ const updateGuestName = createAction(ActionTypes.UPDATE_GUEST_NAME, (uid: string
 const updateGuest = createAction(ActionTypes.UPDATE_GUEST, (guest: IGuest) => guest)();
 const updateGuestFilter = createAction(ActionTypes.UPDATE_FILTER, (idx: number) => idx)();
 const fillGuests = createAction(ActionTypes.FILL, (guests: IGuest[]) => guests)();
+const setEditDetails = createAction(ActionTypes.SET_EDIT_DETAILS, (details: string) => details)();
 const signOutClear = createAction(commonActionsTypes.SIGN_OUT_CLEAR, () => {})();
 
 function getUserUidFromStore(getStore: GetStore) {
   const {
-    login: {userUid},
+    common: {userUid},
   } = getStore();
   return userUid;
 }
@@ -118,6 +126,9 @@ export const Actions = {
     const userUid = getUserUidFromStore(getStore);
     db.removeGuest(userUid, guest);
   },
+  markToDeleteGuest: (guest: IGuest) => async (dispatch: Dispatch) => {
+    dispatch(markToRemoveGuest(guest));
+  },
   togglePartner: (guest: IGuest) => (dispatch: Dispatch, getStore: GetStore) => {
     const userUid = getUserUidFromStore(getStore);
     db.updateGuest(userUid, {
@@ -125,8 +136,25 @@ export const Actions = {
       withPartner: !guest.withPartner,
     });
   },
+  updateGuest: () => (dispatch: Dispatch, getStore: GetStore) => {
+    const userUid = getUserUidFromStore(getStore);
+    const {guests} = getStore();
+    const {editGuest} = guests;
+    const {name, details, withPartner, uid} = editGuest as IGuestMeta;
+    db.updateGuest(userUid, {
+      uid,
+      name,
+      details,
+      withPartner,
+    } as IGuestData);
+    commonActions.navigate(NavAliases.MAIN_SCREEN)();
+  },
+
   setEditableGuest: (guest?: IGuest) => (dispatch: Dispatch) => {
     dispatch(setEditableGuest(guest));
+  },
+  setEditDetails: (details: string) => (dispatch: Dispatch) => {
+    dispatch(setEditDetails(details));
   },
   updateGuestName: (uid: string, newName: string = '') => (dispatch: Dispatch, getStore: GetStore) => {
     const userUid = getUserUidFromStore(getStore);
@@ -136,17 +164,27 @@ export const Actions = {
     const guest = list.find(item => item.uid === uid);
     if (guest) {
       if (!newName) {
-        db.removeGuest(userUid, guest);
+        Actions.removeGuest(guest)(dispatch, getStore);
       } else {
         db.updateGuest(userUid, {
           ...guest,
           name: newName,
         });
       }
+      dispatch(setEditableGuest());
     }
   },
   updateGuestFilter: (idx: number) => async (dispatch: Dispatch) => {
     dispatch(updateGuestFilter(idx));
+  },
+  selectGuest: (guest?: IGuest) => (dispatch: Dispatch) => {
+    dispatch(
+      setEditableGuest({
+        ...(guest as IGuestData),
+        withDetails: true,
+      }),
+    );
+    commonActions.navigate(GUEST_DETAILS_SCREEN)();
   },
 };
 
@@ -164,6 +202,12 @@ export const reducer = createReducer<IStore, Action>(initialState)
     return {
       ...state,
       list: state.list.filter(item => item.uid !== guest.uid),
+    };
+  })
+  .handleAction(markToRemoveGuest, (state, {payload: guest}) => {
+    return {
+      ...state,
+      removedUids: [...state.removedUids, guest.uid],
     };
   })
   .handleAction(toggleCouple, (state, {payload: guest}) => {
@@ -231,4 +275,11 @@ export const reducer = createReducer<IStore, Action>(initialState)
       }),
       editGuest: undefined,
     };
-  });
+  })
+  .handleAction(setEditDetails, (state, {payload}) => ({
+    ...state,
+    editGuest: {
+      ...(state.editGuest as IGuestMeta),
+      details: payload,
+    },
+  }));
