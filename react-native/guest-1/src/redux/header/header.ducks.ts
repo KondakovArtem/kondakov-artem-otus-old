@@ -1,10 +1,10 @@
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
 
-import {Actions as guestsActions} from '../guests/guests.ducks';
-import {IGuest} from '../../model/guest.model';
-import {GetStore} from '../store';
-import {ActionTypes as commonActionsTypes} from '../common/common.ducks';
+import {Actions as guestsActions} from '@app/redux/guests/guests.ducks';
+import {IGuest} from '@app/model/guest.model';
+import {GetStore} from '@app/redux/store';
+import {ActionTypes as commonActionsTypes} from '@app/redux/common/common.ducks';
 
 export const ActionTypes = {
   SET_INPUTVALUE: '@header/SET_INPUTVALUE',

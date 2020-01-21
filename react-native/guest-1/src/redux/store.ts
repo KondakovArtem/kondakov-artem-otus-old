@@ -4,10 +4,10 @@ import {createLogger} from 'redux-logger';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {reducer as headerReducer, IStore as IHeaderStore} from './header/header.ducks';
-import {reducer as guestsReducer, IStore as IGuestsStore} from './guests/guests.ducks';
-import {reducer as loginReducer, IStore as ILoginStore} from './login/login.ducks';
-import {reducer as commonReducer, IStore as ICommonStore} from './common/common.ducks';
+import {reducer as headerReducer, IStore as IHeaderStore} from '@app/redux/header/header.ducks';
+import {reducer as guestsReducer, IStore as IGuestsStore} from '@app/redux/guests/guests.ducks';
+import {reducer as loginReducer, IStore as ILoginStore} from '@app/redux/login/login.ducks';
+import {reducer as commonReducer, IStore as ICommonStore} from '@app/redux/common/common.ducks';
 
 const reducer = combineReducers({
   header: headerReducer,
@@ -40,8 +40,6 @@ const persistConfig = {
 };
 
 export type GetStore = () => IConfiguredStore;
-export type SimpleThunkDispatch = ThunkDispatch<{}, {}, AnyAction>;
-export type SimpleThunkAction = ThunkAction<void, {}, {}, AnyAction>;
 
 export default () => {
   const persistedReducer = persistReducer(persistConfig, reducer);

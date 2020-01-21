@@ -1,8 +1,8 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import LottieView from 'lottie-react-native';
 import styled from 'styled-components/native';
 
-import triangleLoading from '../../../assets/animations/triangle-loading.json';
+import triangleLoading from '@app/../assets/animations/triangle-loading.json';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -26,13 +26,11 @@ const TextContainer = styled.View`
   align-items: center;
 `;
 
-export const LoadingScreenComponent: FunctionComponent = () => {
-  return (
-    <Wrapper>
-      <LottieView source={triangleLoading} autoPlay loop />
-      <TextContainer>
-        <LoadingText>Loading</LoadingText>
-      </TextContainer>
-    </Wrapper>
-  );
-};
+export const LoadingScreenComponent: FC = () => (
+  <Wrapper>
+    <LottieView source={triangleLoading} autoPlay loop />
+    <TextContainer>
+      <LoadingText>Loading</LoadingText>
+    </TextContainer>
+  </Wrapper>
+);

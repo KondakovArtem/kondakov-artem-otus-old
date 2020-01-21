@@ -2,9 +2,9 @@ import auth from '@react-native-firebase/auth';
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
 
-import {GetStore} from '../store';
-import {ActionTypes as commonActionsTypes, Actions as commonActions} from '../common/common.ducks';
-import {NavAliases} from '../../model/navigation.model';
+import {GetStore} from '@app/redux/store';
+import {ActionTypes as commonActionsTypes, Actions as commonActions} from '@app/redux/common/common.ducks';
+import {NavAliases} from '@app/model/navigation.model';
 
 export const ActionTypes = {
   TOGGLE_SHOW_PASSWORD: '@login/TOGGLE_SHOW_PASSWORD',
@@ -54,7 +54,6 @@ export const Actions = {
         await auth().signInWithEmailAndPassword(username, password);
       } catch (e) {
         console.error(e);
-        return;
       }
     }
   },

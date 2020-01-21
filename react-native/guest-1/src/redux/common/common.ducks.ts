@@ -4,9 +4,9 @@ import {NavigationActions, NavigationContainerComponent, NavigationState} from '
 import {Dispatch} from 'redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {NavAliases, NAV_STATE_KEY} from '../../model/navigation.model';
-import {IUserInfo} from '../../model/login.model';
-import {GetStore} from '../store';
+import {NavAliases, NAV_STATE_KEY} from '@app/model/navigation.model';
+import {IUserInfo} from '@app/model/login.model';
+import {GetStore} from '@app/redux/store';
 
 export const ActionTypes = {
   SIGN_OUT_CLEAR: '@common/SIGN_OUT_CLEAR',

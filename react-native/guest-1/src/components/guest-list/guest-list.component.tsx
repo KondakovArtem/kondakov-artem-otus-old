@@ -1,8 +1,8 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {useEffect, FC} from 'react';
 import {FlatList, View, StyleSheet, Text} from 'react-native';
 
-import {IGuest} from '../../model/guest.model';
-import {GuestItemContainer} from '../../container/guest-list/guest-list-item.container';
+import {IGuest} from '@app/model/guest.model';
+import {GuestItemContainer} from '@app/container/guest-list/guest-list-item.container';
 
 export interface IProps {
   list: IGuest[];
@@ -27,7 +27,13 @@ const styles = StyleSheet.create({
 const keyExtractor = (item: IGuest) => item.uid;
 const renderItem = ({item}: {item: IGuest}) => <GuestItemContainer>{item}</GuestItemContainer>;
 
-export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props => {
+export const ListEmptyComponent = () => (
+  <View style={styles.noRecordWrapper}>
+    <Text style={styles.noRecordText}>No records</Text>
+  </View>
+);
+
+export const GuestListComponent: FC<IProps & IHandlers> = props => {
   const {list, onInit} = props;
 
   useEffect(() => {
@@ -42,11 +48,7 @@ export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props =
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       initialNumToRender={10}
-      ListEmptyComponent={
-        <View style={styles.noRecordWrapper}>
-          <Text style={styles.noRecordText}>No records</Text>
-        </View>
-      }
+      ListEmptyComponent={ListEmptyComponent}
     />
   );
 };

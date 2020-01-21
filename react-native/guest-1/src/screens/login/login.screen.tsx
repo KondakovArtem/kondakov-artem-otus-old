@@ -1,11 +1,11 @@
-import React, {FunctionComponent} from 'react';
-import {NavigationStackOptions} from 'react-navigation-stack';
+import React, {FC} from 'react';
 import {StyleSheet} from 'react-native';
 import {Input, Icon} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {connect} from 'react-redux';
-import {Actions as loginAction} from '../../redux/login/login.ducks';
-import {IConfiguredStore} from '../../redux/store';
+
+import {Actions as loginAction} from '@app/redux/login/login.ducks';
+import {IConfiguredStore} from '@app/redux/store';
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -77,7 +77,7 @@ interface IHandlers {
   signIn: () => void;
 }
 
-export const LoginScreenComponent: FunctionComponent<IProps & IHandlers> = props => {
+export const LoginScreenComponent: FC<IProps & IHandlers> = props => {
   const {showPassword, toggleShowPassword, username, password, setPassword, setUsername, signIn} = props;
 
   return (
@@ -121,10 +121,6 @@ export const LoginScreenComponent: FunctionComponent<IProps & IHandlers> = props
     </KeyboardAvoidingViewContainer>
   );
 };
-
-(LoginScreenComponent as any).navigationOptions = {
-  headerShown: false,
-} as NavigationStackOptions;
 
 export const LoginScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
   ({login}) => ({

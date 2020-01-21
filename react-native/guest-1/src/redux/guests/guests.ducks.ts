@@ -1,11 +1,11 @@
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
 
-import {ActionTypes as commonActionsTypes, Actions as commonActions} from '../common/common.ducks';
-import {IGuest, IGuestMeta, IGuestData} from '../../model/guest.model';
-import {GetStore} from '../store';
-import * as db from '../../services/database/database.service';
-import {NavAliases} from '../../model/navigation.model';
+import {ActionTypes as commonActionsTypes, Actions as commonActions} from '@app/redux/common/common.ducks';
+import {IGuest, IGuestMeta, IGuestData} from '@app/model/guest.model';
+import {GetStore} from '@app/redux/store';
+import * as db from '@app/services/database/database.service';
+import {NavAliases} from '@app/model/navigation.model';
 const {GUEST_DETAILS_SCREEN} = NavAliases;
 
 export enum FilterTypes {
@@ -42,7 +42,7 @@ const initialState: IStore = {
   removedUids: [],
 };
 
-export function filterGuest(list: IGuest[], filter: FilterTypes): IGuest[] {
+export const filterGuest = (list: IGuest[], filter: FilterTypes): IGuest[] => {
   if (filter === FilterTypes.ALL) {
     return list;
   }
@@ -53,7 +53,7 @@ export function filterGuest(list: IGuest[], filter: FilterTypes): IGuest[] {
     return list.filter(item => !item.withPartner);
   }
   return list;
-}
+};
 
 /////////////////////////////////////////////
 /// ACTIONS

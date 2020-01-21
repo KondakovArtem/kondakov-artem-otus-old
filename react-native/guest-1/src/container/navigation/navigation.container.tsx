@@ -2,10 +2,10 @@ import React, {FunctionComponent} from 'react';
 import {connect} from 'react-redux';
 import {NavigationContainerComponent} from 'react-navigation';
 
-import {IConfiguredStore} from '../../redux/store';
-import {Actions as commonActions} from '../../redux/common/common.ducks';
-import {Navigation} from '../../navigation/navigation';
-import {LoadingScreenComponent} from '../../screens/loading/loading.screen';
+import {IConfiguredStore} from '@app/redux/store';
+import {Actions as commonActions} from '@app/redux/common/common.ducks';
+import {Navigation} from '@app/navigation/navigation';
+import {LoadingScreenComponent} from '@app/screens/loading/loading.screen';
 
 interface IHandlers {
   persistNavigationState: any;

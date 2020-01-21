@@ -1,19 +1,17 @@
-import React, {FunctionComponent, useState} from 'react';
-import {NavigationStackOptions} from 'react-navigation-stack';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useState, FC} from 'react';
+import {ScrollView, StyleSheet, View, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
 import {connect} from 'react-redux';
 import {TextInput, Button} from 'react-native-paper';
-
 //@ts-ignore;
-import {Scene as MagicScene, Text as MagicText, Transition} from 'react-native-magic-move';
+import {Scene as MagicScene, Text as MagicText, View as MagicView, Transition} from 'react-native-magic-move';
 
-import {HeaderBarComponent} from '../../components/header-bar/header-bar.component';
-import {IConfiguredStore} from '../../redux/store';
-import {commonStyles, COMMON_DURATION} from '../../services/style/style.service';
-import {IGuestMeta} from '../../model/guest.model';
-import {Actions as commonActions} from '../../redux/common/common.ducks';
-import {Actions as guestsActions} from '../../redux/guests/guests.ducks';
-import {NavAliases} from '../../model/navigation.model';
+import {HeaderBarComponent} from '@app/components/header-bar/header-bar.component';
+import {IConfiguredStore} from '@app/redux/store';
+import {commonStyles, COMMON_DURATION} from '@app/services/style/style.service';
+import {IGuestMeta} from '@app/model/guest.model';
+import {Actions as commonActions} from '@app/redux/common/common.ducks';
+import {Actions as guestsActions} from '@app/redux/guests/guests.ducks';
+import {NavAliases} from '@app/model/navigation.model';
 
 interface IProps {
   editGuest: IGuestMeta;
@@ -39,28 +37,35 @@ const styles = StyleSheet.create({
   },
 });
 
-export const GuestDetailScreenComponent: FunctionComponent<IProps & IHandlers> = props => {
+export const GuestDetailScreenComponent: FC<IProps & IHandlers> = props => {
   const {editGuest = {}, cancel, setDetails, save} = props;
   const {name, uid, details} = editGuest as IGuestMeta;
   const [magicUid] = useState(`mt_${uid}`);
+  const [magicUid2] = useState(`mv_${uid}`);
+
+  const TitleComponent = () => (
+    <MagicView id={magicUid2} transition={Transition.morph} duration={COMMON_DURATION}>
+      <MagicText
+        style={commonStyles.appBarTitle}
+        id={magicUid}
+        transition={Transition.morph}
+        duration={COMMON_DURATION}>
+        {name}
+      </MagicText>
+    </MagicView>
+  );
+
+  function onChange(e: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setDetails(e.nativeEvent.text);
+  }
 
   return (
     <MagicScene>
-      <HeaderBarComponent
-        titleComponent={() => (
-          <MagicText
-            style={commonStyles.appBarTitle}
-            id={magicUid}
-            transition={Transition.morph}
-            duration={COMMON_DURATION}>
-            {name}
-          </MagicText>
-        )}
-      />
+      <HeaderBarComponent titleComponent={TitleComponent} />
       <ScrollView style={styles.scroll}>
         <TextInput
           value={details}
-          onChange={e => setDetails(e.nativeEvent.text)}
+          onChange={onChange}
           mode={'outlined'}
           numberOfLines={10}
           label={'Details'}
@@ -91,7 +96,3 @@ export const GuestDetailScreen = connect<IProps, IHandlers, {}, IConfiguredStore
     setDetails: guestsActions.setEditDetails,
   },
 )(GuestDetailScreenComponent);
-
-(GuestDetailScreen as any).navigationOptions = {
-  header: null,
-} as NavigationStackOptions;

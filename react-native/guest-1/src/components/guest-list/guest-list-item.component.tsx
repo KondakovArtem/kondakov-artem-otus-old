@@ -1,14 +1,14 @@
-import React, {FunctionComponent, memo} from 'react';
+import React, {memo, FC} from 'react';
 import {ListItem, CheckBox} from 'react-native-elements';
-import {TouchableOpacity, StyleSheet, TextInput, View} from 'react-native';
+import {TouchableOpacity, StyleSheet, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 import {isEqual} from 'lodash-es';
 import * as Animatable from 'react-native-animatable';
 //@ts-ignore;
-import {Text as MagicText, Transition} from 'react-native-magic-move';
+import {Text as MagicText, Transition, View as MagicView} from 'react-native-magic-move';
 
-import {IGuest, IGuestMeta} from '../../model/guest.model';
-import {COMMON_DURATION} from '../../services/style/style.service';
+import {IGuest, IGuestMeta} from '@app/model/guest.model';
+import {COMMON_DURATION} from '@app/services/style/style.service';
 
 export interface IProps {
   children: IGuest;
@@ -49,15 +49,15 @@ const styles = StyleSheet.create({
   checkBoxContainer: {
     backgroundColor: 'transparent',
     borderWidth: 0,
-    paddingLeft: 5,
-    paddingTop: 3,
-    paddingBottom: 3,
-    marginLeft: -5,
+    paddingLeft: 6,
+    paddingTop: 4,
+    paddingBottom: 4,
+    marginLeft: -6,
     marginBottom: 0,
   },
 });
 
-export const GuestItemComponent: FunctionComponent<IProps & IHandlers> = ({
+export const GuestItemComponent: FC<IProps & IHandlers> = ({
   children: guest,
   editGuest,
   removedUids,
@@ -70,19 +70,22 @@ export const GuestItemComponent: FunctionComponent<IProps & IHandlers> = ({
 }) => {
   const {uid, name, withPartner} = guest;
 
-  function NameElement() {
+  const onEndEditing = (e: any) => updateGuestName(guest.uid, e.nativeEvent.text);
+  const onSubmitEditing = (e: any) => updateGuestName(guest.uid, e.nativeEvent.text);
+
+  const NameElement = () => {
     return editGuest && editGuest.uid === uid && !editGuest.withDetails ? (
       <EditNameTextInput
         placeholder="Enter a new name"
         defaultValue={name}
-        onEndEditing={e => updateGuestName(guest.uid, e.nativeEvent.text)}
-        onSubmitEditing={e => updateGuestName(guest.uid, e.nativeEvent.text)}
+        onEndEditing={onEndEditing}
+        onSubmitEditing={onSubmitEditing}
         ref={(ref: TextInput) => {
           ref?.focus();
         }}
       />
     ) : (
-      <View style={styles.nameContainer}>
+      <MagicView style={styles.nameContainer} id={`mv_${uid}`} transition={Transition.morph} duration={COMMON_DURATION}>
         <MagicText
           id={`mt_${uid}`}
           style={styles.name}
@@ -92,9 +95,9 @@ export const GuestItemComponent: FunctionComponent<IProps & IHandlers> = ({
           onPress={() => onSelect(guest)}>
           {name}
         </MagicText>
-      </View>
+      </MagicView>
     );
-  }
+  };
 
   function onAnimationEnd() {
     if (removedUids.includes(uid)) {

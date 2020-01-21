@@ -1,7 +1,8 @@
-import React, {FunctionComponent, ReactElement} from 'react';
+import React, {ReactElement, FC} from 'react';
 import {Input, ButtonGroup} from 'react-native-elements';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
-import {HeaderBarComponent} from '../header-bar/header-bar.component';
+
+import {HeaderBarComponent} from '@app/components/header-bar/header-bar.component';
 
 export interface IProps {
   inputValue: string;
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   buttonFilter: {color: 'white'},
 });
 
-export const HeaderComponent: FunctionComponent<IProps & IHandlers> = props => {
+export const HeaderComponent: FC<IProps & IHandlers> = props => {
   const {setInputValue, inputValue, onAddGuest, updateGuestFilter, guestFilter = 0, titleComponent} = props;
 
   const buttons = [`All`, `With partner`, `Without partner`];

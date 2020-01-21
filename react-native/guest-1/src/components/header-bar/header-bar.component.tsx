@@ -1,14 +1,12 @@
-import React, {FunctionComponent, ReactElement} from 'react';
+import React, {ReactElement, FC} from 'react';
 import {Header} from 'react-native-elements';
 import {StyleSheet} from 'react-native';
 
-import {MainMenuContainer} from '../../container/main-menu/main-menu.container';
+import {MainMenuContainer} from '@app/container/main-menu/main-menu.container';
 
 export interface IProps {
   titleComponent: () => ReactElement;
 }
-
-export interface IHandlers {}
 
 const styles = StyleSheet.create({
   header: {
@@ -17,8 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const HeaderBarComponent: FunctionComponent<IProps & IHandlers> = props => {
-  const {titleComponent} = props;
+export const HeaderBarComponent: FC<IProps> = ({titleComponent}) => {
   return (
     <Header
       placement="left"
