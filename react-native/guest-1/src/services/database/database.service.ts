@@ -1,6 +1,8 @@
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
 import {IGuest, IGuestMutateSubscription, IGuestData} from '@app/model/guest.model';
 import {each} from 'lodash-es';
+import {Platform} from 'react-native';
 
 enum Paths {
   INTITES = '/intites',
@@ -80,3 +82,20 @@ export const subscribeGuestMutation = (userUid: string, mutateSubscription: IGue
     ref.off('child_removed', removedFn);
   };
 };
+
+export async function getStorageFileUrl(path: string) {
+  try {
+    return await storage()
+      .ref(path)
+      .getDownloadURL();
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function uploadImage(userUid: string, localUri: string, path: string) {
+  const uploadUri = Platform.OS === 'ios' ? localUri.replace('file://', '') : localUri;
+  const imageRef = storage().ref(`${userUid}/${path}`);
+  await imageRef.putFile(uploadUri);
+  return imageRef.getDownloadURL();
+}

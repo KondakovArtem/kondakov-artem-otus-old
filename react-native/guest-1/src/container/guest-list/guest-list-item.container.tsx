@@ -17,10 +17,12 @@ interface IOwnProps {
 
 export const GuestItemContainer = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
   (state, props) => {
-    const {guests} = state;
+    const {guests, common} = state;
+    const {userUid} = common;
     const {editGuest, removedUids} = guests;
     return {
       editGuest,
+      userUid,
       children: props.children,
       removedUids,
     };
@@ -28,9 +30,10 @@ export const GuestItemContainer = connect<IComponentProps, IComponentHandlers, I
   {
     onDeleteGuest: guestsActions.removeGuest,
     onTogglePartner: guestsActions.togglePartner,
-    setEditableGuest: guestsActions.setEditableGuest,
-    updateGuestName: guestsActions.updateGuestName,
+    onSetEditableGuest: guestsActions.setEditableGuest,
+    onUpdateGuestName: guestsActions.updateGuestName,
     onMarkDeleteGuest: guestsActions.markToDeleteGuest,
     onSelect: guestsActions.selectGuest,
+    onTakeGuestPhoto: guestsActions.takeGuestPhoto,
   },
 )(GuestItem);

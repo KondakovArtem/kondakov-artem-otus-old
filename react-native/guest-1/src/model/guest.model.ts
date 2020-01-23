@@ -3,6 +3,7 @@ export interface IGuestData {
   uid: string;
   withPartner: boolean;
   details: string;
+  photoPath: string;
 }
 
 export interface IGuest extends IGuestData {

@@ -9,20 +9,23 @@ import {Text as MagicText, Transition, View as MagicView} from 'react-native-mag
 
 import {IGuest, IGuestMeta} from '@app/model/guest.model';
 import {COMMON_DURATION} from '@app/services/style/style.service';
+import {AvatarComponent} from '../avatar/avatar.component';
 
 export interface IProps {
   children: IGuest;
   editGuest?: IGuestMeta;
   removedUids: string[];
+  userUid: string;
 }
 
 export interface IHandlers {
   onDeleteGuest: (guest: IGuest) => void;
   onMarkDeleteGuest: (guest: IGuest) => void;
   onTogglePartner: (guest: IGuest) => void;
-  setEditableGuest: (guest?: IGuest) => void;
-  updateGuestName: (uid: string, text: string) => void;
+  onSetEditableGuest: (guest?: IGuest) => void;
+  onUpdateGuestName: (uid: string, text: string) => void;
   onSelect: (guest: IGuest) => void;
+  onTakeGuestPhoto: (guest: IGuest) => void;
 }
 
 const EditNameTextInput = styled.TextInput`
@@ -65,20 +68,31 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
   onMarkDeleteGuest,
   onSelect,
   onTogglePartner,
-  setEditableGuest,
-  updateGuestName,
+  onSetEditableGuest,
+  onUpdateGuestName,
+  onTakeGuestPhoto,
+  userUid,
 }) => {
-  const {uid, name, withPartner} = guest;
+  const {uid, name, withPartner, photoPath} = guest;
 
-  const onEndEditing = (e: any) => updateGuestName(guest.uid, e.nativeEvent.text);
-  const onSubmitEditing = (e: any) => updateGuestName(guest.uid, e.nativeEvent.text);
+  const onSubmitEditing = (e: any) => onUpdateGuestName(guest.uid, e.nativeEvent.text);
+  const takeGuestPhoto = () => onTakeGuestPhoto(guest);
+  const onAnimationEnd = () => {
+    if (removedUids.includes(uid)) {
+      onDeleteGuest(guest);
+    }
+  };
+  const selectGuest = () => onSelect(guest);
+  const togglePartner = () => onTogglePartner(guest);
+  const markDeleteGuest = () => onMarkDeleteGuest(guest);
+  const setEditableGuest = () => onSetEditableGuest(guest);
 
   const NameElement = () => {
     return editGuest && editGuest.uid === uid && !editGuest.withDetails ? (
       <EditNameTextInput
         placeholder="Enter a new name"
         defaultValue={name}
-        onEndEditing={onEndEditing}
+        onEndEditing={onSubmitEditing}
         onSubmitEditing={onSubmitEditing}
         ref={(ref: TextInput) => {
           ref?.focus();
@@ -91,19 +105,13 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
           style={styles.name}
           transition={Transition.morph}
           duration={COMMON_DURATION}
-          onLongPress={() => setEditableGuest(guest)}
-          onPress={() => onSelect(guest)}>
+          onLongPress={setEditableGuest}
+          onPress={selectGuest}>
           {name}
         </MagicText>
       </MagicView>
     );
   };
-
-  function onAnimationEnd() {
-    if (removedUids.includes(uid)) {
-      onDeleteGuest(guest);
-    }
-  }
 
   return (
     <Animatable.View
@@ -113,19 +121,28 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
       onAnimationEnd={onAnimationEnd}>
       <ListItem
         title={<NameElement />}
-        onPress={() => onSelect(guest)}
+        onPress={selectGuest}
         containerStyle={styles.listItemContainer}
         subtitle={
           <CheckBox
             title="with partner"
             checked={withPartner}
-            onPress={() => onTogglePartner(guest)}
+            onPress={togglePartner}
             containerStyle={styles.checkBoxContainer}
+          />
+        }
+        leftElement={
+          <AvatarComponent
+            onLongPress={takeGuestPhoto}
+            onPress={selectGuest}
+            size={50}
+            path={photoPath ? `${userUid}/${photoPath}` : undefined}
+            icon={withPartner ? 'account-multiple-outline' : 'account-outline'}
           />
         }
         rightIcon={{
           Component: TouchableOpacity,
-          onPress: () => onMarkDeleteGuest(guest),
+          onPress: markDeleteGuest,
           name: 'close',
           type: 'Ionicons',
           color: '#000',
