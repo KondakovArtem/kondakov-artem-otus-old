@@ -5,6 +5,7 @@ export enum NavAliases {
   AUTH_STACK = 'Auth',
   LOGIN_SCREEN = 'Login',
   GUEST_DETAILS_SCREEN = 'GuestDetails',
+  USER_PROFILE_SCREEN = 'UserProfile',
 }
 
 export const NAV_STATE_KEY = 'navState';

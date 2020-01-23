@@ -6,6 +6,8 @@ import {IGuest, IGuestMeta, IGuestData} from '@app/model/guest.model';
 import {GetStore} from '@app/redux/store';
 import * as db from '@app/services/database/database.service';
 import {NavAliases} from '@app/model/navigation.model';
+import {takePhoto} from '@app/services/photo/photo.service';
+import {uniqueId} from 'lodash-es';
 const {GUEST_DETAILS_SCREEN} = NavAliases;
 
 export enum FilterTypes {
@@ -136,18 +138,18 @@ export const Actions = {
       withPartner: !guest.withPartner,
     });
   },
-  updateGuest: () => (dispatch: Dispatch, getStore: GetStore) => {
-    const userUid = getUserUidFromStore(getStore);
+
+  updateEditGuest: () => (dispatch: Dispatch, getStore: GetStore) => {
     const {guests} = getStore();
     const {editGuest} = guests;
-    const {name, details, withPartner, uid} = editGuest as IGuestMeta;
-    db.updateGuest(userUid, {
-      uid,
-      name,
-      details,
-      withPartner,
-    } as IGuestData);
+    Actions.updateGuest(editGuest as IGuestMeta)(dispatch, getStore);
     commonActions.navigate(NavAliases.MAIN_SCREEN)();
+  },
+
+  updateGuest: (editGuest: IGuest) => (dispatch: Dispatch, getStore: GetStore) => {
+    const userUid = getUserUidFromStore(getStore);
+    const {name, details, withPartner, uid, photoPath} = editGuest as IGuestMeta;
+    db.updateGuest(userUid, {uid, name, details, withPartner, photoPath} as IGuestData);
   },
 
   setEditableGuest: (guest?: IGuest) => (dispatch: Dispatch) => {
@@ -185,6 +187,17 @@ export const Actions = {
       }),
     );
     commonActions.navigate(GUEST_DETAILS_SCREEN)();
+  },
+  takeGuestPhoto: (guest: IGuest) => async (dispatch: Dispatch, getStore: GetStore) => {
+    const userUid = getUserUidFromStore(getStore);
+    const photoPath = `guests/${uniqueId()}`;
+    const newPhoto = await takePhoto(userUid, photoPath);
+    if (newPhoto) {
+      Actions.updateGuest({
+        ...guest,
+        photoPath,
+      })(dispatch, getStore);
+    }
   },
 };
 
