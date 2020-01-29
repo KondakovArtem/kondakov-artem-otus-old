@@ -7,16 +7,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import {reducer as authReducer, IStore as IAuthStore} from '@app/redux/auth/auth.ducks';
 import {reducer as commonReducer, IStore as ICommonStore} from '@app/redux/common/common.ducks';
+import {DefaultRootState} from 'react-redux';
 
 const reducer = combineReducers({
   authData: authReducer,
   common: commonReducer,
 });
 
-export type IConfiguredStore = {
+export interface IConfiguredStore extends DefaultRootState {
   authData: IAuthStore;
   common: ICommonStore;
-};
+}
 
 const persistConfig = {
   key: 'root',

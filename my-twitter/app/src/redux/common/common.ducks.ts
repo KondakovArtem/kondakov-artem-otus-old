@@ -67,7 +67,9 @@ export const Actions = {
     }
   },
   setTopLevelNavigator: (navigatorRef: NavigationContainerComponent) => async () => {
-    _navigator = navigatorRef;
+    if (navigatorRef) {
+      _navigator = navigatorRef;
+    }
   },
 
   showProfile: () => async () => {

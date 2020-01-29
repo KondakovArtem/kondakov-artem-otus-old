@@ -9,6 +9,13 @@ import App from '../App';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-it('renders correctly', () => {
+async function delay(time: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
+}
+
+it('renders correctly', async () => {
   renderer.create(<App />);
+  await delay(1000);
 });

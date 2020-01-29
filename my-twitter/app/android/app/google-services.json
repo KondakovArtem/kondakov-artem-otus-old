@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "770505168148-aqc1i2n5htm43qtkkhe1odc1nmnrv8o2.apps.googleusercontent.com",
+          "client_id": "770505168148-p93hat0vu5s7931iiu0b5a4bpotd5inf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mytwitter",
-            "certificate_hash": "0719bc2ccbefde2cf4cacd9e0aa454c69f60c21c"
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
