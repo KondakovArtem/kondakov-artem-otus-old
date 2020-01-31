@@ -1,5 +1,5 @@
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
-import {IGuest, IGuestMutateSubscription, IGuestData} from '../../model/guest.model';
+import {IGuest, IGuestMutateSubscription, IGuestData} from '@app/model/guest.model';
 import {each} from 'lodash-es';
 
 enum Paths {

@@ -1,22 +1,19 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import {connect} from 'react-redux';
+import {Text} from 'react-native';
 
-import {IConfiguredStore} from '../../redux/store';
-import {Actions as headerActions} from '../../redux/header/header.ducks';
-import {Actions as guestActions} from '../../redux/guests/guests.ducks';
-import {Actions as loginActions} from '../../redux/login/login.ducks';
-import {HeaderComponent} from '../../components/header/header.component';
-import {IProps as IComponentProps, IHandlers as IComponentHandlers} from '../../components/header/header.component';
-import {IUserInfo} from '../../model/login.model';
+import {IConfiguredStore} from '@app/redux/store';
+import {Actions as headerActions} from '@app/redux/header/header.ducks';
+import {Actions as guestActions} from '@app/redux/guests/guests.ducks';
+import {HeaderComponent} from '@app/components/header/header.component';
+import {IProps as IComponentProps, IHandlers as IComponentHandlers} from '@app/components/header/header.component';
+import {commonStyles} from '@app/services/style/style.service';
 
 export const HeaderContainer = connect<IComponentProps, IComponentHandlers, {}, IConfiguredStore>(
   state => {
-    const {header, guests, login} = state;
+    const {header, guests} = state;
     const {inputValue} = header;
     const {list: guestList, filter} = guests;
-    const {info = {} as IUserInfo} = login;
-    const {initial} = info;
 
     let guestTotal = guestList.length;
     guestList.forEach(guest => {
@@ -26,13 +23,14 @@ export const HeaderContainer = connect<IComponentProps, IComponentHandlers, {}, 
       inputValue,
       guestFilter: filter,
       guestTotal,
-      initial,
+      titleComponent: () => (
+        <Text style={commonStyles.appBarTitle}>{`Guests list ${guestTotal ? `(${guestTotal})` : ''}`}</Text>
+      ),
     };
   },
   {
     setInputValue: headerActions.setInputValue,
     onAddGuest: headerActions.addNewGuest,
     updateGuestFilter: guestActions.updateGuestFilter,
-    signOut: loginActions.signOut,
   },
 )(HeaderComponent);

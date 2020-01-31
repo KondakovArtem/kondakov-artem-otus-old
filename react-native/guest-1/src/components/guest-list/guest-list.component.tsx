@@ -1,9 +1,8 @@
-import React, {FunctionComponent, useEffect} from 'react';
-import {FlatList} from 'react-native';
-import styled from 'styled-components/native';
+import React, {useEffect, FC} from 'react';
+import {FlatList, View, StyleSheet, Text} from 'react-native';
 
-import {IGuest} from '../../model/guest.model';
-import {GuestItemContainer} from '../../container/guest-list/guest-list-item.container';
+import {IGuest} from '@app/model/guest.model';
+import {GuestItemContainer} from '@app/container/guest-list/guest-list-item.container';
 
 export interface IProps {
   list: IGuest[];
@@ -13,27 +12,35 @@ export interface IHandlers {
   onInit: () => Function;
 }
 
-const NoRecordWrapper = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const NoRecordText = styled.Text`
-  color: #f2f2f2;
-  font-size: 30px;
-`;
+const styles = StyleSheet.create({
+  noRecordWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRecordText: {
+    color: '#f2f2f2',
+    fontSize: 30,
+  },
+});
 
 const keyExtractor = (item: IGuest) => item.uid;
 const renderItem = ({item}: {item: IGuest}) => <GuestItemContainer>{item}</GuestItemContainer>;
 
-export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props => {
+export const ListEmptyComponent = () => (
+  <View style={styles.noRecordWrapper}>
+    <Text style={styles.noRecordText}>No records</Text>
+  </View>
+);
+
+export const GuestListComponent: FC<IProps & IHandlers> = props => {
   const {list, onInit} = props;
 
   useEffect(() => {
     const unsubscribe = onInit && onInit();
     return () => unsubscribe();
-  }, [onInit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <FlatList
@@ -41,11 +48,7 @@ export const GuestListComponent: FunctionComponent<IProps & IHandlers> = props =
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       initialNumToRender={10}
-      ListEmptyComponent={
-        <NoRecordWrapper>
-          <NoRecordText>No records</NoRecordText>
-        </NoRecordWrapper>
-      }
+      ListEmptyComponent={ListEmptyComponent}
     />
   );
 };

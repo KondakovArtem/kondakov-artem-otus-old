@@ -1,12 +1,15 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
-import {NavigationContainerComponent} from 'react-navigation';
-import {MenuProvider} from 'react-native-popup-menu';
+import 'react-navigation-magic-move';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider as PaperProvider} from 'react-native-paper';
+import initStoreData from './src/redux/store';
+import {NavigationContainer} from './src/container/navigation/navigation.container';
+import {theme} from './src/constants/theme';
 
-import configuredStore from './src/redux/store';
-import {setTopLevelNavigator} from './src/services/navigation/navigation.service';
-import {Navigation} from './src/navigation/navigation';
+//@ts-ignore;
+import * as MagicMove from 'react-native-magic-move';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -14,18 +17,20 @@ const styles = StyleSheet.create({
   },
 });
 
+const {store, persistor} = initStoreData();
+
 export default () => {
   return (
-    <MenuProvider>
-      <Provider store={configuredStore}>
-        <SafeAreaView style={styles.safeArea}>
-          <Navigation
-            ref={navigatorRef => {
-              setTopLevelNavigator(navigatorRef as NavigationContainerComponent);
-            }}
-          />
-        </SafeAreaView>
-      </Provider>
-    </MenuProvider>
+    <MagicMove.Provider>
+      <PaperProvider theme={theme}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SafeAreaView style={styles.safeArea}>
+              <NavigationContainer />
+            </SafeAreaView>
+          </PersistGate>
+        </Provider>
+      </PaperProvider>
+    </MagicMove.Provider>
   );
 };
