@@ -17,10 +17,22 @@ export interface IProps {
 export interface IHandlers {
   toggleShowPassword(): void;
   onChangeText(value: string): void;
+  onEndEditing?(): void;
+  onSubmitEditing?(): void;
 }
 
 export const InputPaswordComponent: FC<IProps & IHandlers> = props => {
-  const {children, showPassword, disabled, toggleShowPassword, placeholder, onChangeText, errorMessage = ''} = props;
+  const {
+    children,
+    showPassword,
+    disabled,
+    toggleShowPassword,
+    placeholder,
+    onChangeText,
+    errorMessage = '',
+    onEndEditing,
+    onSubmitEditing,
+  } = props;
   const animRef = createRef<any>();
   const prevErrorMessage = usePrevious(errorMessage);
 
@@ -47,6 +59,8 @@ export const InputPaswordComponent: FC<IProps & IHandlers> = props => {
         placeholder={placeholder}
         autoCompleteType="password"
         onChangeText={onChangeText}
+        onEndEditing={onEndEditing}
+        onSubmitEditing={onSubmitEditing}
       />
       <View style={inputStyleProps.errorContainer}>
         {errorMessage !== '' && (

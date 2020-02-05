@@ -1,15 +1,17 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {Button} from 'react-native-elements';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import {IConfiguredStore} from '@app/redux/store';
 import {Actions as authActions} from '@app/redux/auth/auth.ducks';
 import {InputPaswordComponent} from '@app/components/input-password/input-password.component';
 import {InputComponent} from '@app/components/input/input.component';
+import {HeaderComponent} from '@app/components/header/header.component';
+import {commonStyles, COMMON_DURATION} from '@app/constants/theme';
+import {FullWidthButtonComponent} from '@app/components/full-width-button/full-width-button.component';
 
 interface IProps {
   username: string;
@@ -29,6 +31,13 @@ interface IHandlers {
   createAccount(): void;
 }
 
+const style = StyleSheet.create({
+  wrapper: {
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+});
+
 export const SignUpScreenComponent: FC<IProps & IHandlers> = props => {
   const {
     password,
@@ -45,39 +54,10 @@ export const SignUpScreenComponent: FC<IProps & IHandlers> = props => {
   } = props;
   return (
     <MagicMove.Scene>
-      <MagicMove.View
-        // debug
-        id="login_header"
-        transition={MagicMove.Transition.morph}
-        duration={200}
-        style={{height: 60, backgroundColor: '#F06332', flexDirection: 'row', alignItems: 'center', paddingLeft: 10}}>
-        <MagicMove.Image
-          id="logo"
-          transition={MagicMove.Transition.morph}
-          duration={200}
-          source={require('mytwitter/assets/images/logo.png')}
-          style={{width: 60, aspectRatio: 1}}
-          resizeMode={'contain'}
-        />
-        <MagicMove.Text
-          id="logo_text"
-          transition={MagicMove.Transition.morph}
-          duration={200}
-          style={{color: 'white', paddingLeft: 10}}>
-          Sign Up
-        </MagicMove.Text>
-      </MagicMove.View>
+      <HeaderComponent>{'Signing Up'}</HeaderComponent>
 
-      <Animatable.View style={{alignItems: 'center'}} animation={'zoomIn'} useNativeDriver={true} duration={500}>
-        <View
-          style={{
-            alignItems: 'stretch',
-            width: '100%',
-            minWidth: 350,
-            maxWidth: 400,
-            paddingHorizontal: 30,
-            paddingTop: 20,
-          }}>
+      <Animatable.View style={style.wrapper} animation={'zoomIn'} useNativeDriver={true} duration={COMMON_DURATION}>
+        <View style={commonStyles.inputContainer}>
           <InputComponent
             disabled={isFetching}
             leftIcon={{name: 'email-outline', type: 'material-community'}}
@@ -105,22 +85,9 @@ export const SignUpScreenComponent: FC<IProps & IHandlers> = props => {
             {repeatPassword}
           </InputPaswordComponent>
         </View>
-        <View style={{width: '100%'}}>
-          <Button
-            buttonStyle={{
-              marginTop: 20,
-              borderRadius: 0,
-              height: 60,
-              backgroundColor: '#E75527',
-            }}
-            titleStyle={{
-              fontSize: 20,
-            }}
-            loading={isFetching}
-            title="Create Account"
-            onPress={createAccount}
-          />
-        </View>
+        <FullWidthButtonComponent loading={isFetching} disabled={isFetching} onPress={createAccount}>
+          Create an account
+        </FullWidthButtonComponent>
       </Animatable.View>
     </MagicMove.Scene>
   );

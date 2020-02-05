@@ -8,21 +8,37 @@ import {usePrevious} from '@app/services/core/core.service';
 
 export interface IProps {
   children: string;
-  disabled: boolean;
-  placeholder: string;
+  disabled?: boolean;
+  placeholder?: string;
   leftIcon?: {
     name: string;
     type: string;
   };
-  errorMessage: string;
+  errorMessage?: string;
+  label?: string;
+  multiline?: boolean;
+  numberOfLines?: number;
 }
 
 export interface IHandlers {
   onChangeText(value: string): void;
+  onEndEditing?(): void;
+  onSubmitEditing?(): void;
 }
 
-export const InputComponent: FC<IProps & IHandlers> = props => {
-  const {children, disabled, placeholder, leftIcon, onChangeText, errorMessage = ''} = props;
+export const InputComponent: FC<IProps & IHandlers> = ({
+  children,
+  disabled,
+  placeholder,
+  leftIcon,
+  onChangeText,
+  errorMessage = '',
+  onEndEditing,
+  onSubmitEditing,
+  label,
+  multiline,
+  numberOfLines,
+}) => {
   const animRef = createRef<any>();
   const prevErrorMessage = usePrevious(errorMessage);
 
@@ -38,11 +54,16 @@ export const InputComponent: FC<IProps & IHandlers> = props => {
     <Animatable.View ref={animRef} useNativeDriver={true} duration={200}>
       <Input
         {...inputStyleProps}
+        label={label}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
         disabled={disabled}
         value={children}
         leftIcon={leftIcon && <Icon name={leftIcon.name} type={leftIcon.type} />}
         placeholder={placeholder}
         onChangeText={onChangeText}
+        onEndEditing={onEndEditing}
+        onSubmitEditing={onSubmitEditing}
       />
       <View style={inputStyleProps.errorContainer}>
         {errorMessage !== '' && (

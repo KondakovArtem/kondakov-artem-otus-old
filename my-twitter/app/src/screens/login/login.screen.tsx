@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
-import {StyleSheet, ImageBackground, View, StatusBar, TouchableOpacity} from 'react-native';
+import {View, StatusBar, TouchableOpacity, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-import {Button, Text, SocialIcon} from 'react-native-elements';
+import {Text, SocialIcon} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
@@ -11,12 +11,18 @@ import {IConfiguredStore} from '@app/redux/store';
 import {Actions as authActions} from '@app/redux/auth/auth.ducks';
 import {InputPaswordComponent} from '@app/components/input-password/input-password.component';
 import {InputComponent} from '@app/components/input/input.component';
+import {statusBackground, commonStyles, COMMON_DURATION} from '@app/constants/theme';
+import {LoginHeaderComponent} from '@app/components/login-header/login-header.component';
+import {FullWidthButtonComponent} from '@app/components/full-width-button/full-width-button.component';
 
 interface IProps {
   showPassword: boolean;
   username: string;
   password: string;
   isFetching: boolean;
+  errors: {
+    [key: string]: string;
+  };
 }
 interface IHandlers {
   toggleShowPassword: () => void;
@@ -28,94 +34,59 @@ interface IHandlers {
 }
 
 const styles = StyleSheet.create({
-  login: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+  conatiner: {
+    alignItems: 'center',
+    flex: 2,
+    justifyContent: 'space-evenly',
+  },
+  keyboardAware: {
+    flexGrow: 1,
+  },
+  googleButton: {
+    marginTop: 30,
+  },
+  footer: {
+    flexDirection: 'row',
+    padding: 10,
+  },
+  signUpLink: {
+    fontWeight: 'bold',
   },
 });
 
-export const LoginScreenComponent: FC<IProps & IHandlers> = props => {
-  const {
-    showPassword,
-    toggleShowPassword,
-    username,
-    password,
-    setPassword,
-    setUsername,
-    isFetching,
-    signIn,
-    signInGoogle,
-    toSignUp,
-  } = props;
-
-  const checkButtonDisabled = () => {
-    return !(password !== '' && username !== '' && !isFetching);
-  };
+export const LoginScreenComponent: FC<IProps & IHandlers> = ({
+  showPassword,
+  toggleShowPassword,
+  username,
+  password,
+  setPassword,
+  setUsername,
+  isFetching,
+  signIn,
+  signInGoogle,
+  toSignUp,
+  errors,
+}) => {
+  const checkButtonDisabled = () => !(password !== '' && username !== '' && !isFetching);
 
   return (
     <MagicMove.Scene>
-      <StatusBar backgroundColor="#F06332" barStyle="light-content" />
-      <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-        <MagicMove.View
-          id="login_header"
-          // debug
-          transition={MagicMove.Transition.morph}
-          duration={200}
-          style={{borderBottomLeftRadius: 150, backgroundColor: '#F06332'}}>
-          <ImageBackground
-            style={styles.login}
-            imageStyle={{borderBottomLeftRadius: 150}}
-            source={require('mytwitter/assets/images/launch_screen.jpg')}>
-            <View style={{alignItems: 'center', paddingTop: 42}}>
-              <MagicMove.Image
-                id="logo"
-                transition={MagicMove.Transition.morph}
-                duration={150}
-                source={require('mytwitter/assets/images/logo.png')}
-                style={{height: 160, aspectRatio: 1}}
-                resizeMode={'contain'}
-              />
-              <View style={{alignItems: 'flex-end', width: '100%'}}>
-                <MagicMove.Text
-                  id="logo_text"
-                  transition={MagicMove.Transition.morph}
-                  duration={150}
-                  style={{color: 'white'}}>
-                  Login
-                </MagicMove.Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </MagicMove.View>
-
+      <StatusBar backgroundColor={statusBackground} barStyle="light-content" />
+      <KeyboardAwareScrollView contentContainerStyle={styles.keyboardAware}>
+        <LoginHeaderComponent />
         <Animatable.View
-          style={{alignItems: 'center', flex: 2, justifyContent: 'space-evenly'}}
+          style={styles.conatiner}
           animation={'zoomIn'}
           useNativeDriver={true}
-          duration={500}>
-          <View
-            style={{
-              alignItems: 'stretch',
-              width: '100%',
-              minWidth: 350,
-              maxWidth: 400,
-              paddingHorizontal: 30,
-            }}>
-            {/* <Input
-              disabled={isFetching}
-              {...inputStyleProps}
-              value={username}
-              leftIcon={<Icon name="email-outline" type="material-community" />}
-              placeholder={'Email'}
-              onChangeText={setUsername}
-            /> */}
-
+          duration={COMMON_DURATION}>
+          <View style={commonStyles.inputContainer}>
             <InputComponent
               disabled={isFetching}
               leftIcon={{name: 'email-outline', type: 'material-community'}}
               placeholder={'Email'}
-              onChangeText={setUsername}>
+              onChangeText={setUsername}
+              errorMessage={errors.username}
+              onSubmitEditing={signIn}>
               {username}
             </InputComponent>
 
@@ -124,40 +95,28 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = props => {
               onChangeText={setPassword}
               placeholder={'Password'}
               showPassword={showPassword}
-              toggleShowPassword={toggleShowPassword}>
+              toggleShowPassword={toggleShowPassword}
+              errorMessage={errors.password}
+              onSubmitEditing={signIn}>
               {password}
             </InputPaswordComponent>
 
             <SocialIcon
               disabled={isFetching}
-              style={{marginTop: 30}}
+              style={styles.googleButton}
               title="Sign in with Google"
               button
               type="google"
               onPress={signInGoogle}
             />
           </View>
-          <View style={{width: '100%'}}>
-            <Button
-              disabled={checkButtonDisabled()}
-              loading={isFetching}
-              buttonStyle={{
-                marginTop: 20,
-                borderRadius: 0,
-                height: 60,
-                backgroundColor: '#E75527',
-              }}
-              titleStyle={{
-                fontSize: 20,
-              }}
-              title="Login"
-              onPress={signIn}
-            />
-          </View>
-          <View style={{flexDirection: 'row', padding: 10}}>
+          <FullWidthButtonComponent loading={isFetching} disabled={checkButtonDisabled()} onPress={signIn}>
+            Login
+          </FullWidthButtonComponent>
+          <View style={styles.footer}>
             <Text>Don't have an account? </Text>
             <TouchableOpacity onPress={toSignUp}>
-              <Text style={{fontWeight: 'bold'}}>Sign Up</Text>
+              <Text style={styles.signUpLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </Animatable.View>
