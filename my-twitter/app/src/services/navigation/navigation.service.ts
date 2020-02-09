@@ -39,6 +39,9 @@ export const navUtils = {
       }),
     );
   },
+  back: () => {
+    _navigator.dispatch(NavigationActions.back());
+  },
   resolveScreenAlias: (navState: NavigationState): string | undefined => {
     if (!navState) {
       return undefined;

@@ -4,3 +4,5 @@ export {SignUpScreen} from '@app/screens/signup/signup.screen';
 export {EmailVerificationScreen} from '@app/screens/email-verification/email-verification.screen';
 export {UserProfileScreen} from '@app/screens/user-profile/user-profile.screen';
 export {ExploreScreen} from '@app/screens/explore/explore.screen';
+export {NewPostScreen} from '@app/screens/new-post/new-post.screen';
+export {FollowsScreen} from '@app/screens/follows/follows.screen';

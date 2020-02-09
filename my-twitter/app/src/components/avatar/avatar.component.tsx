@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Avatar} from 'react-native-elements';
-import {TouchableOpacity, Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {uniqueId} from 'lodash-es';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
@@ -15,7 +15,7 @@ export interface IProps {
   containerStyle?: any;
   icon?: string;
   path?: string;
-  size: number;
+  size?: number;
   color?: string;
   uid?: string;
   showEditButton?: boolean;
@@ -33,7 +33,7 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
   onLongPress,
   icon,
   style,
-  size,
+  size = 34,
   path,
   color,
   showEditButton,
@@ -58,11 +58,13 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
       id={magicUid}
       transition={MagicMove.Transition.morph}
       duration={COMMON_DURATION}
-      style={{
-        borderRadius: 200,
-        ...containerStyle,
-        alignSelf: 'flex-start',
-      }}>
+      style={StyleSheet.compose(
+        {
+          borderRadius: 200,
+          alignSelf: 'flex-start',
+        },
+        {...containerStyle},
+      )}>
       {/* <TouchableOpacity> */}
       {/* {getAvatar()} */}
       <Avatar
@@ -70,7 +72,7 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
         onPress={onPress}
         size={size}
         rounded
-        source={{uri, cache: 'force-cache'}}
+        source={{uri}}
         // title={label}
         showEditButton={showEditButton}
         imageProps={{

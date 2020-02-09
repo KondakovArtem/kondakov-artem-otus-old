@@ -3,6 +3,7 @@ export interface IUserInfo extends IModifiableUserInfo {
   initial: string;
   avatar: string;
   registrationDate: Date;
+  follows: string[];
 }
 
 export interface IModifiableUserInfo {

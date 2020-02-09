@@ -2,7 +2,7 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import {Dispatch} from 'redux';
-import {persistStore, persistReducer} from 'redux-persist';
+import {persistStore, persistReducer, createTransform} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {reducer as authReducer, IStore as IAuthStore} from '@app/redux/auth/auth.ducks';
@@ -11,18 +11,29 @@ import {
   reducer as editUserInfoReducer,
   IStore as IEditUserInfoStore,
 } from '@app/redux/edit-user-info/edit-user-info.ducks';
+import {reducer as postReducer, IStore as IPostStore} from '@app/redux/post/post.ducks';
 
 const reducer = combineReducers({
   authData: authReducer,
   common: commonReducer,
   editUserInfo: editUserInfoReducer,
+  post: postReducer,
 });
 
 export interface IConfiguredStore {
   authData: IAuthStore;
   common: ICommonStore;
   editUserInfo: IEditUserInfoStore;
+  post: IPostStore;
 }
+
+const replacer = (key: string, value: any) => (value instanceof Date ? value.toISOString() : value);
+const reviver = (key: string, value: any) =>
+  typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/) ? new Date(value) : value;
+const encode = (toDeshydrate: any) => JSON.stringify(toDeshydrate, replacer);
+const decode = (toRehydrate: any) => {
+  return typeof toRehydrate === 'string' ? JSON.parse(toRehydrate, reviver) : toRehydrate;
+};
 
 const persistConfig = {
   key: 'root',
@@ -38,6 +49,7 @@ const persistConfig = {
       return await AsyncStorage.removeItem(key);
     },
   },
+  transforms: [createTransform(encode, decode)],
 };
 
 export type GetStore = () => IConfiguredStore;

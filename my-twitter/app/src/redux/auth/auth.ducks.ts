@@ -19,20 +19,22 @@ import {
 import {delay} from '@app/services/core/core.service';
 import {FirebaseError} from '@app/models/firebase.model';
 import {navUtils} from '@app/services/navigation/navigation.service';
-import {takePhoto} from '@app/services/photo/photo.service';
+import {takeAvatar} from '@app/services/photo/photo.service';
 import {unregisterAllDbSubsribers} from '@app/services/database/subscription.service';
 import {onDbUserInfoChanged, updateUserInfo} from '@app/services/database/userinfo.database';
-
-export const SIGN_OUT_CLEAR = '@auth/SIGN_OUT_CLEAR';
-export const FILL_USER_INFO = '@auth/FILL_USER_INFO';
-export const SET_AVATAR = '@auth/SET_AVATAR';
-export const SET_USERNAME = '@auth/SET_USERNAME';
-export const SET_PASSWORD = '@auth/SET_PASSWORD';
-export const SET_REPEAT_PASSWORD = '@auth/SET_REPEAT_PASSWORD';
-export const TOGGLE_SHOW_PASSWORD = '@auth/TOGGLE_SHOW_PASSWORD';
-export const SET_FETCHING = '@auth/SET_FETCHING';
-export const APPEND_ERROR_MESSAGE = '@auth/APPEND_ERROR_MESSAGE';
-export const CLEAR_ERROR_MESSAGE = '@auth/CLEAR_ERROR_MESSAGE';
+import {Actions as postActions} from '@app/redux/post/post.ducks';
+import {FILL_USER_INFO} from '@app/redux/edit-user-info/edit-user-info.ducks';
+import {
+  SIGN_OUT_CLEAR,
+  SET_AVATAR,
+  SET_PASSWORD,
+  SET_REPEAT_PASSWORD,
+  SET_USERNAME,
+  TOGGLE_SHOW_PASSWORD,
+  SET_FETCHING,
+  APPEND_ERROR_MESSAGE,
+  CLEAR_ERROR_MESSAGE,
+} from '@app/redux/auth/auth.actions';
 
 ///////////////////////////////////////
 // STORE
@@ -117,10 +119,12 @@ export const Actions = {
       dispatch(fillUserInfo({userUid: uid}));
     }
 
-    currentUser &&
+    if (currentUser) {
       onDbUserInfoChanged((info: IUserInfo) => {
         dispatch(fillUserInfo({info}));
       });
+      postActions.init()(dispatch, getStore);
+    }
 
     // Если пользователь авторизован, верифицирован, но находится в неавторизованной зоне
     if (currentUser && currentUser.emailVerified && !AppNavAliases.includes(screen as string)) {
@@ -356,7 +360,7 @@ export const Actions = {
   takeAvatar: (): ThunkAction => async (dispatch, getStore) => {
     const {authData} = getStore();
     const {userUid} = authData;
-    const newAvatar = await takePhoto(userUid, 'avatar');
+    const newAvatar = await takeAvatar(userUid, 'avatar');
     if (newAvatar) {
       await updateUserInfo({avatar: newAvatar});
       // dispatch(setAvatar(newAvatar));

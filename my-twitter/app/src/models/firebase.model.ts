@@ -1,4 +1,5 @@
 import {template} from 'lodash-es';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 
 export enum FirebaseError {
   EMAIL_INVALID = 'auth/invalid-email',
@@ -18,7 +19,7 @@ export enum SubscriptionTypes {
 export const DBPaths = {
   USERINFO: template('users/${uid}'),
   POSTS: template('posts'),
-  POST: template('posts/${uid}'),
+  POST: template('posts/${id}'),
   // (USERS = 'users'), //'/intites',
 };
 
@@ -26,10 +27,16 @@ export interface IRegisterDbSubscription {
   alias: string;
   path: string;
   type: SubscriptionTypes;
+  filter?(ref: FirebaseFirestoreTypes.CollectionReference): FirebaseFirestoreTypes.Query;
   callback(data: any | any[]): void;
 }
 
 export interface IDbSubscription {
   path: string;
   unsubscribes: (() => void)[];
+}
+
+export interface IDBDocument {
+  createdAt: Date;
+  [key: string]: any;
 }

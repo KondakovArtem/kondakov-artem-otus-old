@@ -1,14 +1,27 @@
 import React from 'react';
 import {Icon} from 'react-native-elements';
+import {View, StyleSheet} from 'react-native';
+// @ts-ignore
+import * as MagicMove from 'react-native-magic-move';
 
 import {navUtils} from '@app/services/navigation/navigation.service';
-import {EXPLORE_SCREEN} from '@app/models/navigation.model';
-import {View} from 'react-native';
+import {NEW_POST_SCREEN} from '@app/models/navigation.model';
 import {headerBackground} from '@app/constants/theme';
+
+const styles = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    alignSelf: 'flex-start',
+  },
+});
+
+const onNewPost = () => navUtils.navigate(NEW_POST_SCREEN);
 
 export const AddPostButtonComponent = () => {
   return (
-    <View style={{position: 'absolute', bottom: 10, right: 10, alignSelf: 'flex-start'}}>
+    <MagicMove.View id="newPost" transition={MagicMove.Transition.morph} style={styles.button}>
       <Icon
         name="fountain-pen-tip"
         type="material-community"
@@ -16,8 +29,8 @@ export const AddPostButtonComponent = () => {
         reverseColor={'white'}
         raised
         reverse
-        onPress={() => navUtils.navigate(EXPLORE_SCREEN)}
+        onPress={onNewPost}
       />
-    </View>
+    </MagicMove.View>
   );
 };

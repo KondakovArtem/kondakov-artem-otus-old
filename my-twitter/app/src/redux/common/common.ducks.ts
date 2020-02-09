@@ -1,10 +1,13 @@
 import {createReducer, createAction, Action} from 'typesafe-actions';
-import {NavigationContainerComponent, NavigationState} from 'react-navigation';
+import {NavigationContainerComponent, NavigationState, NavigationAction} from 'react-navigation';
 
 import {ThunkAction} from '@app/redux/store';
-import {USER_PROFILE_SCREEN} from '@app/models/navigation.model';
-import {Actions as authActions, SIGN_OUT_CLEAR} from '@app/redux/auth/auth.ducks';
+import {USER_PROFILE_SCREEN, EXPLORE_SCREEN, FOLLOW_SCREEN} from '@app/models/navigation.model';
+import {Actions as authActions} from '@app/redux/auth/auth.ducks';
 import {navUtils} from '@app/services/navigation/navigation.service';
+import {SIGN_OUT_CLEAR} from '@app/redux/auth/auth.actions';
+import {isEmpty} from 'lodash-es';
+import {IUserInfo} from '@app/models/user.model';
 
 ///////////////////////////////////////////
 // STORE
@@ -36,6 +39,23 @@ export const Actions = {
   },
   showProfile: () => async () => {
     navUtils.navigate(USER_PROFILE_SCREEN);
+  },
+  onNavigationStateChange: (
+    prevNavigationState: NavigationState,
+    nextNavigationState: NavigationState,
+    action: NavigationAction,
+  ): ThunkAction => async (dispatch, getStore) => {
+    prevNavigationState;
+    nextNavigationState;
+    action;
+
+    const {authData} = getStore();
+    const {info = {} as IUserInfo} = authData;
+    const {follows = []} = info;
+
+    if ((action as any).routeName === EXPLORE_SCREEN && isEmpty(follows)) {
+      navUtils.navigate(FOLLOW_SCREEN);
+    }
   },
 };
 

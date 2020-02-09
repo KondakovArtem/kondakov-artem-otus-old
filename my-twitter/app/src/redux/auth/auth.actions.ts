@@ -1,0 +1,10 @@
+export const SIGN_OUT_CLEAR = '@auth/SIGN_OUT_CLEAR';
+export const FILL_USER_INFO = '@auth/FILL_USER_INFO';
+export const SET_AVATAR = '@auth/SET_AVATAR';
+export const SET_USERNAME = '@auth/SET_USERNAME';
+export const SET_PASSWORD = '@auth/SET_PASSWORD';
+export const SET_REPEAT_PASSWORD = '@auth/SET_REPEAT_PASSWORD';
+export const TOGGLE_SHOW_PASSWORD = '@auth/TOGGLE_SHOW_PASSWORD';
+export const SET_FETCHING = '@auth/SET_FETCHING';
+export const APPEND_ERROR_MESSAGE = '@auth/APPEND_ERROR_MESSAGE';
+export const CLEAR_ERROR_MESSAGE = '@auth/CLEAR_ERROR_MESSAGE';

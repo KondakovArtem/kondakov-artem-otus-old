@@ -7,6 +7,8 @@ import {
   EmailVerificationScreen,
   UserProfileScreen,
   ExploreScreen,
+  NewPostScreen,
+  FollowsScreen,
 } from '@app/screens';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
@@ -21,6 +23,8 @@ import {
   EXPLORE_SCREEN,
   TAB_STACK,
   USER_PROFILE_EDIT_SCREEN,
+  NEW_POST_SCREEN,
+  FOLLOW_SCREEN,
 } from '@app/models/navigation.model';
 import {statusBackground} from '@app/constants/theme';
 import {TabbarIconComponent} from '@app/components/tabbar-icon/tabbar-icon.component';
@@ -62,7 +66,7 @@ export const Navigation = createAppContainer(
             inactiveColor: '#f0edf650',
             shifting: true,
             barStyle: {backgroundColor: statusBackground},
-            backBehavior: 'none',
+            backBehavior: 'initialRoute',
             navigationOptions: {
               headerShown: false,
             },
@@ -70,6 +74,18 @@ export const Navigation = createAppContainer(
         ),
         [USER_PROFILE_EDIT_SCREEN]: {
           screen: UserProfileEditScreen,
+          navigationOptions: {
+            headerShown: false,
+          },
+        },
+        [NEW_POST_SCREEN]: {
+          screen: NewPostScreen,
+          navigationOptions: {
+            headerShown: false,
+          },
+        },
+        [FOLLOW_SCREEN]: {
+          screen: FollowsScreen,
           navigationOptions: {
             headerShown: false,
           },

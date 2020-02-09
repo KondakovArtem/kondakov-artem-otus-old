@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {NavigationContainerComponent} from 'react-navigation';
+import {NavigationContainerComponent, NavigationState, NavigationAction} from 'react-navigation';
 
 import {IConfiguredStore} from '@app/redux/store';
 import {Actions as commonActions} from '@app/redux/common/common.ducks';
@@ -10,10 +10,19 @@ interface IHandlers {
   persistNavigationState: any;
   loadNavigationState: any;
   setTopLevelNavigator(navigatorRef: NavigationContainerComponent): void;
+  onNavigationStateChange(
+    prevNavigationState: NavigationState,
+    nextNavigationState: NavigationState,
+    action: NavigationAction,
+  ): void;
 }
 
-const NavigationComponent: FC<IHandlers> = props => {
-  const {loadNavigationState, persistNavigationState, setTopLevelNavigator} = props;
+const NavigationComponent: FC<IHandlers> = ({
+  loadNavigationState,
+  persistNavigationState,
+  setTopLevelNavigator,
+  onNavigationStateChange,
+}) => {
   return (
     <Navigation
       ref={navigatorRef => {
@@ -21,6 +30,7 @@ const NavigationComponent: FC<IHandlers> = props => {
       }}
       loadNavigationState={loadNavigationState}
       persistNavigationState={persistNavigationState}
+      onNavigationStateChange={onNavigationStateChange}
     />
   );
 };
@@ -29,4 +39,5 @@ export const NavigationContainer = connect<{}, IHandlers, {}, IConfiguredStore>(
   persistNavigationState: commonActions.persistNavigationState,
   loadNavigationState: commonActions.loadNavigationState,
   setTopLevelNavigator: commonActions.setTopLevelNavigator,
+  onNavigationStateChange: commonActions.onNavigationStateChange,
 })(NavigationComponent);

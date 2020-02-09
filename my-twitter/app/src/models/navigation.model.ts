@@ -12,9 +12,10 @@ export const APP_STACK: TNavAlias = 'appStack';
 export const TAB_STACK: TNavAlias = 'appTabs';
 export const USER_PROFILE_SCREEN: TNavAlias = 'settings';
 export const USER_PROFILE_EDIT_SCREEN: TNavAlias = 'editSettings';
-
 export const MAIN_SCREEN: TNavAlias = 'main';
 export const EXPLORE_SCREEN: TNavAlias = 'explore';
+export const NEW_POST_SCREEN: TNavAlias = 'newPost';
+export const FOLLOW_SCREEN: TNavAlias = 'follows';
 
 export const NavAliases: TNavAlias[] = [
   AUTH_STACK,
@@ -27,6 +28,8 @@ export const NavAliases: TNavAlias[] = [
   USER_PROFILE_EDIT_SCREEN,
   MAIN_SCREEN,
   EXPLORE_SCREEN,
+  NEW_POST_SCREEN,
+  FOLLOW_SCREEN,
 ];
 
 // Окна приложения
@@ -37,6 +40,8 @@ export const AppNavAliases: TNavAlias[] = [
   MAIN_SCREEN,
   EXPLORE_SCREEN,
   TAB_STACK,
+  NEW_POST_SCREEN,
+  FOLLOW_SCREEN,
 ];
 // Окна требующие авторизации пользователя
 export const AuthNavAliases: TNavAlias[] = [...AppNavAliases, EMAIL_VERIFICATION];

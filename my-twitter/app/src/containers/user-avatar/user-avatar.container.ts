@@ -24,7 +24,7 @@ export const UserAvatar = connect<IComponentProps, IComponentHandlers, IOwnProps
   (state, props) => {
     const {authData} = state;
     const {info = {} as IUserInfo} = authData;
-    const {size = 34, color, uid, containerStyle, style, showEditButton} = props;
+    const {size, color, uid, containerStyle, style, showEditButton} = props;
     const {initial, avatar} = info;
     return {
       imageUri: avatar,

@@ -1,52 +1,90 @@
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import {withAuth} from '@app/services/database/database.service';
-import {DBPaths} from '@app/models/firebase.model';
-import {convertRawtoObject} from '@app/services/core/core.service';
-import {IPost} from '@app/models/post.model';
-import {each} from 'lodash-es';
+import {DBPaths, SubscriptionTypes} from '@app/models/firebase.model';
+import {IPost, IPostMutation} from '@app/models/post.model';
+import {getDbSubscriber, registerDbSubscriber, unregisterDbSubscriber} from './subscription.service';
 
-export const getUserPosts = withAuth(async uid => {
-  const items = await firestore()
-    .collection(DBPaths.POSTS())
-    .orderBy('created')
-    .where('author', '==', uid)
-    .limit(10)
-    .get();
-
-  debugger;
-  return [] as IPost[];
-
-  //   return Object.keys(items.docs).map((id: string) => ({
-  //     ...items[id],
-  //     id,
-  //   }));
-
-  //   each(items, (post, id) => {});
-
-  //   return convertRawtoObject(
-  //     await firestore()
-  //       .collection(DBPaths.POSTS())
-  //       .orderBy('created')
-  //       .where('author', '==', uid)
-  //       .limit(10)
-  //       .get(),
-  //   );
+export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
+  const docRef = firestore().doc(DBPaths.POST({id}));
+  await firestore().runTransaction(async transaction => {
+    const post = (await transaction.get(docRef)).data() as IPost;
+    if (!post) {
+      return;
+    }
+    const {likes = []} = post;
+    return transaction.update(docRef, {
+      likes: likes.includes(uid) ? likes.filter(item => uid !== item) : [...likes, uid],
+    });
+  });
 });
 
+// export const getUserPosts = withAuth(async uid => {
+//   const items = await firestore()
+//     .collection(DBPaths.POSTS())
+//     .orderBy('created')
+//     .where('author', '==', uid)
+//     .limit(10)
+//     .get();
+
+//   return [] as IPost[];
+
+//   //   return Object.keys(items.docs).map((id: string) => ({
+//   //     ...items[id],
+//   //     id,
+//   //   }));
+
+//   //   each(items, (post, id) => {});
+
+//   //   return convertRawtoObject(
+//   //     await firestore()
+//   //       .collection(DBPaths.POSTS())
+//   //       .orderBy('created')
+//   //       .where('author', '==', uid)
+//   //       .limit(10)
+//   //       .get(),
+//   //   );
+// });
+
 export const createNewPost = withAuth(
-  async (uid: string, post: Partial<IPost>): Promise<IPost> => {
-    const docRef = await firestore()
+  async (uid: string, post: Partial<IPost>): Promise<void> => {
+    await firestore()
       .collection(DBPaths.POSTS())
       .add({
         ...post,
-        created: firestore.FieldValue.serverTimestamp(),
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        updatedAt: firestore.FieldValue.serverTimestamp(),
         author: uid,
       });
-    const res = (await docRef.get()).data;
-    return {
-      ...res,
-      id: docRef.id,
-    } as IPost;
   },
 );
+
+export const deletePost = withAuth(
+  async (uid: string, post: IPost): Promise<void> => {
+    await firestore()
+      .doc(DBPaths.POST(post))
+      .update({
+        deleteAt: firestore.FieldValue.serverTimestamp(),
+      });
+  },
+);
+
+export const onDbUserPostChanged = (count: number, callback: (info: IPostMutation[]) => void) => {
+  unregisterDbSubscriber('userPosts');
+  if (!getDbSubscriber('userPosts')) {
+    const {currentUser} = auth();
+    const {uid} = currentUser || {};
+    registerDbSubscriber({
+      alias: 'userPosts',
+      path: DBPaths.POSTS(),
+      filter: collection =>
+        collection
+          .where('author', '==', uid)
+          .orderBy('createdAt', 'desc')
+          .limit(count),
+      callback,
+      type: SubscriptionTypes.COLLECTION,
+    });
+  }
+};

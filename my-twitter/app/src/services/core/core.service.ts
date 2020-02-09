@@ -1,6 +1,8 @@
 import {useRef, useEffect} from 'react';
 import {isArray, isObject, each} from 'lodash-es';
 import firestore from '@react-native-firebase/firestore';
+import {differenceInSeconds} from 'date-fns';
+import {round} from 'lodash-es';
 
 export const usePrevious = <T extends {}>(value: T) => {
   const ref = useRef<T>();
@@ -37,4 +39,19 @@ export const convertRawtoObject = (data: any) => {
     });
   }
   return data;
+};
+
+export const getDateAgo = (date: Date) => {
+  if (!date) {
+    return '...';
+  }
+  const diffSec = differenceInSeconds(Date.now(), date);
+  if (diffSec < 60) {
+    return 'less 1 min';
+  } else if (diffSec < 3600) {
+    return `${round(diffSec / 60)}m`;
+  } else if (diffSec < 3600 * 24) {
+    return `${round(diffSec / 3600)}h`;
+  }
+  return `${round(diffSec / (3600 * 24))}d`;
 };

@@ -20,6 +20,16 @@ export const uploadImage = withAuth(async (uid: string, localUri: string, path: 
   return imageRef.getDownloadURL();
 });
 
+export async function getStorageFileUrl(path: string) {
+  try {
+    return await storage()
+      .ref(path)
+      .getDownloadURL();
+  } catch (e) {
+    return null;
+  }
+}
+
 // export const pushGuest = async (userUid: string, data: IGuest) => {
 //   const ref = database().ref(`${Paths.INTITES}/${userUid}`);
 //   await ref.push(data);
@@ -94,13 +104,3 @@ export const uploadImage = withAuth(async (uid: string, localUri: string, path: 
 //     ref.off('child_removed', removedFn);
 //   };
 // };
-
-export async function getStorageFileUrl(path: string) {
-  try {
-    return await storage()
-      .ref(path)
-      .getDownloadURL();
-  } catch (e) {
-    return null;
-  }
-}
