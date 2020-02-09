@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {View, TouchableNativeFeedback} from 'react-native';
 import {Button} from 'react-native-elements';
+// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
 import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
@@ -8,6 +9,7 @@ import {headerBackground, COMMON_DURATION} from '@app/constants/theme';
 
 export interface IProps {
   mode?: string;
+  userUid: string;
 }
 
 export interface IHandlers {
@@ -21,6 +23,7 @@ export const HeaderProfileComponent: FC<IHandlers & IProps> = ({
   onEditUserProfile,
   mode = 'edit',
   onSaveUserProfile,
+  userUid,
 }) => {
   return (
     <MagicMove.View
@@ -36,8 +39,9 @@ export const HeaderProfileComponent: FC<IHandlers & IProps> = ({
             size={90}
             containerStyle={{borderWidth: 4, borderColor: 'white'}}
             showEditButton={true}
-            onPress={takeAvatar}
-          />
+            onPress={takeAvatar}>
+            {userUid}
+          </UserAvatar>
         </View>
         <View style={{position: 'relative', top: -53, right: 20, zIndex: 1}}>
           {mode === 'edit' && (

@@ -72,8 +72,8 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
         onPress={onPress}
         size={size}
         rounded
-        source={{uri}}
-        // title={label}
+        source={uri && {uri}}
+        title={label}
         showEditButton={showEditButton}
         imageProps={{
           ImageComponent: Image,

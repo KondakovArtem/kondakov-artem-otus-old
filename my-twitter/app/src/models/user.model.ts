@@ -1,9 +1,11 @@
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+
 export interface IUserInfo extends IModifiableUserInfo {
   email: string;
-  initial: string;
   avatar: string;
-  registrationDate: Date;
+  createdAt: Date;
   follows: string[];
+  id: string;
 }
 
 export interface IModifiableUserInfo {
@@ -12,4 +14,9 @@ export interface IModifiableUserInfo {
   location: string;
   webSite: string;
   name: string;
+}
+
+export interface IUserInfoMutation {
+  type: FirebaseFirestoreTypes.DocumentChangeType;
+  doc: IUserInfo;
 }

@@ -20,6 +20,7 @@ interface IProps {
   location: string;
   webSite: string;
   birthDate?: Date;
+  userUid: string;
 }
 interface IHandlers {
   onSaveUserProfile: () => void;
@@ -44,10 +45,16 @@ export const UserProfileEditScreenComponent: FC<IProps & IHandlers> = ({
   setLocation,
   setWebSite,
   setBirthDate,
+  userUid,
 }) => {
   return (
     <MagicMove.Scene>
-      <HeaderProfileComponent mode={'save'} onSaveUserProfile={onSaveUserProfile} takeAvatar={takeAvatar} />
+      <HeaderProfileComponent
+        mode={'save'}
+        onSaveUserProfile={onSaveUserProfile}
+        takeAvatar={takeAvatar}
+        userUid={userUid}
+      />
       <ScrollView>
         <Animatable.View animation={'zoomIn'} useNativeDriver={true} duration={COMMON_DURATION}>
           <View style={commonStyles.inputContainer}>
@@ -74,14 +81,16 @@ export const UserProfileEditScreenComponent: FC<IProps & IHandlers> = ({
 };
 
 export const UserProfileEditScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
-  ({editUserInfo}) => {
+  ({editUserInfo, authData}) => {
     const {about, location, name, webSite, birthDate} = editUserInfo;
+    const {userUid} = authData;
     return {
       name,
       location,
       about,
       webSite,
       birthDate,
+      userUid,
     };
   },
   {

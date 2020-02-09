@@ -18,6 +18,7 @@ export enum SubscriptionTypes {
 
 export const DBPaths = {
   USERINFO: template('users/${uid}'),
+  USERS: template('users'),
   POSTS: template('posts'),
   POST: template('posts/${id}'),
   // (USERS = 'users'), //'/intites',

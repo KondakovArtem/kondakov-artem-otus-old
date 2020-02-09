@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {View} from 'react-native';
-import {Text, Icon} from 'react-native-elements';
+import {Text, Icon, Button} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import {format} from 'date-fns';
 import {isEmpty} from 'lodash-es';
@@ -14,14 +14,8 @@ import {Actions as editUserInfoActions} from '@app/redux/edit-user-info/edit-use
 import {HeaderProfileComponent} from '@app/components/header-profile/header-profile.component';
 import {IUserInfo} from '@app/models/user.model';
 
-interface IProps {
-  email: string;
-  name: string;
-  about: string;
-  birthDate?: Date;
-  registrationDate?: Date;
-  location: string;
-  webSite: string;
+interface IProps extends IUserInfo {
+  userUid: string;
 }
 interface IHandlers {
   signOut(): void;
@@ -40,18 +34,20 @@ const InfoRow = ({children, icon}: {children: string; icon: {name: string; type:
 
 export const UserProfileScreenComponent: FC<IProps & IHandlers> = ({
   onEditUserProfile,
+  signOut,
   takeAvatar,
   name,
   about,
   email,
   birthDate,
-  registrationDate,
+  createdAt,
   location,
   webSite,
+  userUid,
 }) => {
   return (
     <MagicMove.Scene>
-      <HeaderProfileComponent takeAvatar={takeAvatar} onEditUserProfile={onEditUserProfile} />
+      <HeaderProfileComponent takeAvatar={takeAvatar} onEditUserProfile={onEditUserProfile} userUid={userUid} />
       <View style={{paddingTop: 0}}>
         <ScrollView style={{paddingHorizontal: 20}}>
           {!isEmpty(name) && (
@@ -69,14 +65,15 @@ export const UserProfileScreenComponent: FC<IProps & IHandlers> = ({
               'dd.MM.yyyy',
             )}`}</InfoRow>
           )}
-          {registrationDate && (
+          {createdAt && (
             <InfoRow icon={{name: 'calendar-range', type: 'material-community'}}>
-              {`Registration: ${format(registrationDate, 'MMMM yyyy')}`}
+              {`Registration: ${format(createdAt, 'MMMM yyyy')}`}
             </InfoRow>
           )}
           <Text>
             {20} Follow {3} Followers
           </Text>
+          <Button onPress={signOut} title={'Sign out'}>Sign out</Button>
         </ScrollView>
       </View>
     </MagicMove.Scene>
@@ -85,16 +82,10 @@ export const UserProfileScreenComponent: FC<IProps & IHandlers> = ({
 
 export const UserProfileScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
   ({authData}) => {
-    const {info = {}} = authData;
-    const {about, email, birthDate, name, location, webSite, registrationDate} = info as IUserInfo;
+    const {info = {}, userUid} = authData;
     return {
-      about,
-      email,
-      birthDate,
-      location,
-      registrationDate,
-      name,
-      webSite,
+      ...(info as IUserInfo),
+      userUid,
     };
   },
   {

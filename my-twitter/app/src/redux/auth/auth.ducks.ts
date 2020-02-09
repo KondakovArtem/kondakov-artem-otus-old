@@ -23,7 +23,7 @@ import {takeAvatar} from '@app/services/photo/photo.service';
 import {unregisterAllDbSubsribers} from '@app/services/database/subscription.service';
 import {onDbUserInfoChanged, updateUserInfo} from '@app/services/database/userinfo.database';
 import {Actions as postActions} from '@app/redux/post/post.ducks';
-import {FILL_USER_INFO} from '@app/redux/edit-user-info/edit-user-info.ducks';
+import {Actions as usersActions} from '@app/redux/users/users.ducks';
 import {
   SIGN_OUT_CLEAR,
   SET_AVATAR,
@@ -34,6 +34,7 @@ import {
   SET_FETCHING,
   APPEND_ERROR_MESSAGE,
   CLEAR_ERROR_MESSAGE,
+  FILL_USER_INFO,
 } from '@app/redux/auth/auth.actions';
 
 ///////////////////////////////////////
@@ -120,9 +121,8 @@ export const Actions = {
     }
 
     if (currentUser) {
-      onDbUserInfoChanged((info: IUserInfo) => {
-        dispatch(fillUserInfo({info}));
-      });
+      Actions.init()(dispatch, getStore);
+      usersActions.init()(dispatch, getStore);
       postActions.init()(dispatch, getStore);
     }
 
@@ -131,6 +131,12 @@ export const Actions = {
       navUtils.navigate(APP_STACK);
     }
     SplashScreen.hide();
+  },
+
+  init: (): ThunkAction => async dispatch => {
+    onDbUserInfoChanged((info: IUserInfo = {} as IUserInfo) => {
+      dispatch(fillUserInfo({info}));
+    });
   },
 
   initAuth: (): ThunkAction => async (...redux) => {
@@ -372,11 +378,10 @@ export const Actions = {
 /// REDUCERS
 /////////////////////////////////////////////
 export const reducer = createReducer<IStore, Action>(initialState)
-  .handleAction(fillUserInfo, (state, {payload}) => ({...state, ...payload}))
-  .handleAction(signOutClear, state => ({
-    ...state,
+  .handleAction(signOutClear, () => ({
     ...initialState,
   }))
+  .handleAction(fillUserInfo, (state, {payload}) => ({...state, ...payload}))
   .handleAction(setAvatar, (state, {payload}) => ({
     ...state,
     info: {

@@ -9,11 +9,7 @@ import {IPost} from '@app/models/post.model';
 import {AvatarComponent} from '@app/components/avatar/avatar.component';
 import {getDateAgo} from '@app/services/core/core.service';
 import {LikePost} from '@app/containers/like/like.container';
-
-// const styles = StyleSheet.create({
-//   avatar: {backgroundColor: 'white'},
-//   statusIcon: {paddingTop: 10},
-// });
+import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 
 export interface IProps {
   list?: IPost[];
@@ -26,12 +22,12 @@ export interface IHandlers {
 
 const keyExtractor = ({id}: IPost) => id;
 const renderItem = (item: IPost, {onSelectItem}: IHandlers) => {
-  const {text, createdAt, image} = item as IPost;
+  const {text, createdAt, image, author} = item as IPost;
   return (
     <ListItem
       containerStyle={{padding: 10, alignItems: 'flex-start'}}
       titleStyle={{padding: 0, margin: 0}}
-      leftAvatar={<AvatarComponent />}
+      leftAvatar={<UserAvatar>{author}</UserAvatar>}
       title={
         <>
           <View style={{flexDirection: 'row'}}>

@@ -81,22 +81,20 @@ export const HeaderComponent: FC<IProps & IHandlers> = ({
   };
 
   return (
-    <>
-      <MagicMove.View id={rootId} transition={MagicMove.Transition.morph} duration={COMMON_DURATION}>
-        <Header
-          statusBarProps={{
-            backgroundColor: statusBackground,
-            barStyle: 'light-content',
-          }}
-          centerContainerStyle={centerContainerStyle}
-          leftContainerStyle={leftContainerStyle}
-          rightContainerStyle={rightContainerStyle}
-          containerStyle={styles.header}
-          leftComponent={getLeftComponent()}
-          centerComponent={getCenterComponent()}
-          rightComponent={rightComponent}
-        />
-      </MagicMove.View>
-    </>
+    <MagicMove.View id={rootId} transition={MagicMove.Transition.morph} duration={COMMON_DURATION}>
+      <Header
+        statusBarProps={{
+          backgroundColor: statusBackground,
+          barStyle: 'light-content',
+        }}
+        centerContainerStyle={centerContainerStyle}
+        leftContainerStyle={leftContainerStyle}
+        rightContainerStyle={rightContainerStyle}
+        containerStyle={styles.header}
+        leftComponent={getLeftComponent()}
+        centerComponent={getCenterComponent()}
+        rightComponent={rightComponent}
+      />
+    </MagicMove.View>
   );
 };

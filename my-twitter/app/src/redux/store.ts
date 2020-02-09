@@ -12,12 +12,14 @@ import {
   IStore as IEditUserInfoStore,
 } from '@app/redux/edit-user-info/edit-user-info.ducks';
 import {reducer as postReducer, IStore as IPostStore} from '@app/redux/post/post.ducks';
+import {reducer as usersReducer, IStore as IUsersStore} from '@app/redux/users/users.ducks';
 
 const reducer = combineReducers({
   authData: authReducer,
   common: commonReducer,
   editUserInfo: editUserInfoReducer,
   post: postReducer,
+  users: usersReducer,
 });
 
 export interface IConfiguredStore {
@@ -25,6 +27,7 @@ export interface IConfiguredStore {
   common: ICommonStore;
   editUserInfo: IEditUserInfoStore;
   post: IPostStore;
+  users: IUsersStore;
 }
 
 const replacer = (key: string, value: any) => (value instanceof Date ? value.toISOString() : value);

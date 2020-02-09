@@ -6,7 +6,6 @@ import * as MagicMove from 'react-native-magic-move';
 import {IConfiguredStore} from '@app/redux/store';
 
 import {Actions as authActions} from '@app/redux/auth/auth.ducks';
-import {Actions as postActions} from '@app/redux/post/post.ducks';
 import {HeaderComponent} from '@app/components/header/header.component';
 import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 import {navUtils} from '@app/services/navigation/navigation.service';
@@ -17,32 +16,39 @@ import {IPost} from '@app/models/post.model';
 
 interface IProps {
   userPosts: IPost[];
+  userUid: string;
 }
 interface IHandlers {
   signOut(): void;
   toUserProfile(): void;
-  togglePostLike(post: IPost): void;
 }
 
-export const MainScreenComponent: FC<IProps & IHandlers> = props => {
-  const {toUserProfile, userPosts, togglePostLike} = props;
-  return (
-    <MagicMove.Scene>
-      <HeaderComponent leftComponent={<UserAvatar onPress={toUserProfile} uid="logo" />}>Main</HeaderComponent>
-      <PostListComponent list={userPosts} onTogglePostLike={togglePostLike} />
-      <AddPostButtonComponent />
-    </MagicMove.Scene>
-  );
-};
+export const MainScreenComponent: FC<IProps & IHandlers> = ({toUserProfile, userPosts, userUid}) => (
+  <MagicMove.Scene>
+    <HeaderComponent
+      leftComponent={
+        <UserAvatar onPress={toUserProfile} uid="logo">
+          {userUid}
+        </UserAvatar>
+      }>
+      Main
+    </HeaderComponent>
+    <PostListComponent list={userPosts} />
+    <AddPostButtonComponent />
+  </MagicMove.Scene>
+);
 
 export const MainScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
-  ({post}) => {
+  ({post, authData}) => {
     const {userPosts} = post;
-    return {userPosts};
+    const {userUid} = authData;
+    return {
+      userPosts,
+      userUid,
+    };
   },
   {
     signOut: authActions.signOut,
     toUserProfile: () => () => navUtils.navigate(USER_PROFILE_SCREEN),
-    togglePostLike: postActions.togglePostLike,
   },
 )(MainScreenComponent);

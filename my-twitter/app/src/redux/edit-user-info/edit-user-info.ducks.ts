@@ -5,13 +5,14 @@ import {IModifiableUserInfo} from '@app/models/user.model';
 import {navUtils} from '@app/services/navigation/navigation.service';
 import {USER_PROFILE_SCREEN, USER_PROFILE_EDIT_SCREEN} from '@app/models/navigation.model';
 import {getUserInfo, updateUserInfo} from '@app/services/database/userinfo.database';
+import {SIGN_OUT_CLEAR} from '../auth/auth.actions';
 
 export const SET_NAME = '@editUserInfo/SET_NAME';
 export const SET_ABOUT = '@editUserInfo/SET_ABOUT';
 export const SET_LOCATION = '@editUserInfo/SET_LOCATION';
 export const SET_WEBSITE = '@editUserInfo/SET_WEBSITE';
 export const SET_BIRTHDATE = '@editUserInfo/SET_BIRTHDATE';
-export const FILL_USER_INFO = '@editUserInfo/FILL_USER_INFO';
+export const FILL_EDIT_USER_INFO = '@editUserInfo/FILL_EDIT_USER_INFO';
 
 ///////////////////////////////////////
 // STORE
@@ -34,13 +35,14 @@ const setLocation = createAction(SET_LOCATION, (v: string) => v)();
 const setAbout = createAction(SET_ABOUT, (v: string) => v)();
 const setWebSite = createAction(SET_WEBSITE, (v: string) => v)();
 const setBirthDate = createAction(SET_BIRTHDATE, (v: Date) => v)();
-const fillUserInfo = createAction(FILL_USER_INFO, (v: IModifiableUserInfo) => v)();
+const fillEditUserInfo = createAction(FILL_EDIT_USER_INFO, (v: IModifiableUserInfo) => v)();
+const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
 
 export const Actions = {
   editUserProfile: (): ThunkAction => async (...redux) => {
     const userInfo = await getUserInfo();
     const {about, birthDate, location, name, webSite} = userInfo;
-    Actions.fillUserInfo({
+    Actions.fillEditUserInfo({
       about,
       birthDate,
       location,
@@ -61,8 +63,8 @@ export const Actions = {
     });
     navUtils.navigate(USER_PROFILE_SCREEN);
   },
-  fillUserInfo: (userInfo: IModifiableUserInfo): ThunkAction => async dispatch => {
-    dispatch(fillUserInfo(userInfo));
+  fillEditUserInfo: (userInfo: IModifiableUserInfo): ThunkAction => async dispatch => {
+    dispatch(fillEditUserInfo(userInfo));
   },
   setName: (name: string): ThunkAction => dispath => {
     dispath(setName(name));
@@ -85,7 +87,10 @@ export const Actions = {
 // Reducers
 ///////////////////////////////////////
 export const reducer = createReducer<IStore, Action>(initialState)
-  .handleAction(fillUserInfo, (state, {payload}) => ({
+  .handleAction(signOutClear, () => ({
+    ...initialState,
+  }))
+  .handleAction(fillEditUserInfo, (state, {payload}) => ({
     ...state,
     ...payload,
   }))

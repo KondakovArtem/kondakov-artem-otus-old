@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 import {withAuth} from '@app/services/database/database.service';
 import {DBPaths, SubscriptionTypes} from '@app/models/firebase.model';
 import {IPost, IPostMutation} from '@app/models/post.model';
-import {getDbSubscriber, registerDbSubscriber, unregisterDbSubscriber} from './subscription.service';
+import {getDbSubscriber, registerDbSubscriber} from './subscription.service';
 
 export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
   const docRef = firestore().doc(DBPaths.POST({id}));
@@ -71,7 +71,6 @@ export const deletePost = withAuth(
 );
 
 export const onDbUserPostChanged = (count: number, callback: (info: IPostMutation[]) => void) => {
-  unregisterDbSubscriber('userPosts');
   if (!getDbSubscriber('userPosts')) {
     const {currentUser} = auth();
     const {uid} = currentUser || {};

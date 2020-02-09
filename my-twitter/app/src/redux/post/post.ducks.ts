@@ -61,7 +61,7 @@ export const Actions = {
       dispatch(mutateUserPosts(mutationList));
     });
   },
-  fetchMoreUserPosts: (): ThunkAction => async dispatch => {
+  fetchMoreUserPosts: (): ThunkAction => async () => {
     // dispatch(appendUserPosts(await getUserPosts()));
   },
   createNewPost: (data: Partial<IPost>): ThunkAction => async () => {
@@ -95,7 +95,7 @@ export const Actions = {
   removePhoto: (): ThunkAction => async dispatch => {
     dispatch(setNewPostPhoto(''));
   },
-  togglePostLike: ({id}: IPost): ThunkAction => async (dispatch, getStore) => {
+  togglePostLike: ({id}: IPost): ThunkAction => async () => {
     await toggleLikeDbPost(id);
   },
 };

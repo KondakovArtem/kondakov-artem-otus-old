@@ -5,7 +5,6 @@ import {
   AvatarComponent,
 } from '@app/components/avatar/avatar.component';
 import {IConfiguredStore} from '@app/redux/store';
-import {IUserInfo} from '@app/models/user.model';
 
 export interface IOwnProps {
   size?: number;
@@ -14,6 +13,7 @@ export interface IOwnProps {
   containerStyle?: any;
   style?: any;
   showEditButton?: boolean;
+  children?: string;
 }
 
 export interface IOwnHandlers {
@@ -22,10 +22,17 @@ export interface IOwnHandlers {
 
 export const UserAvatar = connect<IComponentProps, IComponentHandlers, IOwnProps & IOwnHandlers, IConfiguredStore>(
   (state, props) => {
-    const {authData} = state;
-    const {info = {} as IUserInfo} = authData;
-    const {size, color, uid, containerStyle, style, showEditButton} = props;
-    const {initial, avatar} = info;
+    const {users} = state;
+    const {userInfoMap} = users;
+    const {size, color, uid, containerStyle, style, showEditButton, children} = props;
+    let initial, avatar;
+    if (children) {
+      const userInfo = userInfoMap[children] || {};
+      avatar = userInfo.avatar;
+      initial = (userInfo.name || userInfo.email || '?')[0].toUpperCase();
+    }
+    // {initial, avatar} = info;
+
     return {
       imageUri: avatar,
       label: initial,
