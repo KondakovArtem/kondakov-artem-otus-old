@@ -19,29 +19,25 @@ export const getUserInfo = withAuth(
   },
 );
 
-export const updateUserInfo = withAuth(async (uid, userInfo: Partial<IUserInfo>) => {
+export const createUserInfo = withAuth(async (uid, userInfo: Partial<IUserInfo>) => {
   const docRef = firestore().doc(DBPaths.USERINFO({uid}));
   await firestore().runTransaction(async transaction => {
-    const snapshotData = (await transaction.get(docRef)).data() as IUserInfo;
     return transaction.set(docRef, {
-      ...snapshotData,
       ...userInfo,
       email: auth().currentUser?.email,
+      createdAt: firestore.FieldValue.serverTimestamp(),
     });
   });
 });
 
-export const toggleFollowDb = withAuth(async (uid, followUid: string) => {
+export const updateUserInfo = withAuth(async (uid, userInfo: Partial<IUserInfo>) => {
   const docRef = firestore().doc(DBPaths.USERINFO({uid}));
   await firestore().runTransaction(async transaction => {
-    const info = (await transaction.get(docRef)).data() as IUserInfo;
-    if (!info) {
-      return;
-    }
-    const {follows = []} = info;
+    // const snapshotData = (await transaction.get(docRef)).data() as IUserInfo;
     return transaction.update(docRef, {
-      follows: follows.includes(followUid) ? follows.filter(item => followUid !== item) : [...follows, followUid],
-    } as Partial<IUserInfo>);
+      ...userInfo,
+      email: auth().currentUser?.email,
+    });
   });
 });
 

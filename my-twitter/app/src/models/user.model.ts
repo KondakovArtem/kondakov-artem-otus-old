@@ -4,7 +4,6 @@ export interface IUserInfo extends IModifiableUserInfo {
   email: string;
   avatar: string;
   createdAt: Date;
-  follows: string[];
   id: string;
 }
 
@@ -19,4 +18,8 @@ export interface IModifiableUserInfo {
 export interface IUserInfoMutation {
   type: FirebaseFirestoreTypes.DocumentChangeType;
   doc: IUserInfo;
+}
+
+export interface IDBFollows {
+  ids: string[];
 }

@@ -3,18 +3,24 @@ import {connect} from 'react-redux';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {StyleSheet} from 'react-native';
+import {Icon} from 'react-native-elements';
 
 import {IConfiguredStore} from '@app/redux/store';
 import {Actions as authActions} from '@app/redux/auth/auth.ducks';
 import {HeaderComponent} from '@app/components/header/header.component';
-import {Icon} from 'react-native-elements';
 import {statusBackground} from '@app/constants/theme';
 import {navUtils} from '@app/services/navigation/navigation.service';
-import {FOLLOW_SCREEN} from '@app/models/navigation.model';
+import {FOLLOW_SCREEN, USER_PROFILE_SCREEN} from '@app/models/navigation.model';
+import {PostListComponent} from '@app/components/post-list/post-list.component';
+import {IPost} from '@app/models/post.model';
+import {AddPostButtonComponent} from '@app/components/add-post-button/add-post-button.component';
+import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 
-interface IProps {}
+interface IProps {
+  followPosts: IPost[];
+}
 interface IHandlers {
-  signOut: () => void;
+  toUserProfile: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -25,8 +31,7 @@ const styles = StyleSheet.create({
   headerIcon: {fontSize: 20},
 });
 
-export const ExploreScreenComponent: FC<IProps & IHandlers> = props => {
-  // const {signOut} = props;
+export const ExploreScreenComponent: FC<IProps & IHandlers> = ({followPosts, toUserProfile}) => {
   return (
     <MagicMove.Scene>
       <HeaderComponent
@@ -34,19 +39,13 @@ export const ExploreScreenComponent: FC<IProps & IHandlers> = props => {
         centerContainerStyle={styles.defContainer}
         rightContainerStyle={styles.expandContainer}
         leftComponent={
-          <MagicMove.View id="test" transition={MagicMove.Transition.morph}>
-            <Icon
-              type="material-community"
-              name="arrow-left"
-              color={statusBackground}
-              selectionColor={'white'}
-              containerStyle={styles.headerIconContainer}
-              iconStyle={styles.headerIcon}
-              suppressHighlighting={true}
-              size={16}
-              reverse
-            />
-          </MagicMove.View>
+          <UserAvatar
+            onPress={() => {
+              debugger;
+              toUserProfile();
+            }}
+            uid="logo"
+          />
         }
         rightComponent={
           <Icon
@@ -63,15 +62,20 @@ export const ExploreScreenComponent: FC<IProps & IHandlers> = props => {
           />
         }
       />
+      <PostListComponent list={followPosts} />
+      <AddPostButtonComponent />
     </MagicMove.Scene>
   );
 };
 
 export const ExploreScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
-  () => {
-    return {};
+  ({post}) => {
+    const {followPosts} = post;
+    return {
+      followPosts,
+    };
   },
   {
-    signOut: authActions.signOut,
+    toUserProfile: () => () => navUtils.navigate(USER_PROFILE_SCREEN),
   },
 )(ExploreScreenComponent);

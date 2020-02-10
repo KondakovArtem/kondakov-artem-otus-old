@@ -5,7 +5,7 @@ import {GoogleSignin, statusCodes} from 'react-native-google-signin';
 import {extend, isEmpty} from 'lodash-es';
 
 import {IUserInfo} from '@app/models/user.model';
-import {ThunkAction} from '@app/redux/store';
+import {ThunkAction, IDispatchActions} from '@app/redux/store';
 import {GOOGLE_WEB_CLIENT_ID} from '@app/constants/auth';
 import {
   LOGIN_SCREEN,
@@ -21,7 +21,7 @@ import {FirebaseError} from '@app/models/firebase.model';
 import {navUtils} from '@app/services/navigation/navigation.service';
 import {takeAvatar} from '@app/services/photo/photo.service';
 import {unregisterAllDbSubsribers} from '@app/services/database/subscription.service';
-import {onDbUserInfoChanged, updateUserInfo} from '@app/services/database/userinfo.database';
+import {onDbUserInfoChanged, updateUserInfo, createUserInfo} from '@app/services/database/userinfo.database';
 import {Actions as postActions} from '@app/redux/post/post.ducks';
 import {Actions as usersActions} from '@app/redux/users/users.ducks';
 import {
@@ -105,7 +105,7 @@ export const Actions = {
 
     //Если пользователь авторизован, но не верифицирован
     if (currentUser && !currentUser.emailVerified) {
-      Actions.startCheckProcessVerifyEmail();
+      Actions.startCheckProcessVerifyEmail()(dispatch, getStore);
       if (screen !== EMAIL_VERIFICATION) {
         navUtils.navigate(EMAIL_VERIFICATION);
         SplashScreen.hide();
@@ -322,6 +322,8 @@ export const Actions = {
       dispatch(setFetching(false));
       return;
     }
+    await createUserInfo({});
+
     try {
       await credential.user.sendEmailVerification();
     } catch (e) {
@@ -330,24 +332,24 @@ export const Actions = {
     // debugger;
     dispatch(setFetching(false));
   },
-  stopCheckProcessVerifyEmail: () => {
+  stopCheckProcessVerifyEmail: (): ThunkAction => () => {
     if (queryVerificationHandler != null) {
       clearInterval(queryVerificationHandler);
     }
     queryVerificationHandler = undefined;
   },
-  startCheckProcessVerifyEmail: () => {
+  startCheckProcessVerifyEmail: (): ThunkAction => (...redux) => {
     if (!queryVerificationHandler) {
       queryVerificationHandler = setInterval(async () => {
-        console.log('checkProcessVerifyEmail');
         const {currentUser} = auth();
         if (currentUser && !currentUser.emailVerified) {
           await currentUser.reload();
         } else {
           if (currentUser && navUtils.getCurrentScreen() === EMAIL_VERIFICATION) {
+            Actions.checkAuth(currentUser)(...redux);
             navUtils.navigate(APP_STACK);
           }
-          Actions.stopCheckProcessVerifyEmail();
+          Actions.stopCheckProcessVerifyEmail()(...redux);
         }
       }, 3000);
     }

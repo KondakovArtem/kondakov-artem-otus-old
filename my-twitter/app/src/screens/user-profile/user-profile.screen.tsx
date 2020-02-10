@@ -73,7 +73,9 @@ export const UserProfileScreenComponent: FC<IProps & IHandlers> = ({
           <Text>
             {20} Follow {3} Followers
           </Text>
-          <Button onPress={signOut} title={'Sign out'}>Sign out</Button>
+          <Button onPress={signOut} title={'Sign out'}>
+            Sign out
+          </Button>
         </ScrollView>
       </View>
     </MagicMove.Scene>

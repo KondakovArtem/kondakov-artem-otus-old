@@ -43,7 +43,6 @@ export const EmailVerificationScreenComponent: FC<IProps & IHandlers> = ({
   return (
     <MagicMove.Scene>
       <HeaderComponent>Email Verification</HeaderComponent>
-
       <Animatable.View style={styles.cardContainer} animation={'fadeInDown'} useNativeDriver duration={COMMON_DURATION}>
         <Card title="Email Verification" containerStyle={styles.card}>
           <Text style={styles.message}>

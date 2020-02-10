@@ -7,6 +7,7 @@ import * as MagicMove from 'react-native-magic-move';
 
 import {getStorageFileUrl} from '@app/services/database/database.service';
 import {COMMON_DURATION} from '@app/constants/theme';
+import FastImage from 'react-native-fast-image';
 
 export interface IProps {
   label?: string;
@@ -65,8 +66,6 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
         },
         {...containerStyle},
       )}>
-      {/* <TouchableOpacity> */}
-      {/* {getAvatar()} */}
       <Avatar
         onLongPress={onLongPress}
         onPress={onPress}
@@ -79,8 +78,6 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
           ImageComponent: Image,
         }}
       />
-      {/* <Image source={{uri}} style={{width: 100, height: 100}}></Image> */}
-      {/* </TouchableOpacity> */}
     </MagicMove.View>
   );
 };

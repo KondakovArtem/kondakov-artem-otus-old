@@ -2,9 +2,8 @@ import React, {FC} from 'react';
 import {connect} from 'react-redux';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {ScrollView} from 'react-native';
 
 import {IConfiguredStore} from '@app/redux/store';
 import {Actions as authActions} from '@app/redux/auth/auth.ducks';

@@ -1,8 +1,8 @@
-import {createStore, applyMiddleware, combineReducers} from 'redux';
+import {createStore, applyMiddleware, combineReducers, Store} from 'redux';
 import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import {Dispatch} from 'redux';
-import {persistStore, persistReducer, createTransform} from 'redux-persist';
+import {persistStore, persistReducer, createTransform, Persistor} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {reducer as authReducer, IStore as IAuthStore} from '@app/redux/auth/auth.ducks';
@@ -58,9 +58,18 @@ const persistConfig = {
 export type GetStore = () => IConfiguredStore;
 export type ThunkAction = (dispatch: Dispatch, getStore: GetStore) => any;
 
+export interface IDispatchActions {
+  [key: string]: (...args: any[]) => ThunkAction;
+}
+
+let store: Store;
+let persistor: Persistor;
+
 export default () => {
-  const persistedReducer = persistReducer(persistConfig, reducer);
-  let store = createStore(persistedReducer, applyMiddleware(thunk, createLogger()));
-  let persistor = persistStore(store);
+  if (!store || !persistor) {
+    const persistedReducer = persistReducer(persistConfig, reducer);
+    store = createStore(persistedReducer, applyMiddleware(thunk, createLogger()));
+    persistor = persistStore(store);
+  }
   return {store, persistor};
 };

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Icon, Image} from 'react-native-elements';
 // @ts-ignore
@@ -10,10 +10,9 @@ import {isEmpty} from 'lodash-es';
 import {IConfiguredStore} from '@app/redux/store';
 import {InputComponent} from '@app/components/input/input.component';
 import {HeaderComponent} from '@app/components/header/header.component';
-import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 import {statusBackground, COMMON_DURATION} from '@app/constants/theme';
 import {Actions as postActions} from '@app/redux/post/post.ducks';
-import {ScrollView} from 'react-native-gesture-handler';
+import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 
 interface IProps {
   imagePath: string;

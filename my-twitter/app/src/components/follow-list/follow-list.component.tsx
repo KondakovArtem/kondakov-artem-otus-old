@@ -5,8 +5,8 @@ import {Text} from 'react-native';
 import {isEmpty} from 'lodash-es';
 
 import {IUserInfo} from '@app/models/user.model';
-import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
 import {FollowButton} from '@app/containers/follow-button/follow-button.container';
+import {AvatarContainer} from '@app/containers/avatar/avatar.container';
 
 export interface IProps {
   list?: IUserInfo[];
@@ -29,7 +29,7 @@ const renderItem = (item: IUserInfo) => {
     <ListItem
       containerStyle={styles.itemContainer}
       titleStyle={styles.title}
-      leftAvatar={<UserAvatar>{id}</UserAvatar>}
+      leftAvatar={<AvatarContainer>{id}</AvatarContainer>}
       title={
         <>
           <View>

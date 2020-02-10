@@ -49,9 +49,8 @@ export const Actions = {
     nextNavigationState;
     action;
 
-    const {authData} = getStore();
-    const {info = {} as IUserInfo} = authData;
-    const {follows = []} = info;
+    const {users} = getStore();
+    const {follows = []} = users;
 
     if ((action as any).routeName === EXPLORE_SCREEN && isEmpty(follows)) {
       navUtils.navigate(FOLLOW_SCREEN);

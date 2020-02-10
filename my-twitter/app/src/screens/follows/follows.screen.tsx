@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {connect} from 'react-redux';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
@@ -20,6 +20,7 @@ interface IProps {
 interface IHandlers {
   setSearch(value: string): void;
   backPress(): void;
+  filterSearchFollows(): void;
 }
 
 const styles = StyleSheet.create({
@@ -30,7 +31,18 @@ const styles = StyleSheet.create({
   headerIcon: {fontSize: 20},
 });
 
-export const FollowsScreenComponent: FC<IProps & IHandlers> = ({search, setSearch, searchFollows, backPress}) => {
+export const FollowsScreenComponent: FC<IProps & IHandlers> = ({
+  search,
+  setSearch,
+  searchFollows,
+  backPress,
+  filterSearchFollows,
+}) => {
+  useEffect(() => {
+    filterSearchFollows();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <MagicMove.Scene>
       <HeaderComponent
@@ -55,7 +67,6 @@ export const FollowsScreenComponent: FC<IProps & IHandlers> = ({search, setSearc
         }
         rightComponent={<InputSearchComponent onChangeText={setSearch}>{search}</InputSearchComponent>}
       />
-
       <FollowListComponent list={searchFollows} />
     </MagicMove.Scene>
   );
@@ -72,5 +83,6 @@ export const FollowsScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
   {
     setSearch: usersActions.setSearch,
     backPress: usersActions.backPress,
+    filterSearchFollows: usersActions.filterSearchFollows,
   },
 )(FollowsScreenComponent);

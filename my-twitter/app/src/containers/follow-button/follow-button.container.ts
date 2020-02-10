@@ -6,7 +6,6 @@ import {
   FollowButtonComponent,
 } from '@app/components/follow-button/follow-button.component';
 import {IConfiguredStore} from '@app/redux/store';
-import {IUserInfo} from '@app/models/user.model';
 import {headerBackground} from '@app/constants/theme';
 import {Actions as usersActions} from '@app/redux/users/users.ducks';
 
@@ -15,9 +14,8 @@ export interface IOwnProps {
 }
 
 export const FollowButton = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
-  ({authData}, {children}) => {
-    const {info = {} as IUserInfo} = authData;
-    const {follows = []} = info;
+  ({users}, {children}) => {
+    const {follows = []} = users;
     const isFollow = follows.includes(children);
 
     return {

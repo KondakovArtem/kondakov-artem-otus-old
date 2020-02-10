@@ -70,7 +70,7 @@ export const deletePost = withAuth(
   },
 );
 
-export const onDbUserPostChanged = (count: number, callback: (info: IPostMutation[]) => void) => {
+export const onDbUserPostChanged = (count: number = 10, callback: (info: IPostMutation[]) => void) => {
   if (!getDbSubscriber('userPosts')) {
     const {currentUser} = auth();
     const {uid} = currentUser || {};
@@ -80,6 +80,26 @@ export const onDbUserPostChanged = (count: number, callback: (info: IPostMutatio
       filter: collection =>
         collection
           .where('author', '==', uid)
+          .orderBy('createdAt', 'desc')
+          .limit(count),
+      callback,
+      type: SubscriptionTypes.COLLECTION,
+    });
+  }
+};
+
+export const onDbFollowsPostChanged = (
+  count: number = 10,
+  ids: string[] = [],
+  callback: (info: IPostMutation[]) => void,
+) => {
+  if (!getDbSubscriber('followPosts')) {
+    registerDbSubscriber({
+      alias: 'followPosts',
+      path: DBPaths.POSTS(),
+      filter: collection =>
+        collection
+          .where('author', 'in', ids)
           .orderBy('createdAt', 'desc')
           .limit(count),
       callback,
