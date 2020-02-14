@@ -5,6 +5,7 @@ export type TNavAlias = string;
 export const AUTH_STACK: TNavAlias = 'authStack';
 export const LOGIN_SCREEN: TNavAlias = 'loginScreen';
 export const SIGN_UP_SCREEN: TNavAlias = 'signUpScreen';
+export const LOADING_SCREEN: TNavAlias = 'loadingScreen';
 
 // Authorized Access
 export const EMAIL_VERIFICATION: TNavAlias = 'emailVerification';
@@ -29,6 +30,7 @@ export const NavAliases: TNavAlias[] = [
   MAIN_SCREEN,
   EXPLORE_SCREEN,
   NEW_POST_SCREEN,
+  LOADING_SCREEN,
   FOLLOW_SCREEN,
 ];
 

@@ -6,10 +6,11 @@ module.exports = {
       {
         root: ['./src'],
         extensions: ['.tsx', '.ts'],
-        alias: {
-          '@app': './src/',
-          '@assets': './assets/',
-        },
+        // alias: {
+        //   '@app': './src/',
+        //   '@assets': './assets/',
+        //   redux: './src/redux/',
+        // },
       },
     ],
   ],

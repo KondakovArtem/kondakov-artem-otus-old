@@ -3,8 +3,8 @@ import {Input, Icon} from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import {TouchableOpacity, View} from 'react-native';
 
-import {inputStyleProps} from '@app/constants/theme';
-import {usePrevious} from '@app/services/core/core.service';
+import {inputStyleProps} from 'constants/theme';
+import {usePrevious} from 'services/core/core.service';
 
 export interface IProps {
   children: string;

@@ -2,7 +2,7 @@ import ImagePicker, {ImagePickerResponse, ImagePickerOptions} from 'react-native
 import ImageCropper, {Options as CropOptions} from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
 
-import {uploadImage} from '@app/services/database/database.service';
+import {uploadImage} from 'services/database/database.service';
 
 // More info on all the options is below in the API Reference... just some common use cases shown here
 const defOptions = {

@@ -1,11 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-import {withAuth} from '@app/services/database/database.service';
-import {DBPaths, SubscriptionTypes} from '@app/models/firebase.model';
-import {IUserInfo, IUserInfoMutation} from '@app/models/user.model';
-import {convertRawtoObject} from '@app/services/core/core.service';
-import {getDbSubscriber, registerDbSubscriber} from '@app/services/database/subscription.service';
+import {withAuth} from 'services/database/database.service';
+import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
+import {IUserInfo, IUserInfoMutation} from 'models/user.model';
+import {convertRawtoObject} from 'services/core/core.service';
+import {getDbSubscriber, registerDbSubscriber} from 'services/database/subscription.service';
 
 export const getUserInfo = withAuth(
   async (uid): Promise<IUserInfo> => {

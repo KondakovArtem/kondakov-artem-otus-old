@@ -5,13 +5,13 @@ import * as MagicMove from 'react-native-magic-move';
 import {View, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import {IConfiguredStore} from '@app/redux/store';
-import {Actions as authActions} from '@app/redux/auth/auth.ducks';
-import {Actions as editUserInfoActions} from '@app/redux/edit-user-info/edit-user-info.ducks';
-import {HeaderProfileComponent} from '@app/components/header-profile/header-profile.component';
-import {InputComponent} from '@app/components/input/input.component';
-import {COMMON_DURATION, commonStyles} from '@app/constants/theme';
-import {DatePickerComponent} from '@app/components/date-picker/date-picker.component';
+import {IConfiguredStore} from 'store';
+import {Actions as authActions} from 'store/auth/auth.ducks';
+import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.ducks';
+import {HeaderProfileComponent} from 'components/header-profile/header-profile.component';
+import {InputComponent} from 'components/input/input.component';
+import {COMMON_DURATION, commonStyles} from 'constants/theme';
+import {DatePickerComponent} from 'components/date-picker/date-picker.component';
 
 interface IProps {
   name: string;

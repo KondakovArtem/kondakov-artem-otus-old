@@ -1,36 +1,43 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Icon} from 'react-native-elements';
-import {View, StyleSheet} from 'react-native';
-// @ts-ignore
-import * as MagicMove from 'react-native-magic-move';
+import {StyleSheet} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
-import {navUtils} from '@app/services/navigation/navigation.service';
-import {NEW_POST_SCREEN} from '@app/models/navigation.model';
-import {headerBackground} from '@app/constants/theme';
+import {headerBackground, COMMON_DURATION} from 'constants/theme';
 
 const styles = StyleSheet.create({
   button: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 60,
     right: 10,
     alignSelf: 'flex-start',
   },
 });
 
-const onNewPost = () => navUtils.navigate(NEW_POST_SCREEN);
+export interface IProps {
+  visible: boolean;
+}
 
-export const AddPostButtonComponent = () => {
+export interface IHandlers {
+  onPress(): void;
+}
+
+export const AddPostButtonComponent: FC<IProps & IHandlers> = ({visible, onPress}) => {
   return (
-    <MagicMove.View id="newPost" transition={MagicMove.Transition.morph} style={styles.button}>
-      <Icon
-        name="fountain-pen-tip"
-        type="material-community"
-        color={headerBackground}
-        reverseColor={'white'}
-        raised
-        reverse
-        onPress={onNewPost}
-      />
-    </MagicMove.View>
+    <>
+      {visible && (
+        <Animatable.View animation={'zoomIn'} duration={COMMON_DURATION} style={styles.button}>
+          <Icon
+            name="fountain-pen-tip"
+            type="material-community"
+            color={headerBackground}
+            reverseColor={'white'}
+            raised
+            reverse
+            onPress={onPress}
+          />
+        </Animatable.View>
+      )}
+    </>
   );
 };

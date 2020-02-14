@@ -22,6 +22,7 @@ export const DBPaths = {
   POSTS: template('posts'),
   POST: template('posts/${id}'),
   FOLLOWS: template('follows/${uid}'),
+  FOLLOWERS: template('follows'),
 };
 
 export interface IRegisterDbSubscription {

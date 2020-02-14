@@ -1,18 +1,28 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Icon, Image} from 'react-native-elements';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {isEmpty} from 'lodash-es';
 
-import {IConfiguredStore} from '@app/redux/store';
-import {InputComponent} from '@app/components/input/input.component';
-import {HeaderComponent} from '@app/components/header/header.component';
-import {statusBackground, COMMON_DURATION} from '@app/constants/theme';
-import {Actions as postActions} from '@app/redux/post/post.ducks';
-import {UserAvatar} from '@app/containers/user-avatar/user-avatar.container';
+import {IConfiguredStore} from 'store';
+import {InputComponent} from 'components/input/input.component';
+import {HeaderComponent} from 'components/header/header.component';
+import {COMMON_DURATION, commonStyles} from 'constants/theme';
+import {Actions as postActions} from 'store/post/post.ducks';
+import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
+import {HeaderActionComponent} from 'components/header-action/header-action.component';
+import {navUtils} from 'services/navigation/navigation.service';
+
+const styles = StyleSheet.create({
+  buttonActionWrapper: {flexDirection: 'row'},
+  scrollContent: {paddingTop: 10},
+  image: {width: '100%', aspectRatio: 1, borderRadius: 20},
+  removeImage: {position: 'absolute', right: 8},
+  removeImageIcon: {fontSize: 20},
+});
 
 interface IProps {
   imagePath: string;
@@ -33,57 +43,24 @@ export const NewPostScreenComponent: FC<IProps & IHandlers> = ({
   onPostMessage,
   onChangePostText,
 }) => {
+  const onClose = () => navUtils.back();
+
   return (
     <MagicMove.Scene>
       <HeaderComponent
-        leftComponent={
-          <MagicMove.View id="test" transition={MagicMove.Transition.morph}>
-            <Icon
-              type="material-community"
-              color={statusBackground}
-              selectionColor={'white'}
-              containerStyle={{left: -8}}
-              suppressHighlighting={true}
-              name="close"
-              size={16}
-              iconStyle={{fontSize: 20}}
-              reverse
-              onPress={() => {}}
-            />
-          </MagicMove.View>
-        }
+        leftComponent={<HeaderActionComponent name="close" onPress={onClose} />}
         rightComponent={
-          <View style={{flexDirection: 'row'}}>
-            <Icon
-              type="material-community"
-              color={statusBackground}
-              selectionColor={'white'}
-              suppressHighlighting={true}
-              name="image"
-              size={16}
-              iconStyle={{fontSize: 20}}
-              reverse
-              onPress={onTakePhoto}
-            />
-            <Icon
-              type="material-community"
-              color={statusBackground}
-              selectionColor={'white'}
-              suppressHighlighting={true}
-              name="send"
-              size={16}
-              iconStyle={{fontSize: 20}}
-              reverse
-              onPress={onPostMessage}
-            />
-          </View>
+          <Animatable.View animation="fadeInDown" duration={COMMON_DURATION} style={styles.buttonActionWrapper}>
+            <HeaderActionComponent name="image" onPress={onTakePhoto} />
+            <HeaderActionComponent name="send" onPress={onPostMessage} />
+          </Animatable.View>
         }
       />
       <ScrollView>
-        <View style={{paddingTop: 10}}>
+        <View style={styles.scrollContent}>
           <InputComponent
             leftComponent={<UserAvatar uid="logo" />}
-            placeholder={'What happening?'}
+            placeholder="What's going on?"
             autoFocus={true}
             multiline={true}
             onChangeText={onChangePostText}>
@@ -91,22 +68,18 @@ export const NewPostScreenComponent: FC<IProps & IHandlers> = ({
           </InputComponent>
           {!isEmpty(imagePath) && (
             <Animatable.View
-              style={{paddingHorizontal: 10}}
+              style={commonStyles.screenContent}
               animation={'zoomIn'}
               useNativeDriver={true}
               duration={COMMON_DURATION}>
-              <Image
-                source={{uri: imagePath}}
-                style={{width: '100%', aspectRatio: 1, borderRadius: 20}}
-                borderRadius={20}
-              />
+              <Image source={{uri: imagePath}} style={styles.image} borderRadius={20} />
               <Icon
                 type="material-community"
                 name="close"
-                containerStyle={{position: 'absolute', right: 8}}
+                containerStyle={styles.removeImage}
+                iconStyle={styles.removeImageIcon}
                 reverse
                 size={16}
-                iconStyle={{fontSize: 20}}
                 onPress={onRemovePhoto}
               />
             </Animatable.View>

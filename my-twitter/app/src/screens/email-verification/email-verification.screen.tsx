@@ -4,12 +4,12 @@ import {Text, Card, Button} from 'react-native-elements';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import * as Animatable from 'react-native-animatable';
-
-import {IConfiguredStore} from '@app/redux/store';
 import {View, StyleSheet} from 'react-native';
-import {Actions} from '@app/redux/auth/auth.ducks';
-import {HeaderComponent} from '@app/components/header/header.component';
-import {COMMON_DURATION} from '@app/constants/theme';
+
+import {IConfiguredStore} from 'store';
+import {Actions} from 'store/auth/auth.ducks';
+import {HeaderComponent} from 'components/header/header.component';
+import {COMMON_DURATION} from 'constants/theme';
 
 interface IProps {
   isFetching: boolean;

@@ -7,8 +7,8 @@ import {format, set} from 'date-fns';
 import {zonedTimeToUtc} from 'date-fns-tz';
 import * as RNLocalize from 'react-native-localize';
 
-import {inputStyleProps} from '@app/constants/theme';
-import {usePrevious} from '@app/services/core/core.service';
+import {inputStyleProps} from 'constants/theme';
+import {usePrevious} from 'services/core/core.service';
 
 export interface IProps {
   children?: Date;

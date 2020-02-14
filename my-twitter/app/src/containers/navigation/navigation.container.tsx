@@ -2,9 +2,9 @@ import React, {FC} from 'react';
 import {connect} from 'react-redux';
 import {NavigationContainerComponent, NavigationState, NavigationAction} from 'react-navigation';
 
-import {IConfiguredStore} from '@app/redux/store';
-import {Actions as commonActions} from '@app/redux/common/common.ducks';
-import {Navigation} from '@app/navigation/navigation';
+import {IConfiguredStore} from 'store';
+import {Actions as commonActions} from 'store/common/common.ducks';
+import {Navigation} from 'navigation/navigation';
 
 interface IHandlers {
   persistNavigationState: any;

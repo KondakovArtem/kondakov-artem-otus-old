@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {View} from 'react-native';
 import {Button} from 'react-native-elements';
 
-import {commonStyles, fullWidthButtonProps} from '@app/constants/theme';
+import {commonStyles, fullWidthButtonProps} from 'constants/theme';
 
 export interface IProps {
   children: string;

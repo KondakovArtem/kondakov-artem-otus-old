@@ -1,23 +1,20 @@
-// import {DefaultTheme, Theme} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
-
-// export const theme: Theme = {
-//   ...DefaultTheme,
-//   roundness: 2,
-//   colors: {
-//     ...DefaultTheme.colors,
-//     primary: '#2089dc',
-//     accent: '#f1c40f',
-//     // background: '#E75527',
-//     // text: 'white',
-//   },
-// };
+import {StyleSheet, StatusBarProps} from 'react-native';
 
 export const statusBackground = '#D3532C';
 export const headerBackground = '#F06332';
 export const COMMON_DURATION = 200;
+export const DELETE_POST_DURATION = 200;
+
+export const statusBarProps: StatusBarProps = {
+  backgroundColor: statusBackground,
+  barStyle: 'light-content',
+};
 
 export const commonStyles = StyleSheet.create({
+  headerLogoContainer: {
+    paddingLeft: 10,
+    paddingRight: 6,
+  },
   input: {
     fontWeight: '100',
     paddingLeft: 0,
@@ -31,25 +28,19 @@ export const commonStyles = StyleSheet.create({
     marginLeft: 0,
     marginTop: 0,
     marginBottom: 0,
-    // height: 32,
     padding: 0,
     paddingTop: 2,
     paddingRight: 10,
   },
 
+  screenContent: {paddingHorizontal: 10},
 
-  
-  containerStyle: {
-    // paddingBottom: 20,
-  },
+  containerStyle: {},
   inputContainerStyle: {
     alignItems: 'flex-start',
-    // height: 38,
     padding: 0,
   },
-  inputSelection: {
-    //color: '#ffffffa0',
-  },
+  inputSelection: {},
   errorStyle: {
     color: 'red',
   },

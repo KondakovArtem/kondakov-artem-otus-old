@@ -5,13 +5,13 @@ import * as MagicMove from 'react-native-magic-move';
 import {View, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import {IConfiguredStore} from '@app/redux/store';
-import {Actions as authActions} from '@app/redux/auth/auth.ducks';
-import {InputPaswordComponent} from '@app/components/input-password/input-password.component';
-import {InputComponent} from '@app/components/input/input.component';
-import {HeaderComponent} from '@app/components/header/header.component';
-import {commonStyles, COMMON_DURATION} from '@app/constants/theme';
-import {FullWidthButtonComponent} from '@app/components/full-width-button/full-width-button.component';
+import {IConfiguredStore} from 'store';
+import {Actions as authActions} from 'store/auth/auth.ducks';
+import {InputPaswordComponent} from 'components/input-password/input-password.component';
+import {InputComponent} from 'components/input/input.component';
+import {HeaderComponent} from 'components/header/header.component';
+import {commonStyles, COMMON_DURATION} from 'constants/theme';
+import {FullWidthButtonComponent} from 'components/full-width-button/full-width-button.component';
 
 interface IProps {
   username: string;

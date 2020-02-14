@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Avatar} from 'react-native-elements';
-import {Image, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {uniqueId} from 'lodash-es';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
-import {getStorageFileUrl} from '@app/services/database/database.service';
-import {COMMON_DURATION} from '@app/constants/theme';
+import {getStorageFileUrl} from 'services/database/database.service';
+import {COMMON_DURATION} from 'constants/theme';
 import FastImage from 'react-native-fast-image';
 
 export interface IProps {
@@ -22,6 +22,12 @@ export interface IProps {
   showEditButton?: boolean;
 }
 
+const styles = StyleSheet.create({
+  containerStyle: {
+    borderRadius: 200,
+  },
+});
+
 export interface IHandlers {
   onPress?: () => void;
   onLongPress?: () => void;
@@ -32,11 +38,8 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
   imageUri,
   onPress,
   onLongPress,
-  icon,
-  style,
   size = 34,
   path,
-  color,
   showEditButton,
   uid,
   containerStyle,
@@ -59,13 +62,7 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
       id={magicUid}
       transition={MagicMove.Transition.morph}
       duration={COMMON_DURATION}
-      style={StyleSheet.compose(
-        {
-          borderRadius: 200,
-          alignSelf: 'flex-start',
-        },
-        {...containerStyle},
-      )}>
+      style={StyleSheet.flatten([styles.containerStyle, containerStyle])}>
       <Avatar
         onLongPress={onLongPress}
         onPress={onPress}
@@ -75,7 +72,7 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
         title={label}
         showEditButton={showEditButton}
         imageProps={{
-          ImageComponent: Image,
+          ImageComponent: FastImage,
         }}
       />
     </MagicMove.View>

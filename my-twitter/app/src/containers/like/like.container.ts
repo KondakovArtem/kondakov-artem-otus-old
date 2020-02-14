@@ -1,12 +1,13 @@
 import {connect} from 'react-redux';
+
 import {
   IProps as IComponentProps,
   IHandlers as IComponentHandlers,
   HeartComponent,
-} from '@app/components/heart/heart.component';
-import {IConfiguredStore} from '@app/redux/store';
-import {Actions as postActions} from '@app/redux/post/post.ducks';
-import {IPost} from '@app/models/post.model';
+} from 'components/heart/heart.component';
+import {IConfiguredStore} from 'store';
+import {Actions as postActions} from 'store/post/post.ducks';
+import {IPost} from 'models/post.model';
 
 export interface IOwnProps {
   children: IPost;
@@ -15,12 +16,13 @@ export interface IOwnProps {
 export const LikePost = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
   ({authData}, {children}) => {
     const {userUid} = authData;
+    const {likes} = children;
     return {
       userUid,
-      children,
+      children: likes,
     };
   },
-  {
-    onPress: postActions.togglePostLike,
-  },
+  (dispatch, {children}) => ({
+    onPress: () => postActions.togglePostLike(children)(),
+  }),
 )(HeartComponent);

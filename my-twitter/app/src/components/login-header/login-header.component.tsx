@@ -3,7 +3,7 @@ import {ImageBackground, View, StyleSheet} from 'react-native';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
-import {COMMON_DURATION} from '@app/constants/theme';
+import {COMMON_DURATION} from 'constants/theme';
 
 const bottomLeftRadius = 150;
 

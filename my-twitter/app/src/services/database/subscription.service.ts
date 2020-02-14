@@ -1,5 +1,5 @@
 import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
-import {SubscriptionTypes, IDbSubscription, IRegisterDbSubscription, IDBDocument} from '@app/models/firebase.model';
+import {SubscriptionTypes, IDbSubscription, IRegisterDbSubscription, IDBDocument} from 'models/firebase.model';
 import {each} from 'lodash-es';
 import {convertRawtoObject} from '../core/core.service';
 

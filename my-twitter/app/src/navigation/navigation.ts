@@ -9,7 +9,8 @@ import {
   ExploreScreen,
   NewPostScreen,
   FollowsScreen,
-} from '@app/screens';
+  LoadingScreen,
+} from 'screens';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
 import {
@@ -25,14 +26,24 @@ import {
   USER_PROFILE_EDIT_SCREEN,
   NEW_POST_SCREEN,
   FOLLOW_SCREEN,
-} from '@app/models/navigation.model';
-import {statusBackground} from '@app/constants/theme';
-import {TabbarIconComponent} from '@app/components/tabbar-icon/tabbar-icon.component';
-import {UserProfileEditScreen} from '@app/screens/user-profile-edit/user-profile-edit.screen';
+  LOADING_SCREEN,
+} from 'models/navigation.model';
+import {statusBackground} from 'constants/theme';
+import {TabbarIconComponent} from 'components/tabbar-icon/tabbar-icon.component';
+import {UserProfileEditScreen} from 'screens/user-profile-edit/user-profile-edit.screen';
+
+const noHeader = {
+  navigationOptions: {
+    headerShown: false,
+  },
+};
 
 export const Navigation = createAppContainer(
   createSwitchNavigator(
     {
+      [LOADING_SCREEN]: {
+        screen: LoadingScreen,
+      },
       [APP_STACK]: createStackNavigator({
         [TAB_STACK]: createMaterialBottomTabNavigator(
           {
@@ -67,52 +78,40 @@ export const Navigation = createAppContainer(
             shifting: true,
             barStyle: {backgroundColor: statusBackground},
             backBehavior: 'initialRoute',
-            navigationOptions: {
-              headerShown: false,
-            },
+            ...noHeader,
           },
         ),
         [USER_PROFILE_EDIT_SCREEN]: {
           screen: UserProfileEditScreen,
-          navigationOptions: {
-            headerShown: false,
-          },
+          ...noHeader,
         },
         [NEW_POST_SCREEN]: {
           screen: NewPostScreen,
-          navigationOptions: {
-            headerShown: false,
-          },
+          ...noHeader,
         },
         [FOLLOW_SCREEN]: {
           screen: FollowsScreen,
-          navigationOptions: {
-            headerShown: false,
-          },
+          ...noHeader,
         },
       }),
 
       [EMAIL_VERIFICATION]: {
         screen: EmailVerificationScreen,
-        navigationOptions: {
-          headerShown: false,
-        },
+        ...noHeader,
       },
       [AUTH_STACK]: createStackNavigator({
         [LOGIN_SCREEN]: {
           screen: LoginScreen,
-          navigationOptions: {
-            headerShown: false,
-          },
+          ...noHeader,
         },
         [SIGN_UP_SCREEN]: {
           screen: SignUpScreen,
-          navigationOptions: {
-            headerShown: false,
-          },
+          ...noHeader,
         },
       }),
     },
-    {},
+    {
+      initialRouteName: LOADING_SCREEN,
+    },
   ),
 );

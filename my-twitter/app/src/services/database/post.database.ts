@@ -1,9 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-import {withAuth} from '@app/services/database/database.service';
-import {DBPaths, SubscriptionTypes} from '@app/models/firebase.model';
-import {IPost, IPostMutation} from '@app/models/post.model';
+import {withAuth} from 'services/database/database.service';
+import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
+import {IPost, IPostMutation} from 'models/post.model';
 import {getDbSubscriber, registerDbSubscriber} from './subscription.service';
 
 export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
@@ -20,33 +20,6 @@ export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
   });
 });
 
-// export const getUserPosts = withAuth(async uid => {
-//   const items = await firestore()
-//     .collection(DBPaths.POSTS())
-//     .orderBy('created')
-//     .where('author', '==', uid)
-//     .limit(10)
-//     .get();
-
-//   return [] as IPost[];
-
-//   //   return Object.keys(items.docs).map((id: string) => ({
-//   //     ...items[id],
-//   //     id,
-//   //   }));
-
-//   //   each(items, (post, id) => {});
-
-//   //   return convertRawtoObject(
-//   //     await firestore()
-//   //       .collection(DBPaths.POSTS())
-//   //       .orderBy('created')
-//   //       .where('author', '==', uid)
-//   //       .limit(10)
-//   //       .get(),
-//   //   );
-// });
-
 export const createNewPost = withAuth(
   async (uid: string, post: Partial<IPost>): Promise<void> => {
     await firestore()
@@ -55,12 +28,13 @@ export const createNewPost = withAuth(
         ...post,
         createdAt: firestore.FieldValue.serverTimestamp(),
         updatedAt: firestore.FieldValue.serverTimestamp(),
+        deleteAt: null,
         author: uid,
       });
   },
 );
 
-export const deletePost = withAuth(
+export const deleteDBPost = withAuth(
   async (uid: string, post: IPost): Promise<void> => {
     await firestore()
       .doc(DBPaths.POST(post))
@@ -80,6 +54,7 @@ export const onDbUserPostChanged = (count: number = 10, callback: (info: IPostMu
       filter: collection =>
         collection
           .where('author', '==', uid)
+          .where('deleteAt', '==', null)
           .orderBy('createdAt', 'desc')
           .limit(count),
       callback,
@@ -100,6 +75,7 @@ export const onDbFollowsPostChanged = (
       filter: collection =>
         collection
           .where('author', 'in', ids)
+          .where('deleteAt', '==', null)
           .orderBy('createdAt', 'desc')
           .limit(count),
       callback,

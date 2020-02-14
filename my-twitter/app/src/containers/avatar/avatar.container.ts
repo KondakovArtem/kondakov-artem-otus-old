@@ -4,8 +4,8 @@ import {
   IProps as IComponentProps,
   IHandlers as IComponentHandlers,
   AvatarComponent,
-} from '@app/components/avatar/avatar.component';
-import {IConfiguredStore} from '@app/redux/store';
+} from 'components/avatar/avatar.component';
+import {IConfiguredStore} from 'store';
 
 export interface IOwnProps {
   size?: number;

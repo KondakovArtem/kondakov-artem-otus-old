@@ -21,5 +21,11 @@ export interface IUserInfoMutation {
 }
 
 export interface IDBFollows {
+  id: string;
   ids: string[];
+}
+
+export interface IDBFollowersMutation {
+  type: FirebaseFirestoreTypes.DocumentChangeType;
+  doc: IDBFollows;
 }

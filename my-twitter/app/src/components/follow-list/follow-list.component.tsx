@@ -4,9 +4,9 @@ import {ListItem, Divider} from 'react-native-elements';
 import {Text} from 'react-native';
 import {isEmpty} from 'lodash-es';
 
-import {IUserInfo} from '@app/models/user.model';
-import {FollowButton} from '@app/containers/follow-button/follow-button.container';
-import {AvatarContainer} from '@app/containers/avatar/avatar.container';
+import {IUserInfo} from 'models/user.model';
+import {FollowButton} from 'containers/follow-button/follow-button.container';
+import {AvatarContainer} from 'containers/avatar/avatar.container';
 
 export interface IProps {
   list?: IUserInfo[];

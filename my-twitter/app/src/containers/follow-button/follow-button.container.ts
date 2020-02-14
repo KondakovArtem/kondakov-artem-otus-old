@@ -4,10 +4,10 @@ import {
   IProps as IComponentProps,
   IHandlers as IComponentHandlers,
   FollowButtonComponent,
-} from '@app/components/follow-button/follow-button.component';
-import {IConfiguredStore} from '@app/redux/store';
-import {headerBackground} from '@app/constants/theme';
-import {Actions as usersActions} from '@app/redux/users/users.ducks';
+} from 'components/follow-button/follow-button.component';
+import {IConfiguredStore} from 'store';
+import {headerBackground} from 'constants/theme';
+import {Actions as usersActions} from 'store/users/users.ducks';
 
 export interface IOwnProps {
   children: string;

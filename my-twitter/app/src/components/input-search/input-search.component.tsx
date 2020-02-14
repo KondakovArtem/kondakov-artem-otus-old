@@ -2,9 +2,9 @@ import React, {FC, useState, useEffect} from 'react';
 import * as Animatable from 'react-native-animatable';
 import {Input, Icon} from 'react-native-elements';
 import {View, StyleSheet} from 'react-native';
-
-import {statusBackground, inputStyleProps} from '@app/constants/theme';
 import {isEmpty} from 'lodash-es';
+
+import {statusBackground, inputStyleProps} from 'constants/theme';
 
 const styles = StyleSheet.create({
   inputView: {width: '100%', flexGrow: 1},
@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   inputStyle: {color: 'white'},
 
   iconView: {flexDirection: 'row'},
-  iconContainerStyle: {right: -8},
   iconStyle: {fontSize: 20},
 });
 
@@ -64,7 +63,6 @@ export const InputSearchComponent: FC<IProps & IHandlers> = ({children = '', onC
             name="magnify"
             color={statusBackground}
             selectionColor={'white'}
-            containerStyle={styles.iconContainerStyle}
             iconStyle={styles.iconStyle}
             suppressHighlighting={true}
             size={16}

@@ -5,17 +5,16 @@ import AnimatedLottieView from 'lottie-react-native';
 import {isEmpty} from 'lodash-es';
 import * as Animatable from 'react-native-animatable';
 
-import {usePrevious} from '@app/services/core/core.service';
-import {COMMON_DURATION} from '@app/constants/theme';
-import {IPost} from '@app/models/post.model';
+import {usePrevious} from 'services/core/core.service';
+import {COMMON_DURATION} from 'constants/theme';
 
 export interface IProps {
-  children: IPost;
+  children: string[];
   userUid: string;
 }
 
 export interface IHandlers {
-  onPress?(post: IPost): void;
+  onPress?(): void;
 }
 
 const styles = StyleSheet.create({
@@ -43,32 +42,40 @@ const styles = StyleSheet.create({
   },
 });
 
-export const HeartComponent: FC<IProps & IHandlers> = ({children: post, userUid, onPress}) => {
-  const {likes} = post;
+export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid, onPress}) => {
   const lottieRef = useRef<AnimatedLottieView>();
+  const inited = useRef(false);
+  const progress = useRef(isLike() ? 107 / 150 : 0);
   const preLikes = usePrevious(likes);
 
+  function isLike() {
+    return likes && likes.includes(userUid);
+  }
+
   useEffect(() => {
-    if (lottieRef.current) {
-      let frames;
-      const curIncludes = likes && likes.includes(userUid);
+    if (lottieRef.current && inited.current) {
       const preIncludes = preLikes && preLikes.includes(userUid);
-      if (!preLikes) {
-        frames = curIncludes ? [130, 130] : [0, 0];
-      } else {
-        if ((preIncludes && curIncludes) || (!preIncludes && !curIncludes)) {
-          return;
-        }
-        frames = likes && likes.includes(userUid) ? [59, 107] : [140, 150];
+      const curIncludes = likes && likes.includes(userUid);
+      if ((preIncludes && curIncludes) || (!preIncludes && !curIncludes)) {
+        return;
       }
+      const frames = isLike() ? [59, 107] : [140, 150];
       lottieRef.current.play(...frames);
     }
+    return () => {
+      console.log('destroy');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [likes]);
+
+  useEffect(() => {
+    inited.current = true;
+  }, []);
 
   return (
     <View style={styles.constainer}>
       <LottieView
+        progress={progress.current}
         ref={ref => (lottieRef.current = ref as AnimatedLottieView)}
         style={styles.view}
         source={require('mytwitter/assets/animation/heart')}
@@ -115,10 +122,15 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: post, userUid,
         ]}
       />
 
-      <TouchableWithoutFeedback onPress={() => onPress && onPress(post)}>
+      <TouchableWithoutFeedback onPress={() => onPress && onPress()}>
         <View style={styles.textWrapper}>
           {!isEmpty(likes) && (
-            <Animatable.Text key={likes.length} style={styles.text} animation={'fadeIn'} duration={COMMON_DURATION}>
+            <Animatable.Text
+              useNativeDriver={true}
+              key={likes.length}
+              style={styles.text}
+              animation={'fadeIn'}
+              duration={COMMON_DURATION}>
               {likes.length}
             </Animatable.Text>
           )}

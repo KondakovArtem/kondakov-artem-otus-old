@@ -4,8 +4,8 @@ import {Button} from 'react-native-elements';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
-import {headerBackground, COMMON_DURATION} from '@app/constants/theme';
-import {AvatarContainer} from '@app/containers/avatar/avatar.container';
+import {headerBackground, COMMON_DURATION} from 'constants/theme';
+import {AvatarContainer} from 'containers/avatar/avatar.container';
 
 export interface IProps {
   mode?: string;

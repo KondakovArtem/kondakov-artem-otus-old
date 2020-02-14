@@ -1,10 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-import {withAuth} from '@app/services/database/database.service';
-import {DBPaths, SubscriptionTypes} from '@app/models/firebase.model';
-import {IDBFollows} from '@app/models/user.model';
-import {getDbSubscriber, registerDbSubscriber} from '@app/services/database/subscription.service';
+import {withAuth} from 'services/database/database.service';
+import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
+import {IDBFollows, IDBFollowersMutation} from 'models/user.model';
+import {getDbSubscriber, registerDbSubscriber} from 'services/database/subscription.service';
 
 export const toggleFollowDb = withAuth(async (uid, followUid: string) => {
   const docRef = firestore().doc(DBPaths.FOLLOWS({uid}));
@@ -30,3 +30,26 @@ export const onDbFollowsChanged = (callback: (data: IDBFollows) => void) => {
     });
   }
 };
+
+export const onDbFollowersChanged = (callback: (data: IDBFollowersMutation[]) => void) => {
+  if (!getDbSubscriber('followers')) {
+    const {currentUser = {}} = auth();
+    const {uid} = currentUser as any;
+    registerDbSubscriber({
+      alias: 'followers',
+      path: DBPaths.FOLLOWERS(),
+      filter: collection => collection.where('ids', 'array-contains', uid),
+      callback,
+      type: SubscriptionTypes.COLLECTION,
+    });
+  }
+};
+
+// export const getDBFollowers = withAuth(async uid => {
+//   const snapshot = await firestore()
+//     .collection(DBPaths.FOLLOWERS())
+//     .where('ids', 'array-contains', uid)
+//     .get();
+//   const docs = snapshot.docs;
+//   return docs.map(({id}) => id);
+// });

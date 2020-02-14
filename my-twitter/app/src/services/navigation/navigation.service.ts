@@ -1,6 +1,7 @@
 import {NavigationContainerComponent, NavigationActions, NavigationState, NavigationRoute} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import {NAV_STATE_KEY, NavAliases} from '@app/models/navigation.model';
+
+import {NAV_STATE_KEY, NavAliases} from 'models/navigation.model';
 
 let _navigator: NavigationContainerComponent;
 let isNavLoaded = false;
@@ -24,9 +25,9 @@ export const navUtils = {
     let data: any = JSON.parse(jsonString) as NavigationState;
     const savedNavAliases = navUtils.collectNavAliases(data);
     const missingScreenInSaved = savedNavAliases.find(alias => !NavAliases.includes(alias));
-    const missingScreenInModel = NavAliases.find(alias => !savedNavAliases.includes(alias));
+    // const missingScreenInModel = NavAliases.find(alias => !savedNavAliases.includes(alias));
     isNavLoaded = true;
-    return missingScreenInSaved || missingScreenInModel ? undefined : data;
+    return missingScreenInSaved ? undefined : data;
   },
   navigate: (routeName: string, params?: any) => {
     if ((_navigator.state as any).nav == null) {
@@ -81,4 +82,3 @@ export const navUtils = {
     });
   },
 };
-

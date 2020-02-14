@@ -7,13 +7,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 // @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
-import {IConfiguredStore} from '@app/redux/store';
-import {Actions as authActions} from '@app/redux/auth/auth.ducks';
-import {InputPaswordComponent} from '@app/components/input-password/input-password.component';
-import {InputComponent} from '@app/components/input/input.component';
-import {statusBackground, commonStyles, COMMON_DURATION} from '@app/constants/theme';
-import {LoginHeaderComponent} from '@app/components/login-header/login-header.component';
-import {FullWidthButtonComponent} from '@app/components/full-width-button/full-width-button.component';
+import {IConfiguredStore} from 'store';
+import {Actions as authActions} from 'store/auth/auth.ducks';
+import {InputPaswordComponent} from 'components/input-password/input-password.component';
+import {InputComponent} from 'components/input/input.component';
+import {statusBackground, commonStyles, COMMON_DURATION} from 'constants/theme';
+import {LoginHeaderComponent} from 'components/login-header/login-header.component';
+import {FullWidthButtonComponent} from 'components/full-width-button/full-width-button.component';
 
 interface IProps {
   showPassword: boolean;
