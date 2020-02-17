@@ -6,7 +6,7 @@ import {View, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import {IConfiguredStore} from 'store';
-import {Actions as authActions} from 'store/auth/auth.ducks';
+import authActions from 'store/auth/auth.actions';
 import {InputPaswordComponent} from 'components/input-password/input-password.component';
 import {InputComponent} from 'components/input/input.component';
 import {HeaderComponent} from 'components/header/header.component';

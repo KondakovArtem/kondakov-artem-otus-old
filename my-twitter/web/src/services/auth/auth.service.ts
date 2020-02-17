@@ -3,9 +3,7 @@ import firebase, {auth} from 'firebase';
 
 declare const gapi: any;
 
-export const isAuth = () => {
-  return false;
-};
+export const isAuth = () => !!auth().currentUser;
 
 export const signInWithGoogle = async (data: any) => {
   // debugger;

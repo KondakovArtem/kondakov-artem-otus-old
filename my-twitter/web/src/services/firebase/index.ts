@@ -14,4 +14,10 @@ firebase.initializeApp({
   measurementId: 'G-0MYVYW3YH5',
 });
 
+export type User = firebase.User;
+export type UserCredential = firebase.auth.UserCredential;
+export type QuerySnapshot = firebase.firestore.QuerySnapshot;
+
+export const Timestamp = firebase.firestore.Timestamp;
+export {auth, firestore, storage} from 'firebase';
 export default firebase;

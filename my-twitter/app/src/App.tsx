@@ -11,7 +11,6 @@ import {NavigationContainer} from 'containers/navigation/navigation.container';
 import initStoreData from 'store';
 import {AddPostButton} from 'containers/add-post-button/add-post-button.container';
 import {DialogManager} from 'containers/dialog-manager/dialog-manager.container';
-// import {HeartComponent} from './components/heart/heart.component';
 
 const {store, persistor} = initStoreData();
 const styles = StyleSheet.create({

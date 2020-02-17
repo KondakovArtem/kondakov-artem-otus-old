@@ -5,7 +5,7 @@ import {IModifiableUserInfo} from 'models/user.model';
 import {navUtils} from 'services/navigation/navigation.service';
 import {USER_PROFILE_SCREEN, USER_PROFILE_EDIT_SCREEN} from 'models/navigation.model';
 import {getUserInfo, updateUserInfo} from 'services/database/userinfo.database';
-import {SIGN_OUT_CLEAR} from 'store/auth/auth.actions';
+import {SIGN_OUT_CLEAR} from 'store/auth/auth.ducks';
 
 export const SET_NAME = '@editUserInfo/SET_NAME';
 export const SET_ABOUT = '@editUserInfo/SET_ABOUT';

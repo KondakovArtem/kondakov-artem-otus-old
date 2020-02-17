@@ -1,4 +1,4 @@
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+export type TMutationType = 'added' | 'removed' | 'modified';
 
 export interface IUserInfo extends IModifiableUserInfo {
   email: string;
@@ -16,7 +16,7 @@ export interface IModifiableUserInfo {
 }
 
 export interface IUserInfoMutation {
-  type: FirebaseFirestoreTypes.DocumentChangeType;
+  type: TMutationType;
   doc: IUserInfo;
 }
 
@@ -26,6 +26,6 @@ export interface IDBFollows {
 }
 
 export interface IDBFollowersMutation {
-  type: FirebaseFirestoreTypes.DocumentChangeType;
+  type: TMutationType;
   doc: IDBFollows;
 }

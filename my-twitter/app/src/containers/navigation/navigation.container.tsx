@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {NavigationContainerComponent, NavigationState, NavigationAction} from 'react-navigation';
 
 import {IConfiguredStore} from 'store';
-import {Actions as commonActions} from 'store/common/common.ducks';
+import {Actions as commonActions} from 'store/common/common.actions';
 import {Navigation} from 'navigation/navigation';
 
 interface IHandlers {

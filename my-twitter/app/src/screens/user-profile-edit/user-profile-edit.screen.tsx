@@ -6,7 +6,7 @@ import {View, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import {IConfiguredStore} from 'store';
-import {Actions as authActions} from 'store/auth/auth.ducks';
+import authActions from 'store/auth/auth.actions';
 import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.ducks';
 import {HeaderProfileComponent} from 'components/header-profile/header-profile.component';
 import {InputComponent} from 'components/input/input.component';

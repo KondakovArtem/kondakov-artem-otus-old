@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as MagicMove from 'react-native-magic-move';
 
 import {IConfiguredStore} from 'store';
-import {Actions as authActions} from 'store/auth/auth.ducks';
+import authActions from 'store/auth/auth.actions';
 import {HeaderComponent} from 'components/header/header.component';
 import {navUtils} from 'services/navigation/navigation.service';
 import {USER_PROFILE_SCREEN} from 'models/navigation.model';

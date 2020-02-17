@@ -5,7 +5,7 @@ import * as MagicMove from 'react-native-magic-move';
 import {StyleSheet} from 'react-native';
 
 import {IConfiguredStore} from 'store';
-import {Actions as usersActions} from 'store/users/users.ducks';
+import {Actions as usersActions} from 'store/users/users.actions';
 import {HeaderComponent} from 'components/header/header.component';
 import {InputSearchComponent} from 'components/input-search/input-search.component';
 import {IUserInfo} from 'models/user.model';

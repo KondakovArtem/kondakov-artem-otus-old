@@ -1,27 +1,28 @@
 import React, {FC} from 'react';
 import {Route, Redirect} from 'react-router-dom';
-import {Routes} from 'models/router.model';
+
 import {isAuth} from 'services/auth/auth.service';
+import {LOGIN_SCREEN} from 'models/navigation.model';
 
 export interface IProps {
-  exact: boolean;
+  exact?: boolean;
   path: string;
 }
 
 export const ProtectedRoute: FC<IProps> = ({children, ...rest}) => (
   <Route
     {...rest}
-    render={({location}) =>
-      isAuth() ? (
+    render={({location}) => {
+      return isAuth() ? (
         children
       ) : (
         <Redirect
           to={{
-            pathname: Routes.login,
+            pathname: LOGIN_SCREEN,
             state: {from: location},
           }}
         />
-      )
-    }
+      );
+    }}
   />
 );

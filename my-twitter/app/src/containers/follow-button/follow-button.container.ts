@@ -7,7 +7,7 @@ import {
 } from 'components/follow-button/follow-button.component';
 import {IConfiguredStore} from 'store';
 import {headerBackground} from 'constants/theme';
-import {Actions as usersActions} from 'store/users/users.ducks';
+import {Actions as usersActions} from 'store/users/users.actions';
 
 export interface IOwnProps {
   children: string;

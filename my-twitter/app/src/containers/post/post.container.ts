@@ -7,7 +7,7 @@ import {
 } from 'components/post/post.component';
 import {IConfiguredStore} from 'store';
 import {IPost} from 'models/post.model';
-import {Actions as postActions} from 'store/post/post.ducks';
+import {Actions as postActions} from 'store/post/post.actions';
 
 export interface IOwnProps {
   children: IPost;

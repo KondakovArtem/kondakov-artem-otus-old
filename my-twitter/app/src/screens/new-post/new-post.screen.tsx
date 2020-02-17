@@ -11,7 +11,7 @@ import {IConfiguredStore} from 'store';
 import {InputComponent} from 'components/input/input.component';
 import {HeaderComponent} from 'components/header/header.component';
 import {COMMON_DURATION, commonStyles} from 'constants/theme';
-import {Actions as postActions} from 'store/post/post.ducks';
+import {Actions as postActions} from 'store/post/post.actions';
 import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
 import {HeaderActionComponent} from 'components/header-action/header-action.component';
 import {navUtils} from 'services/navigation/navigation.service';

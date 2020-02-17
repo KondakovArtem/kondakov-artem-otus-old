@@ -8,7 +8,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import * as MagicMove from 'react-native-magic-move';
 
 import {IConfiguredStore} from 'store';
-import {Actions as authActions} from 'store/auth/auth.ducks';
+import authActions from 'store/auth/auth.actions';
 import {InputPaswordComponent} from 'components/input-password/input-password.component';
 import {InputComponent} from 'components/input/input.component';
 import {statusBackground, commonStyles, COMMON_DURATION} from 'constants/theme';

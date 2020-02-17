@@ -1,0 +1,77 @@
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+}
+
+.logo-header {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.ant-page-header {
+  border-bottom: 1px solid #9e9e9e52;
+}
+
+.ant-menu {
+  background: transparent;
+  border-right: 0px;
+  &.ant-menu-inline {
+    & > .ant-menu-item {
+      height: 60px;
+      padding: 7px 0px;
+      margin: 0;
+      padding-left: 0px !important;
+      & > .menu-item-container {
+        padding: 10px;
+        line-height: 24px;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 22px;
+        &:hover {
+          background: #ff9d824a;
+          border-radius: 22px;
+          transition: 0.2s;
+          color: white;
+        }
+      }
+      & i {
+        font-size: 18px;
+      }
+    }
+    &:not(.ant-menu-horizontal) {
+      .ant-menu-item-selected {
+        background-color: transparent;
+        &:after {
+          content: none;
+        }
+        & > .menu-item-container {
+          color: white;
+          background: #df4419;
+        }
+      }
+    }
+  }
+}
+
+.ant-list-item{
+  padding: 10px 15px 0 15px;
+  border-bottom: 1px solid #9e9e9e52;
+  transition: 0.2s;
+  cursor: pointer;
+  &:hover {
+    background: #e6e6e6b0;
+  }
+}

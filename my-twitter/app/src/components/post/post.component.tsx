@@ -112,10 +112,3 @@ export const PostComponent: FC<IProps & IHandlers> = ({children, authorData, onL
     </Animatable.View>
   );
 };
-
-//export const PostComponent = memo<IProps & IHandlers>(PostElement, (prevProps, nextProps) => {
-//   const {children: prePost, authorData: preAuthor, deleting: preDeleting} = prevProps;
-//   const {children: nextPost, authorData: nextAuthor, deleting: nextDeleting} = nextProps;
-
-//   return isEqual(prePost, nextPost) && isEqual(preAuthor, nextAuthor) && preDeleting === nextDeleting;
-// });

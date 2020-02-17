@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import {View, StyleSheet} from 'react-native';
 
 import {IConfiguredStore} from 'store';
-import {Actions} from 'store/auth/auth.ducks';
+import Actions from 'store/auth/auth.actions';
 import {HeaderComponent} from 'components/header/header.component';
 import {COMMON_DURATION} from 'constants/theme';
 

@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 20,
+    // width: 30,
   },
   view: {
-    width: 140,
+    width: 150,
   },
   textWrapper: {
     marginLeft: -10,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid, onPress}) => {
   const lottieRef = useRef<AnimatedLottieView>();
   const inited = useRef(false);
-  const progress = useRef(isLike() ? 107 / 150 : 0);
+  const progress = useRef(isLike() ? 116 / 116 : 0);
   const preLikes = usePrevious(likes);
 
   function isLike() {
@@ -59,7 +59,7 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
       if ((preIncludes && curIncludes) || (!preIncludes && !curIncludes)) {
         return;
       }
-      const frames = isLike() ? [59, 107] : [140, 150];
+      const frames = isLike() ? [30, 116] : [0, 0];
       lottieRef.current.play(...frames);
     }
     return () => {
@@ -82,44 +82,7 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
         loop={false}
         autoPlay={false}
         autoSize={false}
-        colorFilters={[
-          {
-            keypath: 'Heart Fill',
-            color: '#F00000',
-          },
-          {
-            keypath: 'Heart Small 1',
-            color: '#F00000',
-          },
-          {
-            keypath: 'Heart Small 2',
-            color: '#00f000',
-          },
-          {
-            keypath: 'Heart Small 3',
-            color: '#0000F0',
-          },
-          {
-            keypath: 'Heart Small 4',
-            color: '#f000F0',
-          },
-          {
-            keypath: 'Heart Small 4',
-            color: '#f0F000',
-          },
-          {
-            keypath: 'Heart Small 5',
-            color: '#f00000',
-          },
-          {
-            keypath: 'Heart Small 6',
-            color: '#00F0F0',
-          },
-          {
-            keypath: 'Heart Small 6',
-            color: '#F0F000',
-          },
-        ]}
+        resizeMode="cover"
       />
 
       <TouchableWithoutFeedback onPress={() => onPress && onPress()}>

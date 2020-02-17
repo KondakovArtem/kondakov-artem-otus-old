@@ -1,23 +1,8 @@
 import {createAction, createReducer, Action} from 'typesafe-actions';
-import {isEmpty, uniqBy} from 'lodash-es';
+import {uniqBy} from 'lodash-es';
 
-import {ThunkAction} from 'store';
 import {IPost, IPostMutation} from 'models/post.model';
-import {
-  createNewPost,
-  onDbUserPostChanged,
-  toggleLikeDbPost,
-  onDbFollowsPostChanged,
-  deleteDBPost,
-} from 'services/database/post.database';
-import {takePhoto} from 'services/photo/photo.service';
-import {uploadImage} from 'services/database/database.service';
-import {navUtils} from 'services/navigation/navigation.service';
-import {SIGN_OUT_CLEAR} from 'store/auth/auth.actions';
-import {unregisterDbSubscriber} from 'services/database/subscription.service';
-import {Actions as dialogActions} from 'store/dialog/dialog.ducks';
-import {DialogAction, IDialogButtonAction} from 'models/dialog.model';
-import {DELETE_POST_DURATION} from 'constants/theme';
+import {SIGN_OUT_CLEAR} from 'store/auth/auth.ducks';
 
 export const APPEND_USER_POSTS = '@post/APPEND_USER_POSTS';
 export const APPEND_FOLLOW_POSTS = '@post/APPEND_FOLLOW_POSTS';
@@ -65,109 +50,19 @@ const initialState: IStore = {
 ///////////////////////////////////////
 // Actions
 ///////////////////////////////////////
-const appendUserPosts = createAction(APPEND_USER_POSTS, (v: IPost[]) => v)();
-const appendFollowPosts = createAction(APPEND_FOLLOW_POSTS, (v: IPost[]) => v)();
-const setFollowPosts = createAction(SET_FOLLOW_POSTS, (v: IPost[]) => v)();
-const setNewPostPhoto = createAction(SET_NEW_POST_PHOTO, (s: string) => s)();
-const setIsFetching = createAction(SET_IS_FETCHING, (v: boolean) => v)();
-const clearNewPost = createAction(CLEAR_NEW_POST, () => {})();
-const setPostText = createAction(SET_POST_TEXT, (v: string) => v)();
-const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
-const mutateUserPosts = createAction(MUTATE_USER_POSTS, (v: IPostMutation[]) => v)();
-const mutateFollowPosts = createAction(MUTATE_FOLLOW_POSTS, (v: IPostMutation[]) => v)();
-const appendToDeletingPost = createAction(APPEND_TO_DELETING_POST, (v: string) => v)();
-const removeFromDeletingPost = createAction(REMOVE_FROM_DELETING_POST, (v: string) => v)();
-const deletePost = createAction(DELETE, (v: IPost) => v)();
-/////////////////////////////////////////
-// Thunks
-/////////////////////////////////////////
-export const Actions = {
-  init: (): ThunkAction => async dispatch => {
-    onDbUserPostChanged(10, (mutationList: IPostMutation[]) => {
-      // const {post} = getStore();
-      dispatch(mutateUserPosts(mutationList));
-    });
-  },
-  updateFollowPost: (): ThunkAction => async (dispatch, getStore) => {
-    const {users, post, authData} = getStore();
-    const {userUid} = authData;
-    const {follows} = users;
-    const {followPostCount} = post;
-    unregisterDbSubscriber('followPosts');
-    if (follows.length) {
-      onDbFollowsPostChanged(followPostCount, [...follows, userUid], (mutationList: IPostMutation[]) => {
-        dispatch(mutateFollowPosts(mutationList));
-      });
-    } else {
-      dispatch(setFollowPosts([]));
-    }
-  },
-  fetchMoreUserPosts: () => async () => {
-    // dispatch(appendUserPosts(await getUserPosts()));
-  },
-  createNewPost: (data: Partial<IPost>) => async () => {
-    //const post =
-    await createNewPost(data);
-    // dispatch(appendUserPosts([post]));
-  },
-  changePostText: (value: string): ThunkAction => async dispatch => {
-    dispatch(setPostText(value));
-  },
-  postMessage: (): ThunkAction => async (dispatch, getStore) => {
-    const {post} = getStore();
-    const {newPost} = post;
-    const {imagePath, text} = newPost;
-    let image;
-    try {
-      if (!isEmpty(imagePath)) {
-        image = await uploadImage(imagePath, 'stock');
-      }
-      await createNewPost({image, text});
-    } catch (e) {}
-    dispatch(clearNewPost());
-    navUtils.back();
-  },
-  deletePostAction: (buttonAction: IDialogButtonAction): ThunkAction => async dispatch => {
-    const {dialog, key} = buttonAction;
-    const {data: post} = dialog;
-    const {id} = post;
-    if (key === 'delete') {
-      dispatch(appendToDeletingPost(id));
-      setTimeout(async () => {
-        dispatch(deletePost(post));
-        await deleteDBPost(post);
-        dispatch(removeFromDeletingPost(id));
-      }, DELETE_POST_DURATION);
-    }
-  },
-  deletePostConfirm: (post: IPost): ThunkAction => async (dispatch, getStore) => {
-    const {authData} = getStore();
-    const {userUid} = authData;
-    if (userUid === post.author) {
-      dialogActions.addDialog({
-        title: 'Do you really want to delete this post?',
-        buttons: [
-          {title: 'Cancel', type: 'outline', key: 'cancel'},
-          {title: 'Delete', key: 'delete'},
-        ],
-        action: DialogAction.DELETE_POST,
-        data: post,
-      })(dispatch, getStore);
-    }
-  },
-  takePhoto: (): ThunkAction => async dispatch => {
-    const photoRef = await takePhoto();
-    if (photoRef) {
-      dispatch(setNewPostPhoto(photoRef.uri));
-    }
-  },
-  removePhoto: (): ThunkAction => async dispatch => {
-    dispatch(setNewPostPhoto(''));
-  },
-  togglePostLike: ({id}: IPost) => async () => {
-    await toggleLikeDbPost(id);
-  },
-};
+export const appendUserPosts = createAction(APPEND_USER_POSTS, (v: IPost[]) => v)();
+export const appendFollowPosts = createAction(APPEND_FOLLOW_POSTS, (v: IPost[]) => v)();
+export const setFollowPosts = createAction(SET_FOLLOW_POSTS, (v: IPost[]) => v)();
+export const setNewPostPhoto = createAction(SET_NEW_POST_PHOTO, (s: string) => s)();
+export const setIsFetching = createAction(SET_IS_FETCHING, (v: boolean) => v)();
+export const clearNewPost = createAction(CLEAR_NEW_POST, () => {})();
+export const setPostText = createAction(SET_POST_TEXT, (v: string) => v)();
+export const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
+export const mutateUserPosts = createAction(MUTATE_USER_POSTS, (v: IPostMutation[]) => v)();
+export const mutateFollowPosts = createAction(MUTATE_FOLLOW_POSTS, (v: IPostMutation[]) => v)();
+export const appendToDeletingPost = createAction(APPEND_TO_DELETING_POST, (v: string) => v)();
+export const removeFromDeletingPost = createAction(REMOVE_FROM_DELETING_POST, (v: string) => v)();
+export const deletePost = createAction(DELETE, (v: IPost) => v)();
 
 const sortPost = (a: IPost, b: IPost) => {
   return a.createdAt.getTime() < b.createdAt.getTime() ? 1 : -1;

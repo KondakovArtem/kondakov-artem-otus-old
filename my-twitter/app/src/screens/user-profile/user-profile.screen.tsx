@@ -9,7 +9,7 @@ import {format} from 'date-fns';
 import {isEmpty} from 'lodash-es';
 
 import {IConfiguredStore} from 'store';
-import {Actions as authActions} from 'store/auth/auth.ducks';
+import authActions from 'store/auth/auth.actions';
 import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.ducks';
 import {HeaderProfileComponent} from 'components/header-profile/header-profile.component';
 import {IUserInfo} from 'models/user.model';

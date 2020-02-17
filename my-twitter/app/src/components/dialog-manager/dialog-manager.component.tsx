@@ -9,7 +9,7 @@ export interface IProps {
 }
 
 export interface IHandlers {
-  onBackdropPress(dialog: IModalDialog): void;
+  onBackdropPress?(dialog: IModalDialog): void;
   onClose(dialog: IModalDialog): void;
   onPressButton(buttonAction: IDialogButtonAction): void;
 }
