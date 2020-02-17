@@ -26,14 +26,16 @@ const EmptyComponent: FC = ({children}) => (
 
 export const PostListComponent: FC<IProps & IHandlers> = ({list = [], onSelectItem, emptyText, style}) => {
   const renderItemWithHandlers = ({children}: {children: IPost}) => renderItem(children, {onSelectItem});
-  return (
-    // <>{list.map(item => renderItemWithHandlers({children: item}))}</>
 
-    <VirtualScroller
-      preserveScrollPositionOnPrependItems={true}
-      preserveScrollPositionAtBottomOnMount={true}
-      items={list}
-      itemComponent={renderItemWithHandlers}
-    />
+  return (
+    <>{list.map(item => renderItemWithHandlers({children: item}))}</>
+    // TODO при обновлении данных (например, like поставить) через раз происходит ререндер всех элементов, непонятно почему
+    // из-за этого слетает scrollTop, если останется время - разобраться
+    // <VirtualScroller
+    //   preserveScrollPositionOnPrependItems={true}
+    //   preserveScrollPositionAtBottomOnMount={true}
+    //   items={list}
+    //   itemComponent={renderItemWithHandlers}
+    // />
   );
 };

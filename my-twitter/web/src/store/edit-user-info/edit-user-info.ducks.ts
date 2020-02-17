@@ -6,9 +6,12 @@ import {SIGN_OUT_CLEAR} from 'store/auth/auth.ducks';
 ///////////////////////////////////////
 // STORE
 ///////////////////////////////////////
-export interface IStore extends IModifiableUserInfo {}
+export interface IStore extends IModifiableUserInfo {
+  showAvatarEditor: boolean;
+}
 
 const initialState: IStore = {
+  showAvatarEditor: false,
   name: '',
   about: '',
   location: '',
@@ -26,6 +29,7 @@ export const SET_LOCATION = '@editUserInfo/SET_LOCATION';
 export const SET_WEBSITE = '@editUserInfo/SET_WEBSITE';
 export const SET_BIRTHDATE = '@editUserInfo/SET_BIRTHDATE';
 export const FILL_EDIT_USER_INFO = '@editUserInfo/FILL_EDIT_USER_INFO';
+export const SET_SHOW_AVATAR_EDITOR = '@editUserInfo/SET_SHOW_AVATAR_EDITOR'
 
 export const setName = createAction(SET_NAME, (v: string) => v)();
 export const setLocation = createAction(SET_LOCATION, (v: string) => v)();
@@ -33,12 +37,13 @@ export const setAbout = createAction(SET_ABOUT, (v: string) => v)();
 export const setWebSite = createAction(SET_WEBSITE, (v: string) => v)();
 export const setBirthDate = createAction(SET_BIRTHDATE, (v: Date) => v)();
 export const fillEditUserInfo = createAction(FILL_EDIT_USER_INFO, (v: IModifiableUserInfo) => v)();
-export const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
+export const signOutClear = createAction(SIGN_OUT_CLEAR)();
+export const setShowAvatarEditor = createAction(SET_SHOW_AVATAR_EDITOR, (v: boolean) => v)();
 
 ///////////////////////////////////////
 // Reducers
 ///////////////////////////////////////
-export const reducer = createReducer<IStore, Action>(initialState)
+export default createReducer<IStore, Action>(initialState)
   .handleAction(signOutClear, () => ({
     ...initialState,
   }))
@@ -65,4 +70,8 @@ export const reducer = createReducer<IStore, Action>(initialState)
   .handleAction(setBirthDate, (state, {payload}) => ({
     ...state,
     birthDate: payload,
+  }))
+  .handleAction(setShowAvatarEditor, (state, {payload}) => ({
+    ...state,
+    showAvatarEditor: payload,
   }));

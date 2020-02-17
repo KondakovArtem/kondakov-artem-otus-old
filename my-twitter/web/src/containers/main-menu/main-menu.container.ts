@@ -9,7 +9,7 @@ import {
   IHandlers as IComponentHandlers,
   IMenu,
 } from 'components/main-menu/main-menu.component';
-import {MAIN_SCREEN, EXPLORE_SCREEN, USER_PROFILE_SCREEN} from 'models/navigation.model';
+import {MAIN_SCREEN, EXPLORE_SCREEN, USER_PROFILE_SCREEN, FOLLOW_SCREEN} from 'models/navigation.model';
 import {withRouter} from 'react-router-dom';
 
 const menu: IMenu[] = [
@@ -30,6 +30,12 @@ const menu: IMenu[] = [
     title: 'Profile',
     key: USER_PROFILE_SCREEN,
     nav: USER_PROFILE_SCREEN,
+  },
+  {
+    icon: 'usergroup-add',
+    title: 'Follows',
+    key: FOLLOW_SCREEN,
+    nav: FOLLOW_SCREEN,
   },
 ];
 

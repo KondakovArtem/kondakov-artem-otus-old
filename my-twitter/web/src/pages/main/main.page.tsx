@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
+import {motion} from 'framer-motion';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
@@ -8,9 +9,8 @@ import {navUtils} from 'services/navigation';
 import {USER_PROFILE_SCREEN} from 'models/navigation.model';
 import {PostListComponent} from 'components/post-list/post-list.component';
 import {IPost} from 'models/post.model';
-import {motion} from 'framer-motion';
 import {thumbnailVariants} from 'constants/theme';
-// import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
+import {NewPostContainer} from 'containers/new-post/new-post.container';
 
 interface IProps {
   userPosts: IPost[];
@@ -23,6 +23,7 @@ interface IHandlers {
 export const MainPageComponent: FC<IProps & IHandlers> = ({toUserProfile, userPosts}) => (
   <motion.div {...thumbnailVariants} style={{display: 'flex', flexDirection: 'column', minHeight: '100%'}}>
     <HeaderComponent>Main</HeaderComponent>
+    <NewPostContainer />
     <PostListComponent style={{flex: 1}} list={userPosts} emptyText={'Post something'} />
   </motion.div>
 );

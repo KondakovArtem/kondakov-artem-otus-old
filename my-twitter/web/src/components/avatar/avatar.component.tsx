@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Avatar} from 'antd';
+import {Avatar, Badge, Icon} from 'antd';
 
 export interface IProps {
   label?: string;
@@ -19,20 +19,32 @@ export interface IHandlers {
   onLongPress?: () => void;
 }
 
-export const AvatarComponent: FC<IProps & IHandlers> = ({
-  label,
-  imageUri,
-  onPress,
-  onLongPress,
-  size = 34,
-  path,
-  showEditButton,
-}) => {
+const WithEditButton: FC<{showEditButton?: boolean}> = ({children, showEditButton}) => {
+  return !showEditButton ? (
+    <>{children}</>
+  ) : (
+    <Badge
+      count={
+        <Icon
+          type="edit"
+          style={{color: 'white', background: 'grey', borderRadius: '50%', padding: 4, bottom: 0, top: 'inherit'}}
+        />
+      }>
+      {children}
+    </Badge>
+  );
+};
+
+export const AvatarComponent: FC<IProps & IHandlers> = ({label, imageUri, onPress, size = 34, showEditButton}) => {
   const uri = imageUri;
 
   return (
-    <Avatar size={size} src={uri}>
-      {label}
-    </Avatar>
+    <div onClick={onPress} style={{cursor: onPress ? 'pointer' : 'inherit'}}>
+      <WithEditButton showEditButton={showEditButton}>
+        <Avatar size={size} src={uri}>
+          {label}
+        </Avatar>
+      </WithEditButton>
+    </div>
   );
 };

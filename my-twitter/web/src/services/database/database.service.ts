@@ -1,4 +1,4 @@
-import {auth} from 'services/firebase';
+import {auth, storage} from 'services/firebase';
 
 export const withAuth = <T extends any[], U>(fn: (uid: string, ...args: T) => U) => {
   return (...args: T): U => {
@@ -11,20 +11,19 @@ export const withAuth = <T extends any[], U>(fn: (uid: string, ...args: T) => U)
   };
 };
 
-// export const uploadImage = withAuth(async (uid: string, localUri: string, path: string) => {
-//   const uploadUri = Platform.OS === 'ios' ? localUri.replace('file://', '') : localUri;
-//   const imageRef = storage().ref(`${uid}/${path}`);
-//   await imageRef.putFile(uploadUri);
-//   return imageRef.getDownloadURL();
-// });
+export const uploadImage = withAuth(async (uid: string, base64: string, path: string) => {
+  const data = base64.replace(/^data:image\/[a-z]+;base64,/, '');
+  const imageRef = storage().ref(`${uid}/${path}`);
+  await imageRef.putString(data, 'base64');
+  return imageRef.getDownloadURL();
+});
 
-// export async function getStorageFileUrl(path: string) {
-//   try {
-//     return await storage()
-//       .ref(path)
-//       .getDownloadURL();
-//   } catch (e) {
-//     return null;
-//   }
-// }
-
+export async function getStorageFileUrl(path: string) {
+  try {
+    return await storage()
+      .ref(path)
+      .getDownloadURL();
+  } catch (e) {
+    return null;
+  }
+}

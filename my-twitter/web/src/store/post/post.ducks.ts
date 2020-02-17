@@ -29,7 +29,7 @@ export interface IStore {
   followPostCount: number;
   newPost: {
     text: string;
-    imagePath: string;
+    image: string;
     isFetching: boolean;
   };
 }
@@ -37,12 +37,12 @@ export interface IStore {
 const initialState: IStore = {
   userPosts: [],
   postToDelete: [],
-  userPostCount: 10,
+  userPostCount: 50,
   followPosts: [],
-  followPostCount: 10,
+  followPostCount: 50,
   newPost: {
     text: '',
-    imagePath: '',
+    image: '',
     isFetching: false,
   },
 };
@@ -55,9 +55,9 @@ export const appendFollowPosts = createAction(APPEND_FOLLOW_POSTS, (v: IPost[]) 
 export const setFollowPosts = createAction(SET_FOLLOW_POSTS, (v: IPost[]) => v)();
 export const setNewPostPhoto = createAction(SET_NEW_POST_PHOTO, (s: string) => s)();
 export const setIsFetching = createAction(SET_IS_FETCHING, (v: boolean) => v)();
-export const clearNewPost = createAction(CLEAR_NEW_POST, () => {})();
+export const clearNewPost = createAction(CLEAR_NEW_POST)();
 export const setPostText = createAction(SET_POST_TEXT, (v: string) => v)();
-export const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
+export const signOutClear = createAction(SIGN_OUT_CLEAR)();
 export const mutateUserPosts = createAction(MUTATE_USER_POSTS, (v: IPostMutation[]) => v)();
 export const mutateFollowPosts = createAction(MUTATE_FOLLOW_POSTS, (v: IPostMutation[]) => v)();
 export const appendToDeletingPost = createAction(APPEND_TO_DELETING_POST, (v: string) => v)();
@@ -103,7 +103,7 @@ export default createReducer<IStore, Action>(initialState)
     ...state,
     newPost: {
       ...state.newPost,
-      imagePath: payload,
+      image: payload,
     },
   }))
   .handleAction(setIsFetching, (state, {payload}) => ({

@@ -37,9 +37,9 @@ export interface IStore {
 const initialState: IStore = {
   userPosts: [],
   postToDelete: [],
-  userPostCount: 10,
+  userPostCount: 50,
   followPosts: [],
-  followPostCount: 10,
+  followPostCount: 50,
   newPost: {
     text: '',
     imagePath: '',
@@ -139,7 +139,7 @@ export const reducer = createReducer<IStore, Action>(initialState)
   .handleAction(setFollowPosts, (state, {payload}) => ({
     ...state,
     followPosts: payload,
-    followPostCount: Math.min(initialState.followPostCount),
+    followPostCount: Math.min(initialState.followPostCount, payload.length),
   }))
   .handleAction(appendToDeletingPost, (state, {payload}) => ({
     ...state,

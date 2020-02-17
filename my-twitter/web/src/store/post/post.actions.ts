@@ -1,4 +1,5 @@
 import {isEmpty} from 'lodash-es';
+import {message} from 'antd';
 
 import {ThunkAction} from 'store';
 import {IPost, IPostMutation} from 'models/post.model';
@@ -9,9 +10,6 @@ import {
   onDbFollowsPostChanged,
   deleteDBPost,
 } from 'services/database/post.database';
-// import {takePhoto} from 'services/photo/photo.service';
-// import {uploadImage} from 'services/database/database.service';
-import {navUtils} from 'services/navigation';
 import {unregisterDbSubscriber} from 'services/database/subscription.service';
 import {Actions as dialogActions} from 'store/dialog/dialog.actions';
 import {DialogAction, IDialogButtonAction} from 'models/dialog.model';
@@ -26,14 +24,19 @@ import {
   deletePost,
   removeFromDeletingPost,
   setNewPostPhoto,
+  setIsFetching,
 } from 'store/post/post.ducks';
+import {uploadImage} from 'services/database/database.service';
+import {uuidv4} from 'services/core/core.service';
 
 /////////////////////////////////////////
 // Thunks
 /////////////////////////////////////////
 export const Actions = {
-  init: (): ThunkAction => async dispatch => {
-    onDbUserPostChanged(10, (mutationList: IPostMutation[]) => {
+  init: (): ThunkAction => async (dispatch, getStore) => {
+    const {post} = getStore();
+    const {userPostCount} = post;
+    onDbUserPostChanged(userPostCount, (mutationList: IPostMutation[]) => {
       dispatch(mutateUserPosts(mutationList));
     });
   },
@@ -43,21 +46,18 @@ export const Actions = {
     const {follows} = users;
     const {followPostCount} = post;
     unregisterDbSubscriber('followPosts');
+    dispatch(setFollowPosts([]));
     if (follows.length) {
       onDbFollowsPostChanged(followPostCount, [...follows, userUid], (mutationList: IPostMutation[]) => {
         dispatch(mutateFollowPosts(mutationList));
       });
-    } else {
-      dispatch(setFollowPosts([]));
     }
   },
   fetchMoreUserPosts: () => async () => {
     // dispatch(appendUserPosts(await getUserPosts()));
   },
   createNewPost: (data: Partial<IPost>) => async () => {
-    //const post =
     await createNewPost(data);
-    // dispatch(appendUserPosts([post]));
   },
   changePostText: (value: string): ThunkAction => async dispatch => {
     dispatch(setPostText(value));
@@ -65,16 +65,19 @@ export const Actions = {
   postMessage: (): ThunkAction => async (dispatch, getStore) => {
     const {post} = getStore();
     const {newPost} = post;
-    const {imagePath, text} = newPost;
-    let image;
+    const {image: imageData, text} = newPost;
+    let image = null;
+    dispatch(setIsFetching(true));
     try {
-      if (!isEmpty(imagePath)) {
-        // image = await uploadImage(imagePath, 'stock');
+      if (!isEmpty(imageData)) {
+        image = await uploadImage(imageData, `stock/${uuidv4()}`);
       }
       await createNewPost({image, text});
-    } catch (e) {}
+    } catch (e) {
+      message.error(e.message);
+    }
+    dispatch(setIsFetching(false));
     dispatch(clearNewPost());
-    navUtils.back();
   },
   deletePostAction: (buttonAction: IDialogButtonAction): ThunkAction => async dispatch => {
     const {dialog, key} = buttonAction;
@@ -104,11 +107,8 @@ export const Actions = {
       })(dispatch, getStore);
     }
   },
-  takePhoto: (): ThunkAction => async dispatch => {
-    // const photoRef = await takePhoto();
-    // if (photoRef) {
-    //   dispatch(setNewPostPhoto(photoRef.uri));
-    // }
+  takePhoto: (image: string): ThunkAction => async dispatch => {
+    dispatch(setNewPostPhoto(image));
   },
   removePhoto: (): ThunkAction => async dispatch => {
     dispatch(setNewPostPhoto(''));

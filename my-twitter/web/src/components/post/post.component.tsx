@@ -1,6 +1,7 @@
-import React, {FC, CSSProperties, memo} from 'react';
-import {isEmpty, isEqual} from 'lodash-es';
+import React, {FC, memo} from 'react';
+import {isEmpty} from 'lodash-es';
 import {List, Icon} from 'antd';
+import {StyleSheet, Text, View} from 'react-native';
 
 import {IPost} from 'models/post.model';
 import {getDateAgo} from 'services/core/core.service';
@@ -9,9 +10,7 @@ import {IUserInfo} from 'models/user.model';
 import {DELETE_POST_DURATION} from 'constants/theme';
 import {AvatarContainer} from 'containers/avatar/avatar.container';
 
-const styles: {
-  [key: string]: CSSProperties;
-} = {
+const styles = StyleSheet.create({
   container: {padding: 10, alignItems: 'flex-start'},
   title: {padding: 0, margin: 0},
   titleView: {flexDirection: 'row', display: 'flex'},
@@ -20,6 +19,9 @@ const styles: {
   email: {color: 'grey'},
   imageView: {borderRadius: 10, marginTop: 6, display: 'flex', overflow: 'hidden'},
   image: {width: '100%', borderRadius: 10},
+  avatarContainer: {marginHorizontal: 6},
+  contentContainer: {marginHorizontal: 6, flex: 1},
+  listContainer: {width: '100%', flexDirection: 'row'},
   actionView: {
     display: 'flex',
     flexDirection: 'row',
@@ -29,7 +31,7 @@ const styles: {
   },
   comment: {flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex'},
   retweet: {flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex'},
-};
+});
 
 export interface IProps {
   deleting: boolean;
@@ -52,38 +54,42 @@ const PostContent: FC<IContentProps> = ({children, author}) => {
 
   return (
     <>
-      <div style={styles.titleView}>
-        <span style={styles.titleText}>
-          {!isEmpty(name) && <span style={styles.name}>{name} </span>}
-          {!isEmpty(email) && <span style={styles.email}>{email}</span>}
-        </span>
-        <span> {getDateAgo(createdAt)}</span>
-      </div>
-      <div>
-        {!isEmpty(text) && <span>{text}</span>}
+      <View style={styles.titleView}>
+        <Text style={styles.titleText}>
+          {!isEmpty(name) && <Text style={styles.name}>{name} </Text>}
+          {!isEmpty(email) && <Text style={styles.email}>{email}</Text>}
+        </Text>
+        <Text> {getDateAgo(createdAt)}</Text>
+      </View>
+      <View>
+        {!isEmpty(text) && <Text>{text}</Text>}
         {!isEmpty(image) && (
-          <div style={styles.imageView}>
-            <img src={image} style={{width: '100%'}}></img>
-          </div>
+          <View style={styles.imageView}>
+            <img
+              src={image}
+              style={{
+                width: '100%',
+                maxHeight: '270px',
+                objectFit: 'cover',
+              }}></img>
+          </View>
         )}
-      </div>
-      <div style={styles.actionView}>
-        <div style={styles.comment}>
+      </View>
+      <View style={styles.actionView}>
+        <View style={styles.comment}>
           <Icon type="message" />
-        </div>
-        <div style={styles.retweet}>
+        </View>
+        <View style={styles.retweet}>
           <Icon type="retweet" />
-        </div>
-        {/* <LikePost>{children}</LikePost> */}
-      </div>
+        </View>
+        <LikePost>{children}</LikePost>
+      </View>
     </>
   );
 };
 
-export const PostElement: FC<IProps & IHandlers> = ({children, authorData, onLongPress, deleting}) => {
+export const PostElement: FC<IProps & IHandlers> = ({children, authorData, deleting}) => {
   const {author, id} = children;
-
-  const longPress = () => onLongPress && onLongPress(children);
 
   const animationProps = deleting
     ? {
@@ -95,23 +101,16 @@ export const PostElement: FC<IProps & IHandlers> = ({children, authorData, onLon
 
   return (
     <List.Item key={id}>
-      <div style={{overflowX: 'hidden', display: 'flex', flexDirection: 'row', margin: '0 -5px', width: '100%'}}>
-        <div style={{margin: '0 5px'}}>
+      <View style={styles.listContainer}>
+        <View style={styles.avatarContainer}>
           <AvatarContainer size={50}>{author}</AvatarContainer>
-        </div>
-        <div style={{margin: '0 5px', flex: 1}}>
+        </View>
+        <View style={styles.contentContainer}>
           <PostContent author={authorData}>{children}</PostContent>
-        </div>
-      </div>
+        </View>
+      </View>
     </List.Item>
   );
 };
 
-export const PostComponent = memo(PostElement);
-
-// export const PostComponent = memo<IProps & IHandlers>(PostElement, (prevProps, nextProps) => {
-//   const {children: prePost, authorData: preAuthor, deleting: preDeleting} = prevProps;
-//   const {children: nextPost, authorData: nextAuthor, deleting: nextDeleting} = nextProps;
-//   debugger;
-//   return isEqual(prePost, nextPost) && isEqual(preAuthor, nextAuthor) && preDeleting === nextDeleting;
-// });
+export const PostComponent = PostElement;

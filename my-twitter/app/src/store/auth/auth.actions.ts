@@ -332,7 +332,6 @@ const Actions = {
     const newAvatar = await takeAvatar(userUid, 'avatar');
     if (newAvatar) {
       await updateUserInfo({avatar: newAvatar});
-      // dispatch(setAvatar(newAvatar));
     }
   },
 };

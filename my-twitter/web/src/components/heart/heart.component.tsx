@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, CSSProperties} from 'react';
+import React, {FC, useEffect, useRef, CSSProperties, useState, memo} from 'react';
 
 import Lottie from 'react-lottie';
 import {isEmpty} from 'lodash-es';
@@ -6,6 +6,7 @@ import {isEmpty} from 'lodash-es';
 import {usePrevious} from 'services/core/core.service';
 import {COMMON_DURATION} from 'constants/theme';
 import animationData from 'assets/animation/heart.json';
+import {Badge} from 'antd';
 
 export interface IProps {
   children: string[];
@@ -41,7 +42,7 @@ const styles: {
   },
   text: {
     color: 'black',
-    paddingLeft: 26,
+    marginLeft: 26,
   },
 };
 
@@ -49,33 +50,35 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
   const lottieRef = useRef<Lottie>(null);
   const inited = useRef(false);
   const preLikes = usePrevious(likes);
+  const [isAnimStop, setAnimStop] = useState(false);
 
   function isLike() {
     return likes && likes.includes(userUid);
   }
 
+  function stopFrame(anim: any, frame: number) {
+    anim.goToAndStop(frame, true);
+    setAnimStop(true);
+  }
+  function runFrame(anim: any, frame: number) {
+    anim.goToAndPlay(frame, true);
+    setAnimStop(false);
+  }
+
   useEffect(() => {
     if (lottieRef.current) {
+      const anim = (lottieRef.current as any).anim;
       if (inited.current) {
         const preIncludes = preLikes && preLikes.includes(userUid);
         const curIncludes = likes && likes.includes(userUid);
         if ((preIncludes && curIncludes) || (!preIncludes && !curIncludes)) {
           return;
         }
-        // debugger;
-        isLike()
-          ? (lottieRef.current as any).anim.goToAndPlay(30, true)
-          : (lottieRef.current as any).anim.goToAndStop(0, true);
+        isLike() ? runFrame(anim, 30) : stopFrame(anim, 0);
       } else {
-        // debugger;
-        isLike()
-          ? (lottieRef.current as any).anim.goToAndStop(116, true)
-          : (lottieRef.current as any).anim.goToAndStop(0, true);
+        isLike() ? stopFrame(anim, 115) : stopFrame(anim, 0);
       }
     }
-    return () => {
-      console.log('destroy');
-    };
   }, [likes]);
 
   useEffect(() => {
@@ -85,9 +88,8 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
   return (
     <div style={styles.constainer} onClick={() => onPress && onPress()}>
       <Lottie
-        // progress={progress.current}
         ref={ref => ((lottieRef as any).current = ref)}
-        // style={styles.view}
+        isPaused={isAnimStop}
         options={{
           loop: false,
           autoplay: false,
@@ -101,9 +103,17 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
       />
       <div style={styles.textWrapper}>
         {!isEmpty(likes) && (
-          <span key={likes.length} style={styles.text}>
-            {likes.length}
-          </span>
+          <Badge
+            count={likes.length}
+            style={{
+              backgroundColor: 'transparent',
+              color: '#222',
+              marginLeft: 0,
+              left: 'calc(50% + 10px)',
+              top: '-1px',
+              boxShadow: 'none',
+            }}
+          />
         )}
       </div>
     </div>

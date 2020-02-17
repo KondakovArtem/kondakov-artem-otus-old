@@ -42,13 +42,13 @@ export const Actions = {
     const {userUid} = authData;
     const {follows} = users;
     const {followPostCount} = post;
+    debugger;
+    dispatch(setFollowPosts([]));
     unregisterDbSubscriber('followPosts');
     if (follows.length) {
       onDbFollowsPostChanged(followPostCount, [...follows, userUid], (mutationList: IPostMutation[]) => {
         dispatch(mutateFollowPosts(mutationList));
       });
-    } else {
-      dispatch(setFollowPosts([]));
     }
   },
   fetchMoreUserPosts: () => async () => {

@@ -75,3 +75,10 @@ body {
     background: #e6e6e6b0;
   }
 }
+
+.ant-form-item {
+  transition: .2s;
+  &.no-error-message{
+    margin-bottom: 0;
+  }
+} 
