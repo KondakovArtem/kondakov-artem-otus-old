@@ -13,3 +13,22 @@ export const thumbnailVariants = {
     opacity: 0,
   },
 };
+
+export const thumbnailVariants2 = {
+  initial: {opacity: 0, y: -10, height: 0},
+  animate: {opacity: 1, y: 0, height: 270},
+  exit: {
+    marginTop: 0,
+    scale: 0,
+    height: 0,
+    opacity: 0,
+  },
+};
+
+export const deletePostVariant = {
+  animate: {
+    opacity: 0,
+    height: 0,
+    scale: 0,
+  },
+};

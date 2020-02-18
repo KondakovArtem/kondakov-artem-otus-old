@@ -9,9 +9,9 @@ export interface ButtonActionProps extends ButtonProps {
 
 export interface IModalDialog {
   uid?: string;
-  title: string;
-  buttons: ButtonActionProps[];
-  action: DialogAction;
+  title?: string;
+  buttons?: ButtonActionProps[];
+  action?: DialogAction;
   data: any;
 }
 

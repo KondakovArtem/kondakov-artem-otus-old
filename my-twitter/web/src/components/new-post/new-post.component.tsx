@@ -1,10 +1,12 @@
-import React, {FC, useState} from 'react';
-import {List, Button, Upload, message, Icon} from 'antd';
+import React, {FC} from 'react';
+import {List, Button, Upload, message, Icon, Spin} from 'antd';
 import {StyleSheet, View} from 'react-native';
+import {motion, AnimatePresence} from 'framer-motion';
 
 import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
 import {InputComponent} from 'components/input/input.component';
 import {isEmpty} from 'lodash-es';
+import {thumbnailVariants2} from 'constants/theme';
 
 const styles = StyleSheet.create({
   container: {padding: 10, alignItems: 'flex-start'},
@@ -13,7 +15,6 @@ const styles = StyleSheet.create({
   titleText: {flexGrow: 1, flexShrink: 1},
   name: {fontSize: 15, fontWeight: 'bold'},
   email: {color: 'grey'},
-  imageView: {borderRadius: 10, marginTop: 6, display: 'flex', overflow: 'hidden'},
   image: {width: '100%', borderRadius: 10},
   avatarContainer: {marginHorizontal: 6},
   contentContainer: {marginHorizontal: 6, flex: 1},
@@ -80,65 +81,77 @@ export const NewPostComponent: FC<IProps & IHandlers> = ({
   };
 
   return (
-    <List.Item>
-      <View style={styles.listContainer}>
-        <View style={styles.avatarContainer}>
-          <UserAvatar size={50} />
-        </View>
-        <View style={styles.contentContainer}>
-          <InputComponent
-            disabled={isFetching}
-            multiline={true}
-            placeholder={'What happening?'}
-            numberOfLines={3}
-            onChangeText={onChangePostText}>
-            {text}
-          </InputComponent>
-          {!isEmpty(image) && (
-            <View style={styles.imageView}>
-              <img
-                src={image}
-                style={{
-                  width: '100%',
-                  maxHeight: '270px',
-                  objectFit: 'cover',
-                }}
-              />
-              {!isFetching && (
-                <Icon
-                  type="close"
+    <Spin spinning={isFetching}>
+      <List.Item>
+        <View style={styles.listContainer}>
+          <View style={styles.avatarContainer}>
+            <UserAvatar size={50} />
+          </View>
+          <View style={styles.contentContainer}>
+            <InputComponent
+              disabled={isFetching}
+              multiline={true}
+              placeholder={'What happening?'}
+              numberOfLines={3}
+              onChangeText={onChangePostText}>
+              {text}
+            </InputComponent>
+            <AnimatePresence exitBeforeEnter>
+              {!isEmpty(image) && (
+                <motion.div
+                  {...thumbnailVariants2}
                   style={{
-                    position: 'absolute',
-                    right: '8px',
-                    top: '8px',
-                    padding: '7px',
-                    background: 'black',
-                    borderRadius: '50%',
-                    color: 'white',
-                  }}
-                  onClick={onRemovePhoto}
-                />
-              )}
-            </View>
-          )}
+                    borderRadius: 10,
+                    marginTop: '6px',
+                    display: 'flex',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  }}>
+                  <img
+                    src={image}
+                    style={{
+                      width: '100%',
+                      maxHeight: '270px',
+                      objectFit: 'cover',
+                    }}
+                  />
 
-          <View style={styles.buttonContainer}>
-            <Upload disabled={isFetching} showUploadList={false} beforeUpload={beforeUpload}>
-              <Button disabled={isFetching} shape="circle" icon="picture" />
-            </Upload>
-            <Button
-              disabled={isEmpty(text) && isEmpty(image)}
-              loading={isFetching}
-              style={{marginLeft: 10}}
-              type="primary"
-              icon="message"
-              shape="round"
-              onClick={onPostMessage}>
-              Post
-            </Button>
+                  {!isFetching && (
+                    <Icon
+                      type="close"
+                      style={{
+                        position: 'absolute',
+                        right: '8px',
+                        top: '8px',
+                        padding: '7px',
+                        background: 'black',
+                        borderRadius: '50%',
+                        color: 'white',
+                      }}
+                      onClick={onRemovePhoto}
+                    />
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <View style={styles.buttonContainer}>
+              <Upload disabled={isFetching} showUploadList={false} beforeUpload={beforeUpload}>
+                <Button disabled={isFetching} shape="circle" icon="picture" />
+              </Upload>
+              <Button
+                disabled={isEmpty(text) && isEmpty(image)}
+                loading={isFetching}
+                style={{marginLeft: 10}}
+                type="primary"
+                icon="message"
+                shape="round"
+                onClick={onPostMessage}>
+                Post
+              </Button>
+            </View>
           </View>
         </View>
-      </View>
-    </List.Item>
+      </List.Item>
+    </Spin>
   );
 };

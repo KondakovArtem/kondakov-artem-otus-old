@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import {connect} from 'react-redux';
 
 import {
@@ -16,7 +16,8 @@ export interface IOwnProps {
 }
 
 export const Post = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
-  ({users, post}, {children, ref}) => {
+  ({users, post, authData}, {children, ref}) => {
+    const {userUid} = authData;
     const {userInfoMap} = users;
     const {author} = children;
     const {postToDelete} = post;
@@ -24,6 +25,7 @@ export const Post = connect<IComponentProps, IComponentHandlers, IOwnProps, ICon
       deleting: postToDelete.includes(children.id),
       authorData: userInfoMap[author] || {},
       children,
+      currentUserId: userUid,
       ref,
     };
   },

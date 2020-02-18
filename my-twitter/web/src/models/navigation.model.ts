@@ -1,3 +1,5 @@
+import {template} from 'lodash-es';
+
 // Non Authorized Access
 export type TNavAlias = string;
 export const AUTH_STACK: TNavAlias = '/authStack';
@@ -11,10 +13,13 @@ export const APP_STACK: TNavAlias = '/appstack';
 export const TAB_STACK: TNavAlias = '/apptabs';
 export const USER_PROFILE_SCREEN: TNavAlias = '/settings';
 export const USER_PROFILE_EDIT_SCREEN: TNavAlias = '/editsettings';
+export const USER_INFO_SCREEN: TNavAlias = '/user/:id';
 export const MAIN_SCREEN: TNavAlias = '/';
 export const EXPLORE_SCREEN: TNavAlias = '/explore';
 export const NEW_POST_SCREEN: TNavAlias = '/newpost';
 export const FOLLOW_SCREEN: TNavAlias = '/follows';
+
+export const NonAuthNavAliases: TNavAlias[] = [LOGIN_SCREEN, SIGN_UP_SCREEN];
 
 export const NavAliases: TNavAlias[] = [
   AUTH_STACK,
@@ -46,3 +51,7 @@ export const AppNavAliases: TNavAlias[] = [
 
 // Окна требующие авторизации пользователя
 export const AuthNavAliases: TNavAlias[] = [...AppNavAliases, EMAIL_VERIFICATION];
+
+export const NavPath = {
+  USERINFO: template('user/${uid}'),
+};

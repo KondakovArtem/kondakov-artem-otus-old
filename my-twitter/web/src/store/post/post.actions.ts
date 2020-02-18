@@ -28,6 +28,7 @@ import {
 } from 'store/post/post.ducks';
 import {uploadImage} from 'services/database/database.service';
 import {uuidv4} from 'services/core/core.service';
+import {Dispatch} from 'redux';
 
 /////////////////////////////////////////
 // Thunks
@@ -79,7 +80,7 @@ export const Actions = {
     dispatch(setIsFetching(false));
     dispatch(clearNewPost());
   },
-  deletePostAction: (buttonAction: IDialogButtonAction): ThunkAction => async dispatch => {
+  deletePostAction: (buttonAction: IDialogButtonAction) => async (dispatch: Dispatch) => {
     const {dialog, key} = buttonAction;
     const {data: post} = dialog;
     const {id} = post;

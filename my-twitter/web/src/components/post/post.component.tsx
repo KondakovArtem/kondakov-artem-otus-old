@@ -1,19 +1,23 @@
-import React, {FC, memo} from 'react';
+import React, {FC} from 'react';
 import {isEmpty} from 'lodash-es';
 import {List, Icon} from 'antd';
 import {StyleSheet, Text, View} from 'react-native';
+import {motion} from 'framer-motion';
 
 import {IPost} from 'models/post.model';
 import {getDateAgo} from 'services/core/core.service';
 import {LikePost} from 'containers/like/like.container';
 import {IUserInfo} from 'models/user.model';
-import {DELETE_POST_DURATION} from 'constants/theme';
+import {DELETE_POST_DURATION, deletePostVariant} from 'constants/theme';
 import {AvatarContainer} from 'containers/avatar/avatar.container';
+import {PostMenu} from 'containers/post-menu/post-menu.container';
+import {navUtils} from 'services/navigation';
+import {NavPath} from 'models/navigation.model';
 
 const styles = StyleSheet.create({
   container: {padding: 10, alignItems: 'flex-start'},
   title: {padding: 0, margin: 0},
-  titleView: {flexDirection: 'row', display: 'flex'},
+  titleView: {flexDirection: 'row', display: 'flex', alignItems: 'center'},
   titleText: {flexGrow: 1, flexShrink: 1},
   name: {fontSize: 15, fontWeight: 'bold'},
   email: {color: 'grey'},
@@ -37,6 +41,7 @@ export interface IProps {
   deleting: boolean;
   children: IPost;
   authorData: IUserInfo;
+  currentUserId: string;
 }
 
 export interface IHandlers {
@@ -46,11 +51,12 @@ export interface IHandlers {
 interface IContentProps {
   author: IUserInfo;
   children: IPost;
+  currentUserId: string;
 }
 
-const PostContent: FC<IContentProps> = ({children, author}) => {
+const PostContent: FC<IContentProps> = ({children, author, currentUserId}) => {
   const {createdAt, text, image} = children;
-  const {name, email} = author;
+  const {name, email, id: userId} = author;
 
   return (
     <>
@@ -60,6 +66,7 @@ const PostContent: FC<IContentProps> = ({children, author}) => {
           {!isEmpty(email) && <Text style={styles.email}>{email}</Text>}
         </Text>
         <Text> {getDateAgo(createdAt)}</Text>
+        {userId === currentUserId && <PostMenu style={{paddingLeft: '10px'}}>{children}</PostMenu>}
       </View>
       <View>
         {!isEmpty(text) && <Text>{text}</Text>}
@@ -88,29 +95,30 @@ const PostContent: FC<IContentProps> = ({children, author}) => {
   );
 };
 
-export const PostElement: FC<IProps & IHandlers> = ({children, authorData, deleting}) => {
+export const PostComponent: FC<IProps & IHandlers> = ({children, authorData, deleting, currentUserId}) => {
   const {author, id} = children;
 
-  const animationProps = deleting
-    ? {
-        animation: 'fadeOutLeft',
-        duration: DELETE_POST_DURATION,
-        useNativeDriver: true,
-      }
-    : {};
+  const animationProps = deleting ? deletePostVariant : {};
+  const showUserProfile = () => {
+    navUtils.navigate(NavPath.USERINFO({uid: author}));
+  };
 
   return (
-    <List.Item key={id}>
-      <View style={styles.listContainer}>
-        <View style={styles.avatarContainer}>
-          <AvatarContainer size={50}>{author}</AvatarContainer>
+    <motion.div {...animationProps} key={id}>
+      <List.Item>
+        <View style={styles.listContainer}>
+          <View style={styles.avatarContainer}>
+            <AvatarContainer onPress={showUserProfile} size={50}>
+              {author}
+            </AvatarContainer>
+          </View>
+          <View style={styles.contentContainer}>
+            <PostContent author={authorData} currentUserId={currentUserId}>
+              {children}
+            </PostContent>
+          </View>
         </View>
-        <View style={styles.contentContainer}>
-          <PostContent author={authorData}>{children}</PostContent>
-        </View>
-      </View>
-    </List.Item>
+      </List.Item>
+    </motion.div>
   );
 };
-
-export const PostComponent = PostElement;

@@ -6,7 +6,7 @@ import {motion} from 'framer-motion';
 import {IConfiguredStore} from 'store';
 import {Logo} from 'components/login';
 import {MainMenu} from 'containers/main-menu/main-menu.container';
-import {MainRouter} from 'containers/main-router/main-router.container';
+import {MainRouter} from 'navigation/main-router/main-router.container';
 import {thumbnailVariants} from 'constants/theme';
 
 const {Sider} = Layout;

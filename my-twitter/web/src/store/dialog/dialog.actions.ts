@@ -21,7 +21,7 @@ export const Actions = {
     const {dialog} = buttonAction;
     const {action} = dialog;
     if (action === DialogAction.DELETE_POST) {
-      await postActions.deletePostAction(buttonAction)(dispatch, getStore);
+      await postActions.deletePostAction(buttonAction)(dispatch);
       Actions.removeDialog(dialog)(dispatch, getStore);
     }
   },

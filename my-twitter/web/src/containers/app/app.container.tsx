@@ -4,7 +4,7 @@ import {Provider as ReduxProvider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {BrowserRouter, Route} from 'react-router-dom';
 
-import {AppRouter} from 'containers/app-router/app-router.container';
+import {AppRouter} from 'navigation/app-router/app-router.container';
 import initStoreData from 'store';
 import {RootProvider} from 'containers/root-provider/root-provider';
 import {navUtils} from 'services/navigation';
@@ -16,8 +16,8 @@ export const App: FC = () => (
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <Route
-          render={({location, history, match}) => {
-            navUtils.setTopLevelNavigator(history);
+          render={({location, history}) => {
+            navUtils.setTopLevelNavigator(history, location);
             return (
               <RootProvider>
                 <AppRouter location={location} />

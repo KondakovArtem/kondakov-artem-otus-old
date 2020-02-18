@@ -2,7 +2,6 @@ import {auth, User, UserCredential} from 'services/firebase';
 import {extend, isEmpty} from 'lodash-es';
 
 import {ThunkAction} from 'store';
-import {GOOGLE_WEB_CLIENT_ID} from 'constants/auth';
 import {
   SIGN_OUT_CLEAR,
   setFetching,
@@ -15,7 +14,13 @@ import {
   appendInputError,
 } from 'store/auth/auth.ducks';
 import {IUserInfo} from 'models/user.model';
-import {SIGN_UP_SCREEN, EMAIL_VERIFICATION, MAIN_SCREEN, LOGIN_SCREEN, AppNavAliases} from 'models/navigation.model';
+import {
+  SIGN_UP_SCREEN,
+  EMAIL_VERIFICATION,
+  MAIN_SCREEN,
+  LOGIN_SCREEN,
+  NonAuthNavAliases,
+} from 'models/navigation.model';
 import {FirebaseError} from 'models/firebase.model';
 
 import {Actions as commonActions} from 'store/common/common.actions';
@@ -74,7 +79,7 @@ const Actions = {
     }
 
     // Если пользователь авторизован, верифицирован, но находится в неавторизованной зоне
-    if (currentUser && currentUser.emailVerified && !AppNavAliases.includes(screen as string)) {
+    if (currentUser && currentUser.emailVerified && NonAuthNavAliases.includes(screen as string)) {
       navUtils.navigate(MAIN_SCREEN);
     }
     Actions.hideSplashScreen()(dispatch, getStore);

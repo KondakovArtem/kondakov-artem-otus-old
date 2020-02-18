@@ -10,9 +10,12 @@ export const toggleFollowDb = withAuth(async (uid, followUid: string) => {
   await firestore().runTransaction(async transaction => {
     const follows = ((await transaction.get(docRef)).data() || {}) as IDBFollows;
     const {ids = []} = follows;
+    let newIds = ids.includes(followUid) ? ids.filter(id => followUid !== id) : [...ids, followUid];
+    newIds = newIds.filter(id => id !== uid);
+
     return transaction.set(docRef, {
       ...follows,
-      ids: ids.includes(followUid) ? ids.filter(id => followUid !== id) : [...ids, followUid],
+      ids: newIds,
     } as IDBFollows);
   });
 });

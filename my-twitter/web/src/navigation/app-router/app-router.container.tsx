@@ -4,7 +4,7 @@ import {AnimatePresence} from 'framer-motion';
 import {Location} from 'history';
 import {motion} from 'framer-motion';
 
-import {ProtectedRoute} from 'containers/app-router/protected-route';
+import {ProtectedRoute} from 'navigation/app-router/protected-route';
 import {LoginPage, SignUpPage, EmailVerificationPage} from 'pages';
 import {MAIN_SCREEN, LOGIN_SCREEN, SIGN_UP_SCREEN, EMAIL_VERIFICATION} from 'models/navigation.model';
 import {navUtils} from 'services/navigation';

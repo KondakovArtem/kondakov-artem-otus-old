@@ -20,7 +20,7 @@ export const Title: FC<ITitleProps> = ({color, ...rest}) => (
   <StyledTitle style={{color: color && `${color}`}} {...rest} />
 );
 
-export const LogoComponent: FC<{style?: any; size?: number}> = props => <img {...props} src={'images/logo.png'} />;
+export const LogoComponent: FC<{style?: any; size?: number}> = props => <img {...props} src={'/images/logo.png'} />;
 
 export const Logo = styled(LogoComponent)`
   width: ${({size}) => (size ? size : 150)}px;
