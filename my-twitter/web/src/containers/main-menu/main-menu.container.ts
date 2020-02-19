@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {SelectParam} from 'antd/lib/menu';
 
-import {IConfiguredStore, ThunkAction} from 'store';
+import {IConfiguredStore} from 'store';
 import {navUtils} from 'services/navigation';
 import {
   MainMenuComponent,

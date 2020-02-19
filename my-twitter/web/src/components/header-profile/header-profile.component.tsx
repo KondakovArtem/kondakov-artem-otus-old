@@ -2,9 +2,16 @@ import React, {FC} from 'react';
 import {View} from 'react-native';
 import {motion} from 'framer-motion';
 import {Button} from 'antd';
+import {css, StyleSheet} from 'aphrodite/no-important';
 
 import {headerBackground, thumbnailVariants} from 'constants/theme';
 import {AvatarContainer} from 'containers/avatar/avatar.container';
+
+const styles = StyleSheet.create({
+  white: {
+    color: 'white',
+  },
+});
 
 export interface IProps {
   mode?: string;
@@ -42,12 +49,22 @@ export const HeaderProfileComponent: FC<IHandlers & IProps> = ({
         {canEdit && (
           <View style={{position: 'relative', top: -53, right: 20, zIndex: 1}}>
             {mode === 'edit' && (
-              <Button type="ghost" icon={'edit'} shape="round" style={{color: 'white'}} onClick={onEditUserProfile}>
+              <Button
+                type="ghost"
+                icon={'edit'}
+                shape="round"
+                className={css(styles.white)}
+                onClick={onEditUserProfile}>
                 {'Change Profile'}
               </Button>
             )}
             {mode === 'save' && (
-              <Button type="ghost" icon={'edit'} shape="round" style={{color: 'white'}} onClick={onSaveUserProfile}>
+              <Button
+                type="ghost"
+                icon={'edit'}
+                shape="round"
+                className={css(styles.white)}
+                onClick={onSaveUserProfile}>
                 {'Save Profile'}
               </Button>
             )}

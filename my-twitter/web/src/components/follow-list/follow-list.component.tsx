@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {StyleProp, ViewStyle, View, StyleSheet} from 'react-native';
 import {Text} from 'react-native';
 import {isEmpty} from 'lodash-es';
-import {List, Icon} from 'antd';
+import {List} from 'antd';
 
 import {IUserInfo} from 'models/user.model';
 // import {FollowButton} from 'containers/follow-button/follow-button.container';
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   dataContainer: {paddingLeft: 10},
 });
 
-const keyExtractor = ({id}: IUserInfo) => id;
 const renderItem = (item: IUserInfo) => {
   const {name, email, about, id} = item;
   return (
@@ -54,8 +53,6 @@ const renderItem = (item: IUserInfo) => {
 
 export const FollowListComponent: FC<IProps> = props => {
   const {list = []} = props;
-
   const renderItemWithHandlers = ({item}: {item: IUserInfo}) => renderItem(item);
-
   return <>{list.map(item => renderItemWithHandlers({item}))}</>;
 };

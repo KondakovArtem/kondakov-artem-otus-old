@@ -1,8 +1,6 @@
-import React, {FC, ReactElement, ReactNode} from 'react';
-import {StyleSheet, StyleProp, ViewStyle} from 'react-native';
+import React, {FC, ReactElement} from 'react';
+import {StyleProp, ViewStyle} from 'react-native';
 import {PageHeader} from 'antd';
-
-import {headerBackground, COMMON_DURATION} from 'constants/theme';
 
 export interface IProps {
   children?: string;
@@ -14,37 +12,6 @@ export interface IProps {
   leftContainerStyle?: StyleProp<ViewStyle>;
   rightContainerStyle?: StyleProp<ViewStyle>;
 }
-
-// const styles = StyleSheet.create({
-//   header: {
-//     paddingTop: 0,
-//     paddingHorizontal: 0,
-//     height: 50,
-//     backgroundColor: headerBackground,
-//   },
-//   logoImage: {
-//     height: 60,
-//     aspectRatio: 1,
-//   },
-//   leftContainerStyle: {
-//     flexShrink: 1,
-//   },
-//   centerContainerStyle: {
-//     alignItems: 'flex-start',
-//     flexGrow: 10,
-//   },
-//   rightContainerStyle: {
-//     flexShrink: 1,
-//   },
-
-//   centerText: {
-//     color: 'white',
-//     paddingLeft: 10,
-//     fontSize: 18,
-//   },
-// });
-
-// export const HeaderComponent: FC = ({children}) => <PageHeader title={children} />;
 
 const LeftComponent: FC = ({children}) => <>{children && children}</>;
 const CenterComponent: FC<{component?: ReactElement}> = ({children, component}) => (

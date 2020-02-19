@@ -16,7 +16,7 @@ export interface IHandlers {
 export const RootProviderComponent: FC<IProps & IHandlers> = ({inited, onInit, children}) => {
   useEffect(() => {
     onInit && onInit();
-  }, []);
+  }, [onInit]);
   return (
     <>
       {inited && children}

@@ -3,12 +3,13 @@ import {isEmpty} from 'lodash-es';
 import {List, Icon} from 'antd';
 import {StyleSheet, Text, View} from 'react-native';
 import {motion} from 'framer-motion';
+import styled from 'styled-components';
 
 import {IPost} from 'models/post.model';
 import {getDateAgo} from 'services/core/core.service';
 import {LikePost} from 'containers/like/like.container';
 import {IUserInfo} from 'models/user.model';
-import {DELETE_POST_DURATION, deletePostVariant} from 'constants/theme';
+import {deletePostVariant} from 'constants/theme';
 import {AvatarContainer} from 'containers/avatar/avatar.container';
 import {PostMenu} from 'containers/post-menu/post-menu.container';
 import {navUtils} from 'services/navigation';
@@ -36,6 +37,12 @@ const styles = StyleSheet.create({
   comment: {flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex'},
   retweet: {flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex'},
 });
+
+export const PostImage = styled.img`
+  width: 100%;
+  max-height: 270px;
+  object-fit: cover;
+`;
 
 export interface IProps {
   deleting: boolean;
@@ -72,13 +79,7 @@ const PostContent: FC<IContentProps> = ({children, author, currentUserId}) => {
         {!isEmpty(text) && <Text>{text}</Text>}
         {!isEmpty(image) && (
           <View style={styles.imageView}>
-            <img
-              src={image}
-              style={{
-                width: '100%',
-                maxHeight: '270px',
-                objectFit: 'cover',
-              }}></img>
+            <PostImage alt="" src={image} />
           </View>
         )}
       </View>

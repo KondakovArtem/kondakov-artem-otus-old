@@ -2,11 +2,13 @@ import React, {FC} from 'react';
 import {List, Button, Upload, message, Icon, Spin} from 'antd';
 import {StyleSheet, View} from 'react-native';
 import {motion, AnimatePresence} from 'framer-motion';
+import styled from 'styled-components';
 
 import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
 import {InputComponent} from 'components/input/input.component';
 import {isEmpty} from 'lodash-es';
 import {thumbnailVariants2} from 'constants/theme';
+import {PostImage} from 'components/post/post.component';
 
 const styles = StyleSheet.create({
   container: {padding: 10, alignItems: 'flex-start'},
@@ -30,6 +32,28 @@ const styles = StyleSheet.create({
   retweet: {flex: 1, alignItems: 'center', justifyContent: 'center', display: 'flex'},
   buttonContainer: {paddingVertical: 10, flexDirection: 'row', justifyContent: 'flex-end'},
 });
+
+const MotionPost = styled(motion.div)`
+  border-radius: 10px;
+  margin-top: 6px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+`;
+
+const CloseIcon = styled(Icon)`
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  padding: 7px;
+  background: black;
+  border-radius: 50%;
+  color: white;
+`;
+
+const PostButton = styled(Button)`
+  margin-left: 10px;
+`;
 
 export interface IProps {
   image: string;
@@ -98,56 +122,25 @@ export const NewPostComponent: FC<IProps & IHandlers> = ({
             </InputComponent>
             <AnimatePresence exitBeforeEnter>
               {!isEmpty(image) && (
-                <motion.div
-                  {...thumbnailVariants2}
-                  style={{
-                    borderRadius: 10,
-                    marginTop: '6px',
-                    display: 'flex',
-                    overflow: 'hidden',
-                    position: 'relative',
-                  }}>
-                  <img
-                    src={image}
-                    style={{
-                      width: '100%',
-                      maxHeight: '270px',
-                      objectFit: 'cover',
-                    }}
-                  />
-
-                  {!isFetching && (
-                    <Icon
-                      type="close"
-                      style={{
-                        position: 'absolute',
-                        right: '8px',
-                        top: '8px',
-                        padding: '7px',
-                        background: 'black',
-                        borderRadius: '50%',
-                        color: 'white',
-                      }}
-                      onClick={onRemovePhoto}
-                    />
-                  )}
-                </motion.div>
+                <MotionPost {...thumbnailVariants2}>
+                  <PostImage src={image} alt="post" />
+                  {!isFetching && <CloseIcon type="close" onClick={onRemovePhoto} />}
+                </MotionPost>
               )}
             </AnimatePresence>
             <View style={styles.buttonContainer}>
               <Upload disabled={isFetching} showUploadList={false} beforeUpload={beforeUpload}>
                 <Button disabled={isFetching} shape="circle" icon="picture" />
               </Upload>
-              <Button
+              <PostButton
                 disabled={isEmpty(text) && isEmpty(image)}
                 loading={isFetching}
-                style={{marginLeft: 10}}
                 type="primary"
                 icon="message"
                 shape="round"
                 onClick={onPostMessage}>
                 Post
-              </Button>
+              </PostButton>
             </View>
           </View>
         </View>

@@ -8,6 +8,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
+  min-height: 100%;
+  height: auto;
+}
+
+html {
+  height: 100%;
 }
 
 #root {
@@ -76,9 +82,31 @@ body {
   }
 }
 
+
+
+
+
 .ant-form-item {
   transition: .2s;
   &.no-error-message{
     margin-bottom: 0;
   }
 } 
+
+.auth-form{
+  .ant-form-explain{
+    color: white;
+  }
+  .ant-form-item {
+    &.no-error-message{
+      margin-bottom: 24px;
+    }
+  } 
+}
+.ant-btn.bottom-margin {
+  margin-bottom: 20px;
+}
+
+.white-text{
+  color: white;
+}

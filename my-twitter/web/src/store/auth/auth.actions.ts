@@ -1,4 +1,4 @@
-import {auth, User, UserCredential} from 'services/firebase';
+import {auth, User, UserCredential, AdditionalUserInfo} from 'services/firebase';
 import {extend, isEmpty} from 'lodash-es';
 
 import {ThunkAction} from 'store';
@@ -31,6 +31,8 @@ import {unregisterAllDbSubsribers} from 'services/database/subscription.service'
 import {delay} from 'services/core/core.service';
 import {navUtils} from 'services/navigation';
 import {onDbUserInfoChanged, createUserInfo} from 'services/database/userinfo.database';
+import {message} from 'antd';
+import {GoogleLoginResponse, GoogleLoginResponseOffline} from 'react-google-login';
 
 let authSubscription: () => void;
 let queryVerificationHandler: number | undefined;
@@ -159,43 +161,27 @@ const Actions = {
       return;
     }
   },
-  //   signInGoogle: (): ThunkAction => async dispatch => {
-  //     dispatch(setFetching(true));
-  //     GoogleSignin.configure({
-  //       webClientId: GOOGLE_WEB_CLIENT_ID,
-  //     });
-  //     try {
-  //       // debugger;
-  //       await GoogleSignin.hasPlayServices();
-  //       await GoogleSignin.signOut();
-  //       const data = await GoogleSignin.signIn();
-  //       // debugger;
-  //       const credential = auth.GoogleAuthProvider.credential(data.idToken);
-  //       // login with credential
-  //       const {additionalUserInfo} = await auth().signInWithCredential(credential);
-  //       const {profile} = additionalUserInfo as FirebaseAuthTypes.AdditionalUserInfo;
-  //       const {email, name, picture} = profile as any;
+  signInGoogle: (data: GoogleLoginResponse | GoogleLoginResponseOffline): ThunkAction => async dispatch => {
+    dispatch(setFetching(true));
 
-  //       await createUserInfo({
-  //         email,
-  //         name,
-  //         avatar: picture,
-  //       });
-  //       // this.setState({userInfo});
-  //     } catch (error) {
-  //       // debugger;
-  //       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //         // user cancelled the login flow
-  //       } else if (error.code === statusCodes.IN_PROGRESS) {
-  //         // operation (f.e. sign in) is in progress already
-  //       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //         // play services not available or outdated
-  //       } else {
-  //         // some other error happened
-  //       }
-  //     }
-  //     dispatch(setFetching(false));
-  //   },
+    try {
+      const {tokenId} = data as GoogleLoginResponse;
+
+      const credential = auth.GoogleAuthProvider.credential(tokenId);
+      const {additionalUserInfo} = await auth().signInWithCredential(credential);
+      const {profile} = additionalUserInfo as AdditionalUserInfo;
+      const {email, name, picture} = profile as any;
+
+      await createUserInfo({
+        email,
+        name,
+        avatar: picture,
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    dispatch(setFetching(false));
+  },
   signOut: () => async () => {
     navUtils.navigate(LOGIN_SCREEN);
     unregisterAllDbSubsribers();

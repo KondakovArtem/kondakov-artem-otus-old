@@ -1,10 +1,10 @@
-import React, {FC, useEffect, useRef, CSSProperties, useState, memo} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {createUseStyles} from 'react-jss';
 
 import Lottie from 'react-lottie';
 import {isEmpty} from 'lodash-es';
 
 import {usePrevious} from 'services/core/core.service';
-import {COMMON_DURATION} from 'constants/theme';
 import animationData from 'assets/animation/heart.json';
 import {Badge} from 'antd';
 
@@ -17,9 +17,7 @@ export interface IHandlers {
   onPress?(): void;
 }
 
-const styles: {
-  [key: string]: CSSProperties;
-} = {
+const useStyles = createUseStyles({
   constainer: {
     flex: 1,
     flexDirection: 'row',
@@ -44,13 +42,24 @@ const styles: {
     color: 'black',
     marginLeft: 26,
   },
-};
+  badge: {
+    '&>sup': {
+      backgroundColor: 'transparent',
+      color: '#222',
+      boxShadow: 'none',
+    },
+    marginLeft: 0,
+    left: 'calc(50% + 10px)',
+    top: '-1px',
+  },
+});
 
 export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid, onPress}) => {
   const lottieRef = useRef<Lottie>(null);
   const inited = useRef(false);
   const preLikes = usePrevious(likes);
   const [isAnimStop, setAnimStop] = useState(false);
+  const classes = useStyles();
 
   function isLike() {
     return likes && likes.includes(userUid);
@@ -79,6 +88,7 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
         isLike() ? stopFrame(anim, 115) : stopFrame(anim, 0);
       }
     }
+    // eslint-disable-next-line
   }, [likes]);
 
   useEffect(() => {
@@ -86,7 +96,7 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
   }, []);
 
   return (
-    <div style={styles.constainer} onClick={() => onPress && onPress()}>
+    <div className={classes.constainer} onClick={() => onPress && onPress()}>
       <Lottie
         ref={ref => ((lottieRef as any).current = ref)}
         isPaused={isAnimStop}
@@ -101,20 +111,8 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
         height={30}
         width={110}
       />
-      <div style={styles.textWrapper}>
-        {!isEmpty(likes) && (
-          <Badge
-            count={likes.length}
-            style={{
-              backgroundColor: 'transparent',
-              color: '#222',
-              marginLeft: 0,
-              left: 'calc(50% + 10px)',
-              top: '-1px',
-              boxShadow: 'none',
-            }}
-          />
-        )}
+      <div className={classes.textWrapper}>
+        {!isEmpty(likes) && <Badge count={likes.length} className={classes.badge} />}
       </div>
     </div>
   );

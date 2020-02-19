@@ -1,16 +1,22 @@
 import React, {FC} from 'react';
 import {Avatar, Badge, Icon} from 'antd';
+import {StyleSheet, css} from 'aphrodite/no-important';
+
+const styles = StyleSheet.create({
+  icon: {
+    color: 'white',
+    background: 'grey',
+    borderRadius: '50%',
+    padding: 4,
+    bottom: 0,
+    top: 'inherit !important',
+  },
+});
 
 export interface IProps {
   label?: string;
   imageUri?: string;
-  style?: any;
-  containerStyle?: any;
-  icon?: string;
-  path?: string;
   size?: number;
-  color?: string;
-  uid?: string;
   showEditButton?: boolean;
 }
 
@@ -23,15 +29,7 @@ const WithEditButton: FC<{showEditButton?: boolean}> = ({children, showEditButto
   return !showEditButton ? (
     <>{children}</>
   ) : (
-    <Badge
-      count={
-        <Icon
-          type="edit"
-          style={{color: 'white', background: 'grey', borderRadius: '50%', padding: 4, bottom: 0, top: 'inherit'}}
-        />
-      }>
-      {children}
-    </Badge>
+    <Badge count={<Icon type="edit" className={css(styles.icon)} />}>{children}</Badge>
   );
 };
 

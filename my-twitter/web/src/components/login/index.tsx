@@ -20,7 +20,9 @@ export const Title: FC<ITitleProps> = ({color, ...rest}) => (
   <StyledTitle style={{color: color && `${color}`}} {...rest} />
 );
 
-export const LogoComponent: FC<{style?: any; size?: number}> = props => <img {...props} src={'/images/logo.png'} />;
+export const LogoComponent: FC<{style?: any; size?: number; className?: string}> = props => (
+  <img {...props} alt="logo" src={'/images/logo.png'} />
+);
 
 export const Logo = styled(LogoComponent)`
   width: ${({size}) => (size ? size : 150)}px;
@@ -62,8 +64,9 @@ const MotionContainer = styled(motion.div)`
   background: #ffffff17;
   border-radius: 10px;
 `;
+
 export const ContainerComponent: FC<{style?: any}> = ({children, style}) => (
-  <MotionContainer {...thumbnailVariants} style={style}>
+  <MotionContainer className="auth-form" {...thumbnailVariants} style={style}>
     {children}
   </MotionContainer>
 );

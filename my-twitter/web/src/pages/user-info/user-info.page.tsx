@@ -33,7 +33,6 @@ export const UserInfoPage = withRouter(
       signOut: authActions.signOut,
       takeAvatar: editUserInfoActions.showAvatarEditor,
       onEditUserProfile: editUserInfoActions.editUserProfile,
-      init: editUserInfoActions.getFollowers,
     },
   )(UserProfilePageComponent),
 );

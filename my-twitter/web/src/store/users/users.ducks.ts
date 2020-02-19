@@ -68,7 +68,7 @@ export default createReducer<IStore, Action>(initialState)
   })
   .handleAction(mutateFollowers, (state, {payload}) => {
     const {followers = []} = state;
-    payload.map(({type, doc}) => {
+    payload.forEach(({type, doc}) => {
       if (type === 'added') {
         followers.push(doc.id);
       }

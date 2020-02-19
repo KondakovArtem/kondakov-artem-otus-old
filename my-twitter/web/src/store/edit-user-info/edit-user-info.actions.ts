@@ -1,5 +1,3 @@
-import {storage} from 'services/firebase';
-
 import {ThunkAction} from 'store';
 import {IModifiableUserInfo} from 'models/user.model';
 import {navUtils} from 'services/navigation';
@@ -29,7 +27,6 @@ export const Actions = {
     })(...redux);
     navUtils.navigate(USER_PROFILE_EDIT_SCREEN);
   },
-  getFollowers: (): ThunkAction => async () => {},
   saveUserProfile: (): ThunkAction => async (dispatch, getStore) => {
     const {editUserInfo} = getStore();
     const {about, webSite, name, location, birthDate} = editUserInfo;

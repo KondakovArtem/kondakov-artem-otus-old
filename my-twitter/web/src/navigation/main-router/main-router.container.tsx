@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Switch, Route, withRouter} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import {AnimatePresence} from 'framer-motion';
 import {motion} from 'framer-motion';
 
@@ -11,7 +11,7 @@ import {
   FOLLOW_SCREEN,
   USER_INFO_SCREEN,
 } from 'models/navigation.model';
-import {MainPage, ExplorePage, UserProfilePage, UserProfileEditPage} from 'pages';
+import {MainPage, ExplorePage, UserProfilePage, UserProfileEditPage, Page404} from 'pages';
 import {FollowsPage} from 'pages/follows/follows.page';
 import {UserInfoPage} from 'pages/user-info/user-info.page';
 
@@ -47,7 +47,7 @@ export const MainRouter: FC = () => (
           <UserInfoPage />
         </Route>
         <Route>
-          <div>404</div>
+          <Page404 />
         </Route>
       </Switch>
     </motion.div>

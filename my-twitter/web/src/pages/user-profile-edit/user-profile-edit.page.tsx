@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {View, ScrollView} from 'react-native';
-import {motion} from 'framer-motion';
+import {View} from 'react-native';
 
 import {IConfiguredStore} from 'store';
 import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.actions';
@@ -9,6 +8,7 @@ import {HeaderProfileComponent} from 'components/header-profile/header-profile.c
 import {InputComponent} from 'components/input/input.component';
 import {thumbnailVariants} from 'constants/theme';
 import {DatePickerComponent} from 'components/date-picker/date-picker.component';
+import {MotionWrapperComponent} from 'components/motion-wrapper/motion-wrapper.component';
 
 interface IProps {
   name: string;
@@ -44,35 +44,33 @@ export const UserProfileEditPageComponent: FC<IProps & IHandlers> = ({
   userUid,
 }) => {
   return (
-    <motion.div {...thumbnailVariants} style={{display: 'flex', flexDirection: 'column', minHeight: '100%'}}>
+    <MotionWrapperComponent {...thumbnailVariants}>
       <HeaderProfileComponent
         mode={'save'}
         onSaveUserProfile={onSaveUserProfile}
         takeAvatar={takeAvatar}
         userUid={userUid}
       />
-      <ScrollView>
-        <View>
-          <View style={{paddingHorizontal: 20}}>
-            <InputComponent onChangeText={setName} label={'Name'}>
-              {name}
-            </InputComponent>
-            <InputComponent onChangeText={setAbout} label={'About'} multiline={true} numberOfLines={3}>
-              {about}
-            </InputComponent>
-            <InputComponent onChangeText={setLocation} label={'Location'}>
-              {location}
-            </InputComponent>
-            <InputComponent onChangeText={setWebSite} label={'Web-site'}>
-              {webSite}
-            </InputComponent>
-            <DatePickerComponent onChangeValue={setBirthDate} label={'Birth date'}>
-              {birthDate}
-            </DatePickerComponent>
-          </View>
+      <View>
+        <View style={{paddingHorizontal: 20}}>
+          <InputComponent onChangeText={setName} label={'Name'}>
+            {name}
+          </InputComponent>
+          <InputComponent onChangeText={setAbout} label={'About'} multiline={true} numberOfLines={3}>
+            {about}
+          </InputComponent>
+          <InputComponent onChangeText={setLocation} label={'Location'}>
+            {location}
+          </InputComponent>
+          <InputComponent onChangeText={setWebSite} label={'Web-site'}>
+            {webSite}
+          </InputComponent>
+          <DatePickerComponent onChangeValue={setBirthDate} label={'Birth date'}>
+            {birthDate}
+          </DatePickerComponent>
         </View>
-      </ScrollView>
-    </motion.div>
+      </View>
+    </MotionWrapperComponent>
   );
 };
 

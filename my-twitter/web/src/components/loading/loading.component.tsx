@@ -13,10 +13,15 @@ const Container = styled.div`
   justify-content: center;
 `;
 
+const SpinSize = styled(Spin)`
+  font-size: 56;
+  color: ${statusBackground};
+`;
+
 export const LoadingComponent = () => {
   return (
     <Container>
-      <Spin indicator={<Icon type="loading" style={{fontSize: 56, color: statusBackground}} spin />} />
+      <SpinSize indicator={<Icon type="loading" spin />} />
     </Container>
   );
 };

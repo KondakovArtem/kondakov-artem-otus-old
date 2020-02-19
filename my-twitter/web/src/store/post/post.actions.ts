@@ -40,6 +40,7 @@ export const Actions = {
     onDbUserPostChanged(userPostCount, (mutationList: IPostMutation[]) => {
       dispatch(mutateUserPosts(mutationList));
     });
+    Actions.updateFollowPost()(dispatch, getStore);
   },
   updateFollowPost: (): ThunkAction => async (dispatch, getStore) => {
     const {users, post, authData} = getStore();
@@ -53,9 +54,6 @@ export const Actions = {
         dispatch(mutateFollowPosts(mutationList));
       });
     }
-  },
-  fetchMoreUserPosts: () => async () => {
-    // dispatch(appendUserPosts(await getUserPosts()));
   },
   createNewPost: (data: Partial<IPost>) => async () => {
     await createNewPost(data);

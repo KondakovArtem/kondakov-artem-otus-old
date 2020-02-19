@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {motion} from 'framer-motion';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
@@ -11,6 +10,7 @@ import {PostListComponent} from 'components/post-list/post-list.component';
 import {IPost} from 'models/post.model';
 import {thumbnailVariants} from 'constants/theme';
 import {NewPostContainer} from 'containers/new-post/new-post.container';
+import {MotionWrapperComponent} from 'components/motion-wrapper/motion-wrapper.component';
 
 interface IProps {
   userPosts: IPost[];
@@ -20,12 +20,12 @@ interface IHandlers {
   toUserProfile(): void;
 }
 
-export const MainPageComponent: FC<IProps & IHandlers> = ({toUserProfile, userPosts}) => (
-  <motion.div {...thumbnailVariants} style={{display: 'flex', flexDirection: 'column', minHeight: '100%'}}>
+export const MainPageComponent: FC<IProps & IHandlers> = ({userPosts}) => (
+  <MotionWrapperComponent {...thumbnailVariants}>
     <HeaderComponent>Main</HeaderComponent>
     <NewPostContainer />
     <PostListComponent style={{flex: 1}} list={userPosts} emptyText={'Post something'} />
-  </motion.div>
+  </MotionWrapperComponent>
 );
 
 export const MainPage = connect<IProps, IHandlers, {}, IConfiguredStore>(

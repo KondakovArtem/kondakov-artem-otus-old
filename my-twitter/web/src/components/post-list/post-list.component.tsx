@@ -1,8 +1,11 @@
 import React, {FC} from 'react';
-import VirtualScroller from 'virtual-scroller/react';
+// import VirtualScroller from 'virtual-scroller/react';
 
 import {IPost} from 'models/post.model';
 import {Post} from 'containers/post/post.container';
+import styled from 'styled-components';
+import {Empty} from 'antd';
+import {isEmpty} from 'lodash-es';
 
 export interface IProps {
   list?: IPost[];
@@ -14,21 +17,30 @@ export interface IHandlers {
   onSelectItem?(item: IPost): void;
 }
 
-const renderItem = (item: IPost, {onSelectItem}: IHandlers) => {
+const renderItem = (item: IPost) => {
   return <Post key={item.id}>{item}</Post>;
 };
 
-const EmptyComponent: FC = ({children}) => (
-  <div style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    <span style={{color: '#e0e0e0', fontSize: 40}}>{children}</span>
-  </div>
+const EmptyContainer = styled.div`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EmptyComponent: FC = () => (
+  <EmptyContainer>
+    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+  </EmptyContainer>
 );
 
-export const PostListComponent: FC<IProps & IHandlers> = ({list = [], onSelectItem, emptyText, style}) => {
-  const renderItemWithHandlers = ({children}: {children: IPost}) => renderItem(children, {onSelectItem});
+export const PostListComponent: FC<IProps & IHandlers> = ({list = [], emptyText}) => {
+  const renderItemWithHandlers = ({children}: {children: IPost}) => renderItem(children);
 
   return (
-    <>{list.map(item => renderItemWithHandlers({children: item}))}</>
+    <>
+      {!isEmpty(list) && <>{list.map(item => renderItemWithHandlers({children: item}))}</>}
+      {(!list || !list.length) && <EmptyComponent>{emptyText}</EmptyComponent>}
+    </>
     // TODO при обновлении данных (например, like поставить) через раз происходит ререндер всех элементов, непонятно почему
     // из-за этого слетает scrollTop, если останется время - разобраться
     // <VirtualScroller

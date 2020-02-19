@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
 import {Button, Typography} from 'antd';
+import styled from 'styled-components';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
@@ -14,31 +15,41 @@ interface IHandlers {
   onSendVerification(): void;
 }
 
+const LogoWithBg = styled(Logo)`
+  background: #df441a;
+  border-radius: 50%;
+  box-shadow: 1px 2px 5px 2px #00000040;
+`;
+
+const ConfirmationTitle = styled(Typography.Paragraph)`
+  font-size: 20px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const EmailVerificationPageComponent: FC<IProps & IHandlers> = ({onCancel, isFetching, onSendVerification}) => {
   return (
     <BackgroundComponent>
       <ContainerComponent style={{background: 'white'}}>
-        <Logo
-          style={{
-            background: '#df441a',
-            borderRadius: '50%',
-            boxShadow: '1px 2px 5px 2px #00000040',
-          }}
-        />
+        <LogoWithBg />
         <Title>Email Verification</Title>
 
-        <Typography.Paragraph style={{fontSize: '20px'}}>
+        <ConfirmationTitle>
           Please confirm your address by clicking on the link from the letter that was sent to you
-        </Typography.Paragraph>
+        </ConfirmationTitle>
 
-        <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+        <ButtonWrapper>
           <Button loading={isFetching} size="large" type="ghost" onClick={onSendVerification}>
             Resend
           </Button>
           <Button onClick={onCancel} size="large">
             Cancel
           </Button>
-        </div>
+        </ButtonWrapper>
       </ContainerComponent>
     </BackgroundComponent>
   );

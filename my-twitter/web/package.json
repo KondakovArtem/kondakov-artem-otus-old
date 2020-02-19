@@ -2,14 +2,23 @@
   "name": "my-twitter",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
+  },
   "dependencies": {
     "antd": "^3.26.9",
+    "aphrodite": "^2.4.0",
     "date-fns": "^2.9.0",
     "firebase": "^7.8.1",
     "framer-motion": "^1.8.4",
     "fuse.js": "^3.4.6",
+    "jss": "^10.0.4",
+    "jss-preset-default": "^10.0.4",
     "localforage": "^1.7.3",
     "lodash-es": "^4.17.15",
+    "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-avatar-edit": "^0.8.3",
     "react-dom": "^16.12.0",
@@ -27,8 +36,8 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
     "typesafe-actions": "^5.1.0",
-    "moment": "^2.24.0",
-    "virtual-scroller": "^1.0.26"
+    "virtual-scroller": "^1.0.26",
+    "react-jss": "^10.0.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -61,11 +70,6 @@
     "jest-ts-auto-mock": "^1.0.11",
     "ts-auto-mock": "^1.5.6",
     "jest-canvas-mock": "^2.2.0"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test"
   },
   "eslintConfig": {
     "extends": "react-app"

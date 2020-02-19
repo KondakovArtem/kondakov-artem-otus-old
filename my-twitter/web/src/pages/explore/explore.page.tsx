@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-import {motion} from 'framer-motion';
 
 import {IConfiguredStore} from 'store';
 import {HeaderComponent} from 'components/header/header.component';
@@ -10,6 +9,7 @@ import {IPost} from 'models/post.model';
 import {navUtils} from 'services/navigation';
 import {thumbnailVariants} from 'constants/theme';
 import {NewPostContainer} from 'containers/new-post/new-post.container';
+import {MotionWrapperComponent} from 'components/motion-wrapper/motion-wrapper.component';
 
 interface IProps {
   followPosts: IPost[];
@@ -18,20 +18,13 @@ interface IHandlers {
   toUserProfile: () => void;
 }
 
-export const ExplorePageComponent: FC<IProps & IHandlers> = ({followPosts, toUserProfile}) => {
+export const ExplorePageComponent: FC<IProps & IHandlers> = ({followPosts}) => {
   return (
-    <motion.div {...thumbnailVariants} style={{display: 'flex', flexDirection: 'column', minHeight: '100%'}}>
-      <HeaderComponent
-      // leftContainerStyle={commonStyles.headerLogoContainer}
-      //rightComponent={
-      // <HeaderActionComponent name="account-multiple-plus" onPress={() => navUtils.navigate(FOLLOW_SCREEN)} />
-      //}
-      >
-        Explore
-      </HeaderComponent>
+    <MotionWrapperComponent {...thumbnailVariants}>
+      <HeaderComponent>Explore</HeaderComponent>
       <NewPostContainer />
       <PostListComponent list={followPosts} />
-    </motion.div>
+    </MotionWrapperComponent>
   );
 };
 

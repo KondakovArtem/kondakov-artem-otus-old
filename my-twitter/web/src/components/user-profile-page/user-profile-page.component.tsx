@@ -48,7 +48,7 @@ export interface IHandlers {
   signOut(): void;
   takeAvatar?(): void;
   onEditUserProfile?(): void;
-  init(): void;
+  init?(): void;
 }
 
 export const UserProfilePageComponent: FC<IProps & IHandlers> = ({
@@ -70,7 +70,7 @@ export const UserProfilePageComponent: FC<IProps & IHandlers> = ({
 }) => {
   useEffect(() => {
     init && init();
-  }, []);
+  }, [init]);
   return (
     <motion.div {...thumbnailVariants} style={{display: 'flex', flexDirection: 'column', minHeight: '100%'}}>
       <HeaderProfileComponent
@@ -86,12 +86,14 @@ export const UserProfilePageComponent: FC<IProps & IHandlers> = ({
         {!isEmpty(location) && <InfoRow icon={{component: geo}}>{location}</InfoRow>}
         {!isEmpty(webSite) && <InfoRow icon={{component: web}}>{webSite}</InfoRow>}
         {birthDate && <InfoRow icon={{type: 'calendar'}}>{`Birth day ${format(birthDate, 'dd.MM.yyyy')}`}</InfoRow>}
-        {createdAt && (
-          <InfoRow icon={{name: 'calendar-range'}}>{`Registration: ${format(createdAt, 'MMMM yyyy')}`}</InfoRow>
+        {createdAt && <InfoRow icon={{type: 'calendar'}}>{`Registration: ${format(createdAt, 'MMMM yyyy')}`}</InfoRow>}
+
+        {(!!followsCount || !!followersCount) && (
+          <Text>
+            <Text>{!!followsCount && `${followsCount} Follow`}</Text>{' '}
+            <Text>{!!followersCount && `${followersCount} Followers`}</Text>
+          </Text>
         )}
-        <Text>
-          {followsCount} Follow {followersCount} Followers
-        </Text>
 
         {canEdit && (
           <div>

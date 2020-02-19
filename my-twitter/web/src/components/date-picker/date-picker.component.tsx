@@ -24,15 +24,12 @@ export interface IHandlers {
 
 export const DatePickerComponent: FC<IProps & IHandlers> = ({
   children,
-  disabled,
   placeholder,
   onChangeValue,
   errorMessage = '',
   label,
 }) => {
   const dateFormat = 'DD.MM.YYYY';
-  //const valueNumber = typeof children === 'string' || !children ? new Date() : children;
-  //const forematterValue = children != null ? format(valueNumber, 'dd.MM.yyyy') : '';
 
   return (
     <Form.Item
@@ -42,6 +39,7 @@ export const DatePickerComponent: FC<IProps & IHandlers> = ({
       help={errorMessage}>
       <DatePicker
         size="large"
+        placeholder={placeholder}
         defaultValue={children && moment(children, dateFormat)}
         format={dateFormat}
         value={children && moment(children, dateFormat)}

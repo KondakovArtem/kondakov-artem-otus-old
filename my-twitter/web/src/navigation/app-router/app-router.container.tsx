@@ -9,12 +9,21 @@ import {LoginPage, SignUpPage, EmailVerificationPage} from 'pages';
 import {MAIN_SCREEN, LOGIN_SCREEN, SIGN_UP_SCREEN, EMAIL_VERIFICATION} from 'models/navigation.model';
 import {navUtils} from 'services/navigation';
 import {AppWrapper} from 'containers/app-wrapper/app-wrapper';
+import styled from 'styled-components';
+
+const Motion = styled(motion.div)`
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f0f2f5;
+`;
 
 export const AppRouter: FC<{location: Location}> = ({location}) => {
   navUtils.onNavigationChange(location);
   return (
     <AnimatePresence exitBeforeEnter initial={false}>
-      <motion.div exit={{opacity: 0}} style={{width: '100%', minHeight: '100%', display: 'flex'}}>
+      <Motion exit={{opacity: 0}}>
         <Switch>
           <Route exact={true} path={LOGIN_SCREEN}>
             <LoginPage />
@@ -29,7 +38,7 @@ export const AppRouter: FC<{location: Location}> = ({location}) => {
             <AppWrapper />
           </ProtectedRoute>
         </Switch>
-      </motion.div>
+      </Motion>
     </AnimatePresence>
   );
 };

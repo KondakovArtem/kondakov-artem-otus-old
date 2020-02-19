@@ -17,6 +17,7 @@ firebase.initializeApp({
 export type User = firebase.User;
 export type UserCredential = firebase.auth.UserCredential;
 export type QuerySnapshot = firebase.firestore.QuerySnapshot;
+export type AdditionalUserInfo = firebase.auth.AdditionalUserInfo;
 
 export const Timestamp = firebase.firestore.Timestamp;
 export {auth, firestore, storage} from 'firebase';

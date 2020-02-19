@@ -1,12 +1,10 @@
 import React, {FC} from 'react';
-import {Button, Typography} from 'antd';
-import {GoogleLogin} from 'react-google-login';
+import {Button, Typography, message} from 'antd';
+import {GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline} from 'react-google-login';
 import {connect} from 'react-redux';
-import {AnimatePresence} from 'framer-motion';
 
 import {InputComponent} from 'components/input/input.component';
 import {GOOGLE_WEB_CLIENT_ID} from 'constants/auth';
-import {signInWithGoogle} from 'services/auth/auth.service';
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
 import {BackgroundComponent, ContainerComponent, Logo, Title, FullWidthButtonComponent} from 'components/login';
@@ -27,6 +25,7 @@ export interface IHandlers {
   toggleShowPassword(value: boolean): void;
   toSignUp(): void;
   signIn(): void;
+  signInGoogle(data: GoogleLoginResponse | GoogleLoginResponseOffline): void;
 }
 
 export const LoginPageComponent: FC<IProps & IHandlers> = ({
@@ -36,6 +35,7 @@ export const LoginPageComponent: FC<IProps & IHandlers> = ({
   password,
   showPassword,
   toggleShowPassword,
+  signInGoogle,
   toSignUp,
   isFetching,
   signIn,
@@ -68,7 +68,12 @@ export const LoginPageComponent: FC<IProps & IHandlers> = ({
           {password}
         </InputComponent>
 
-        <FullWidthButtonComponent disabled={isFetching} loading={isFetching} icon="login" onClick={signIn}>
+        <FullWidthButtonComponent
+          className="bottom-margin"
+          disabled={isFetching}
+          loading={isFetching}
+          icon="login"
+          onClick={signIn}>
           Sign In
         </FullWidthButtonComponent>
 
@@ -83,16 +88,14 @@ export const LoginPageComponent: FC<IProps & IHandlers> = ({
               Sign in with Google
             </FullWidthButtonComponent>
           )}
-          onSuccess={data => {
-            signInWithGoogle(data);
-          }}
+          onSuccess={signInGoogle}
           onFailure={error => {
-            // debugger;
+            message.error(error.message);
           }}>
           <span> Login with Google</span>
         </GoogleLogin>
 
-        <Typography.Text>
+        <Typography.Text className="white-text">
           {`Don't have an account?`}
           <Button type="link" ghost onClick={toSignUp}>
             Sign up
@@ -115,7 +118,7 @@ export const LoginPage = connect<IProps, IHandlers, {}, IConfiguredStore>(
     setPassword: authActions.setPassword,
     toggleShowPassword: authActions.toggleShowPassword,
     signIn: authActions.signIn,
-    // signInGoogle: authActions.signInGoogle,
+    signInGoogle: authActions.signInGoogle,
     toSignUp: authActions.toSignUp,
   },
 )(LoginPageComponent);

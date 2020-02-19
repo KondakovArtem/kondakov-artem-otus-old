@@ -4,12 +4,16 @@
     "node": true,
     "jest": true
   },
-  "plugins": ["prettier", "react", "standard", "@typescript-eslint"],
+  "plugins": [
+    "prettier",
+    "react",
+    "standard",
+    "@typescript-eslint"
+  ],
   "extends": [
     "plugin:react/recommended",
     "eslint:recommended",
     "plugin:prettier/recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
@@ -27,7 +31,8 @@
     "no-prototype-builtins": 0,
     "prettier/prettier": "error",
     "react/prop-types": 0,
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "no-template-curly-in-string": 0
   },
   "settings": {
     "react": {

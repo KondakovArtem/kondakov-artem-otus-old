@@ -1,7 +1,15 @@
 import React, {FC, ChangeEvent} from 'react';
 import {Input, Icon, Tooltip, Form} from 'antd';
+import {createUseStyles} from 'react-jss';
 
 const {TextArea} = Input;
+
+const useStyles = createUseStyles({
+  tooltip: {marginLeft: '6px', color: 'rgba(0,0,0,.45)'},
+  error: {marginLeft: '6px', color: 'red'},
+  showPassword: {marginLeft: '6px', color: 'rgba(0,0,0,.45)'},
+});
+
 export interface IProps {
   size?: 'small' | 'default' | 'large';
   placeholder?: string;
@@ -46,6 +54,8 @@ export const InputComponent: FC<IProps & IHandlers> = ({
     toggleShowPassword && toggleShowPassword(!showPassword);
   };
 
+  const classes = useStyles();
+
   return (
     <Form.Item
       className={!errorMessage ? 'no-error-message' : ''}
@@ -74,19 +84,19 @@ export const InputComponent: FC<IProps & IHandlers> = ({
             <>
               {hint && (
                 <Tooltip title={hint}>
-                  <Icon type="info-circle" style={{marginLeft: '6px', color: 'rgba(0,0,0,.45)'}} />
+                  <Icon type="info-circle" className={classes.tooltip} />
                 </Tooltip>
               )}
               {errorMessage && (
                 <Tooltip title={errorMessage}>
-                  <Icon type="close-circle" style={{marginLeft: '6px', color: 'red'}} />
+                  <Icon type="close-circle" className={classes.error} />
                 </Tooltip>
               )}
               {password && (
                 <Icon
                   type={showPassword ? 'eye' : 'eye-invisible'}
                   onClick={showPasswordClick}
-                  style={{marginLeft: '6px', color: 'rgba(0,0,0,.45)'}}
+                  className={classes.showPassword}
                 />
               )}
             </>

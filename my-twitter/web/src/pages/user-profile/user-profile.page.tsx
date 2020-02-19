@@ -27,6 +27,5 @@ export const UserProfilePage = connect<IComponentProps, IComponentHandlers, {}, 
     signOut: authActions.signOut,
     takeAvatar: editUserInfoActions.showAvatarEditor,
     onEditUserProfile: editUserInfoActions.editUserProfile,
-    init: editUserInfoActions.getFollowers,
   },
 )(UserProfilePageComponent);

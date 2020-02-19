@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import {template} from 'lodash-es';
 
 export type TMutationType = 'added' | 'removed' | 'modified';
