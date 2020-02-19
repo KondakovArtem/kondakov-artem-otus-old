@@ -3,6 +3,7 @@ import {isArray, isObject, each} from 'lodash-es';
 import firestore from '@react-native-firebase/firestore';
 import {differenceInSeconds} from 'date-fns';
 import {round} from 'lodash-es';
+import {Platform} from 'react-native';
 
 export const usePrevious = <T extends {}>(value: T) => {
   const ref = useRef<T>();
@@ -16,6 +17,14 @@ export const delay = async (count: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, count);
   });
+};
+
+// Simple utility to get correct testId
+export const setTestId = (id?: string, pfx: string = '') => {
+  if (!id) {
+    return {};
+  }
+  return Platform.OS === 'android' ? {accessibilityLabel: id + pfx} : {testID: id + pfx};
 };
 
 export const timeStampToDate = (timeStamp: any): Date | undefined => {

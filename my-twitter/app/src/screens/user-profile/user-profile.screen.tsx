@@ -10,7 +10,7 @@ import {isEmpty} from 'lodash-es';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
-import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.ducks';
+import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.actions';
 import {HeaderProfileComponent} from 'components/header-profile/header-profile.component';
 import {IUserInfo} from 'models/user.model';
 

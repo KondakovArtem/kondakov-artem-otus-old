@@ -20,3 +20,10 @@ NativeModules.RNGoogleSignin = {
   configure: jest.fn(),
   currentUserAsync: jest.fn(),
 };
+
+// Mock the ImagePickerManager native module to allow us to unit test the JavaScript code
+NativeModules.ImagePickerManager = {
+  showImagePicker: jest.fn(),
+  launchCamera: jest.fn(),
+  launchImageLibrary: jest.fn(),
+};

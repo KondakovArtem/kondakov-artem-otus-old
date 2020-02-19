@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import {TouchableOpacity, View} from 'react-native';
 
 import {inputStyleProps} from 'constants/theme';
-import {usePrevious} from 'services/core/core.service';
+import {usePrevious, setTestId} from 'services/core/core.service';
 
 export interface IProps {
   children: string;
@@ -12,6 +12,7 @@ export interface IProps {
   disabled: boolean;
   placeholder: string;
   errorMessage?: string;
+  id?: string;
 }
 
 export interface IHandlers {
@@ -32,6 +33,7 @@ export const InputPaswordComponent: FC<IProps & IHandlers> = props => {
     errorMessage = '',
     onEndEditing,
     onSubmitEditing,
+    id,
   } = props;
   const animRef = createRef<any>();
   const prevErrorMessage = usePrevious(errorMessage);
@@ -61,6 +63,7 @@ export const InputPaswordComponent: FC<IProps & IHandlers> = props => {
         onChangeText={onChangeText}
         onEndEditing={onEndEditing}
         onSubmitEditing={onSubmitEditing}
+        {...setTestId(id)}
       />
       <View style={inputStyleProps.errorContainer}>
         {errorMessage !== '' && (
@@ -68,7 +71,8 @@ export const InputPaswordComponent: FC<IProps & IHandlers> = props => {
             animation={'fadeInDown'}
             duration={200}
             useNativeDriver={true}
-            style={inputStyleProps.errorStyle}>
+            style={inputStyleProps.errorStyle}
+            {...setTestId(id, '_error')}>
             {errorMessage}
           </Animatable.Text>
         )}

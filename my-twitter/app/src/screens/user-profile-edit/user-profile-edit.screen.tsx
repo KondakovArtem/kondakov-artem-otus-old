@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
-import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.ducks';
+import {Actions as editUserInfoActions} from 'store/edit-user-info/edit-user-info.actions';
 import {HeaderProfileComponent} from 'components/header-profile/header-profile.component';
 import {InputComponent} from 'components/input/input.component';
 import {COMMON_DURATION, commonStyles} from 'constants/theme';

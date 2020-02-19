@@ -14,6 +14,7 @@ import {InputComponent} from 'components/input/input.component';
 import {statusBackground, commonStyles, COMMON_DURATION} from 'constants/theme';
 import {LoginHeaderComponent} from 'components/login-header/login-header.component';
 import {FullWidthButtonComponent} from 'components/full-width-button/full-width-button.component';
+import {setTestId} from 'services/core/core.service';
 
 interface IProps {
   showPassword: boolean;
@@ -81,6 +82,7 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = ({
           duration={COMMON_DURATION}>
           <View style={commonStyles.inputContainer}>
             <InputComponent
+              id="email"
               disabled={isFetching}
               leftIcon={{name: 'email-outline', type: 'material-community'}}
               placeholder={'Email'}
@@ -91,6 +93,7 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = ({
             </InputComponent>
 
             <InputPaswordComponent
+              id="password"
               disabled={isFetching}
               onChangeText={setPassword}
               placeholder={'Password'}
@@ -102,6 +105,7 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = ({
             </InputPaswordComponent>
 
             <SocialIcon
+              {...setTestId('signInWithGoogleButton')}
               disabled={isFetching}
               style={styles.googleButton}
               title="Sign in with Google"
@@ -110,13 +114,23 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = ({
               onPress={signInGoogle}
             />
           </View>
-          <FullWidthButtonComponent loading={isFetching} disabled={checkButtonDisabled()} onPress={signIn}>
+          <FullWidthButtonComponent
+            id="signInButton"
+            loading={isFetching}
+            disabled={checkButtonDisabled()}
+            onPress={signIn}>
             Login
           </FullWidthButtonComponent>
           <View style={styles.footer}>
             <Text>Don't have an account? </Text>
             <TouchableOpacity onPress={toSignUp}>
-              <Text style={styles.signUpLink}>Sign Up</Text>
+              <Text
+                {...setTestId('signUpLink')}
+                accessibilityLabel="signUpLink"
+                nativeID="signUpLink"
+                style={styles.signUpLink}>
+                Sign Up
+              </Text>
             </TouchableOpacity>
           </View>
         </Animatable.View>

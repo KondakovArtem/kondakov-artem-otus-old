@@ -4,7 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import {View} from 'react-native';
 
 import {inputStyleProps} from 'constants/theme';
-import {usePrevious} from 'services/core/core.service';
+import {usePrevious, setTestId} from 'services/core/core.service';
 
 export interface IProps {
   children?: string;
@@ -20,6 +20,7 @@ export interface IProps {
   label?: string;
   multiline?: boolean;
   numberOfLines?: number;
+  id?: string;
 }
 
 export interface IHandlers {
@@ -42,6 +43,7 @@ export const InputComponent: FC<IProps & IHandlers> = ({
   label,
   multiline,
   numberOfLines,
+  id,
 }) => {
   const animRef = createRef<any>();
   const prevErrorMessage = usePrevious(errorMessage);
@@ -77,10 +79,16 @@ export const InputComponent: FC<IProps & IHandlers> = ({
         onChangeText={onChangeText}
         onEndEditing={onEndEditing}
         onSubmitEditing={onSubmitEditing}
+        {...setTestId(id)}
       />
       <View style={inputStyleProps.errorContainer}>
         {errorMessage !== '' && (
-          <Animatable.Text animation={'fadeInDown'} duration={200} useNativeDriver style={inputStyleProps.errorStyle}>
+          <Animatable.Text
+            {...setTestId(id, '_error')}
+            animation={'fadeInDown'}
+            duration={200}
+            useNativeDriver
+            style={inputStyleProps.errorStyle}>
             {errorMessage}
           </Animatable.Text>
         )}
