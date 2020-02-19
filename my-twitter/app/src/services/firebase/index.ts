@@ -11,5 +11,5 @@ export type DocumentChangeType = FirebaseFirestoreTypes.DocumentChangeType;
 export type CollectionReference = FirebaseFirestoreTypes.CollectionReference;
 export type Query = FirebaseFirestoreTypes.Query;
 
-const Timestamp = FirebaseFirestoreTypes.Timestamp;
+const Timestamp = firestore.Timestamp;
 export {firestore, auth, storage, Timestamp};

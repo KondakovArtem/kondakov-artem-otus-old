@@ -30,7 +30,7 @@ export const ExploreScreenComponent: FC<IProps & IHandlers> = ({followPosts, toU
         }>
         Explore
       </HeaderComponent>
-      <PostListComponent list={followPosts} />
+      <PostListComponent id="exploreList" list={followPosts} />
     </MagicMove.Scene>
   );
 };

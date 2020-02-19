@@ -27,7 +27,7 @@ export const MainScreenComponent: FC<IProps & IHandlers> = ({toUserProfile, user
       leftComponent={<UserAvatar onPress={toUserProfile} uid="logo" />}>
       Main
     </HeaderComponent>
-    <PostListComponent list={userPosts} emptyText={'Post something'} />
+    <PostListComponent id="userPostList" list={userPosts} emptyText={'Post something'} />
   </MagicMove.Scene>
 );
 

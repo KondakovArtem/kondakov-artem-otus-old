@@ -64,11 +64,11 @@ export const Actions = {
   toggleFollow: (userUid: string) => async () => {
     await toggleFollowDb(userUid);
   },
-  showUserInfo: ({id, author}: IPost): ThunkAction => dispatch => {
+  showUserInfo: ({author}: IPost, callUid: string): ThunkAction => dispatch => {
     dispatch(
       selectUser({
         userUid: author,
-        postUid: `${id}_${author}`,
+        postUid: callUid,
       }),
     );
     navUtils.navigate(USER_INFO_SCREEN);

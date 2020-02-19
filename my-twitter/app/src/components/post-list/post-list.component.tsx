@@ -9,6 +9,7 @@ export interface IProps {
   list?: IPost[];
   style?: StyleProp<ViewStyle>;
   emptyText?: string;
+  id: string;
 }
 
 const styles = StyleSheet.create({
@@ -22,8 +23,12 @@ export interface IHandlers {
 }
 
 const keyExtractor = ({id}: IPost) => id;
-const renderItem = (item: IPost) => {
-  return <Post key={item.id}>{item}</Post>;
+const renderItem = (item: IPost, listId: string) => {
+  return (
+    <Post key={item.id} listId={listId}>
+      {item}
+    </Post>
+  );
 };
 
 const EmptyComponent: FC = ({children}) => (
@@ -32,10 +37,10 @@ const EmptyComponent: FC = ({children}) => (
   </View>
 );
 
-export const PostListComponent: FC<IProps & IHandlers> = ({list = [], onSelectItem, emptyText}) => {
+export const PostListComponent: FC<IProps & IHandlers> = ({list = [], id, emptyText}) => {
   const [refreshing, setRefresh] = useState(false);
 
-  const renderItemWithHandlers = ({item}: {item: IPost}) => renderItem(item, {onSelectItem});
+  const renderItemWithHandlers = ({item}: {item: IPost}) => renderItem(item, id);
 
   return (
     <FlatList
