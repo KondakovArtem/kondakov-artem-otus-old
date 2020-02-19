@@ -7,3 +7,4 @@ export {ExploreScreen} from 'screens/explore/explore.screen';
 export {NewPostScreen} from 'screens/new-post/new-post.screen';
 export {FollowsScreen} from 'screens/follows/follows.screen';
 export {LoadingScreen} from 'screens/loading/loading.screen';
+export {UserInfoScreen} from 'screens/user-info/user-info.screen';

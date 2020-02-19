@@ -1,5 +1,9 @@
 {
     "parser": "@typescript-eslint/parser",
+    "globals": {
+        "node": true,
+        "jest": true
+    },
     "plugins": [
 		"prettier",
         "react",

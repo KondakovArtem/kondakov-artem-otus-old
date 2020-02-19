@@ -17,6 +17,7 @@ export const MAIN_SCREEN: TNavAlias = 'main';
 export const EXPLORE_SCREEN: TNavAlias = 'explore';
 export const NEW_POST_SCREEN: TNavAlias = 'newPost';
 export const FOLLOW_SCREEN: TNavAlias = 'follows';
+export const USER_INFO_SCREEN: TNavAlias = 'userInfo';
 
 export const NavAliases: TNavAlias[] = [
   AUTH_STACK,
@@ -38,6 +39,7 @@ export const NavAliases: TNavAlias[] = [
 export const AppNavAliases: TNavAlias[] = [
   AUTH_STACK,
   USER_PROFILE_SCREEN,
+  USER_INFO_SCREEN,
   USER_PROFILE_EDIT_SCREEN,
   MAIN_SCREEN,
   EXPLORE_SCREEN,

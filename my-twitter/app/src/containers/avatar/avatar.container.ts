@@ -37,8 +37,7 @@ export const AvatarContainer = connect<IComponentProps, IComponentHandlers, IOwn
       ...props,
     };
   },
-  (state, props) => {
-    const {onPress} = props;
+  (state, {onPress}) => {
     return {
       onPress,
     };

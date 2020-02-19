@@ -1,5 +1,5 @@
 import {template} from 'lodash-es';
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import {CollectionReference, Query} from 'services/firebase';
 
 export enum FirebaseError {
   EMAIL_INVALID = 'auth/invalid-email',
@@ -29,7 +29,7 @@ export interface IRegisterDbSubscription {
   alias: string;
   path: string;
   type: SubscriptionTypes;
-  filter?(ref: FirebaseFirestoreTypes.CollectionReference): FirebaseFirestoreTypes.Query;
+  filter?(ref: CollectionReference): Query;
   callback(data: any | any[]): void;
 }
 

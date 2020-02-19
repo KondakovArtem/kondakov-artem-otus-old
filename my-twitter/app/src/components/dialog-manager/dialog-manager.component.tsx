@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
+  title: {fontSize: 20, paddingBottom: 30},
+  buttonContainer: {flexDirection: 'row', justifyContent: 'space-between'},
 });
 
 export const DialogManagerComponent: FC<IProps & IHandlers> = ({children, onClose, onPressButton}) => {
@@ -44,8 +46,8 @@ export const DialogManagerComponent: FC<IProps & IHandlers> = ({children, onClos
           width="auto"
           height="auto">
           <View style={styles.container}>
-            <Text style={{fontSize: 20, paddingBottom: 30}}>{title}</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.buttonContainer}>
               {buttons.map(button => {
                 return <Button {...button} onPress={() => pressButton(button.key)} />;
               })}

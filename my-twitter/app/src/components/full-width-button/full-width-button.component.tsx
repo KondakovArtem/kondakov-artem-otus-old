@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {Button} from 'react-native-elements';
 
 import {commonStyles, fullWidthButtonProps} from 'constants/theme';
-import { setTestId } from 'services/core/core.service';
+import {setTestId} from 'services/core/core.service';
 
 export interface IProps {
   children: string;

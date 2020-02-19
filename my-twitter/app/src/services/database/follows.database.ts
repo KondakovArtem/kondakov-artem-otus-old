@@ -1,5 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import {firestore, auth} from 'services/firebase';
 
 import {withAuth} from 'services/database/database.service';
 import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
@@ -44,12 +43,3 @@ export const onDbFollowersChanged = (callback: (data: IDBFollowersMutation[]) =>
     });
   }
 };
-
-// export const getDBFollowers = withAuth(async uid => {
-//   const snapshot = await firestore()
-//     .collection(DBPaths.FOLLOWERS())
-//     .where('ids', 'array-contains', uid)
-//     .get();
-//   const docs = snapshot.docs;
-//   return docs.map(({id}) => id);
-// });

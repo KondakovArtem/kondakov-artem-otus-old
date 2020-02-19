@@ -42,7 +42,6 @@ export const Actions = {
     const {userUid} = authData;
     const {follows} = users;
     const {followPostCount} = post;
-    debugger;
     dispatch(setFollowPosts([]));
     unregisterDbSubscriber('followPosts');
     if (follows.length) {
@@ -55,9 +54,7 @@ export const Actions = {
     // dispatch(appendUserPosts(await getUserPosts()));
   },
   createNewPost: (data: Partial<IPost>) => async () => {
-    //const post =
     await createNewPost(data);
-    // dispatch(appendUserPosts([post]));
   },
   changePostText: (value: string): ThunkAction => async dispatch => {
     dispatch(setPostText(value));

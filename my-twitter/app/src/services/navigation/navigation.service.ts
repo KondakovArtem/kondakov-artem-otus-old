@@ -15,9 +15,7 @@ export const navUtils = {
   persistNavigationState: async (navState: NavigationState) => {
     try {
       await AsyncStorage.setItem(NAV_STATE_KEY, JSON.stringify(navState));
-    } catch (err) {
-      // handle the error according to your needs
-    }
+    } catch (err) {}
   },
   loadNavigationState: async () => {
     isNavLoaded = false;
@@ -25,7 +23,6 @@ export const navUtils = {
     let data: any = JSON.parse(jsonString) as NavigationState;
     const savedNavAliases = navUtils.collectNavAliases(data);
     const missingScreenInSaved = savedNavAliases.find(alias => !NavAliases.includes(alias));
-    // const missingScreenInModel = NavAliases.find(alias => !savedNavAliases.includes(alias));
     isNavLoaded = true;
     return missingScreenInSaved ? undefined : data;
   },

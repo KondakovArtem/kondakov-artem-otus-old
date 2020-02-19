@@ -10,6 +10,7 @@ import {
   NewPostScreen,
   FollowsScreen,
   LoadingScreen,
+  UserInfoScreen,
 } from 'screens';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
@@ -27,6 +28,7 @@ import {
   NEW_POST_SCREEN,
   FOLLOW_SCREEN,
   LOADING_SCREEN,
+  USER_INFO_SCREEN,
 } from 'models/navigation.model';
 import {statusBackground} from 'constants/theme';
 import {TabbarIconComponent} from 'components/tabbar-icon/tabbar-icon.component';
@@ -83,6 +85,10 @@ export const Navigation = createAppContainer(
         ),
         [USER_PROFILE_EDIT_SCREEN]: {
           screen: UserProfileEditScreen,
+          ...noHeader,
+        },
+        [USER_INFO_SCREEN]: {
+          screen: UserInfoScreen,
           ...noHeader,
         },
         [NEW_POST_SCREEN]: {

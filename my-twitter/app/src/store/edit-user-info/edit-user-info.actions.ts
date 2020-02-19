@@ -3,7 +3,14 @@ import {IModifiableUserInfo} from 'models/user.model';
 import {navUtils} from 'services/navigation/navigation.service';
 import {USER_PROFILE_SCREEN, USER_PROFILE_EDIT_SCREEN} from 'models/navigation.model';
 import {getUserInfo, updateUserInfo} from 'services/database/userinfo.database';
-import {fillEditUserInfo, setName, setLocation, setAbout, setWebSite, setBirthDate} from './edit-user-info.ducks';
+import {
+  fillEditUserInfo,
+  setName,
+  setLocation,
+  setAbout,
+  setWebSite,
+  setBirthDate,
+} from 'store/edit-user-info/edit-user-info.ducks';
 
 export const Actions = {
   editUserProfile: (): ThunkAction => async (...redux) => {

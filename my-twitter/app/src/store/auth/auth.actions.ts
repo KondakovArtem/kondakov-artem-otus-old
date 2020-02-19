@@ -1,4 +1,4 @@
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {User, AdditionalUserInfo} from 'services/firebase';
 import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin, statusCodes} from 'react-native-google-signin';
 import {extend, isEmpty} from 'lodash-es';
@@ -35,12 +35,13 @@ import {
   clearInputError,
   appendInputError,
 } from 'store/auth/auth.ducks';
+import {UserCredential, auth} from 'services/firebase';
 
 let authSubscription: () => void;
 let queryVerificationHandler: number | undefined;
 
 const Actions = {
-  checkAuth: (currentUser: FirebaseAuthTypes.User | null): ThunkAction => async (dispatch, getStore) => {
+  checkAuth: (currentUser: User | null): ThunkAction => async (dispatch, getStore) => {
     const {authData} = getStore();
     const {userUid} = authData;
     const screen = navUtils.getCurrentScreen();
@@ -141,7 +142,6 @@ const Actions = {
     try {
       dispatch(setFetching(true));
       await auth().signInWithEmailAndPassword(username, password);
-      // debugger;
     } catch (e) {
       switch (e.code) {
         case FirebaseError.EMAIL_INVALID: {
@@ -177,15 +177,13 @@ const Actions = {
       webClientId: GOOGLE_WEB_CLIENT_ID,
     });
     try {
-      // debugger;
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut();
       const data = await GoogleSignin.signIn();
-      // debugger;
       const credential = auth.GoogleAuthProvider.credential(data.idToken);
-      // login with credential
+
       const {additionalUserInfo} = await auth().signInWithCredential(credential);
-      const {profile} = additionalUserInfo as FirebaseAuthTypes.AdditionalUserInfo;
+      const {profile} = additionalUserInfo as AdditionalUserInfo;
       const {email, name, picture} = profile as any;
 
       await createUserInfo({
@@ -193,9 +191,7 @@ const Actions = {
         name,
         avatar: picture,
       });
-      // this.setState({userInfo});
     } catch (error) {
-      // debugger;
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -254,11 +250,10 @@ const Actions = {
       return;
     }
 
-    let credential: FirebaseAuthTypes.UserCredential;
+    let credential: UserCredential;
     try {
       dispatch(setFetching(true));
       credential = await auth().createUserWithEmailAndPassword(username, password);
-      // debugger;
     } catch (e) {
       switch (e.code) {
         case FirebaseError.EMAIL_INVALID: {
@@ -287,10 +282,7 @@ const Actions = {
 
     try {
       await credential.user.sendEmailVerification();
-    } catch (e) {
-      // debugger;
-    }
-    // debugger;
+    } catch (e) {}
     dispatch(setFetching(false));
   },
   stopCheckProcessVerifyEmail: (): ThunkAction => () => {

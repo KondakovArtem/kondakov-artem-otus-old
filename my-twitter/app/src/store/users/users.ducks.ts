@@ -9,6 +9,12 @@ export const SET_SEARCH_FOLLOWS = '@users/SET_SEARCH_FOLLOWS';
 export const MUTATE_USERS = '@users/MUTATE_USERS';
 export const MUTATE_FOLLOWERS = '@users/MUTATE_FOLLOWERS';
 export const SET_FOLLOWS = '@users/SET_FOLLOWS';
+export const SELECT_USER = '@users/SELECT_USER';
+
+interface ISelectedUSer {
+  userUid: string;
+  postUid: string;
+}
 
 ///////////////////////////////////////
 // STORE
@@ -21,6 +27,7 @@ export interface IStore {
   searchFollows: IUserInfo[];
   follows: string[];
   followers: string[];
+  selectedUser: ISelectedUSer;
 }
 
 const initialState: IStore = {
@@ -29,6 +36,10 @@ const initialState: IStore = {
   userInfoMap: {},
   follows: [],
   followers: [],
+  selectedUser: {
+    userUid: '',
+    postUid: '',
+  },
 };
 
 ///////////////////////////////////////
@@ -40,6 +51,7 @@ export const setSearchFollows = createAction(SET_SEARCH_FOLLOWS, (v: IUserInfo[]
 export const mutateUsers = createAction(MUTATE_USERS, (v: IUserInfoMutation[]) => v)();
 export const setFollows = createAction(SET_FOLLOWS, (v: string[]) => v)();
 export const mutateFollowers = createAction(MUTATE_FOLLOWERS, (v: IDBFollowersMutation[]) => v)();
+export const selectUser = createAction(SELECT_USER, (v: ISelectedUSer) => v)();
 
 ///////////////////////////////////////
 // Reducers
@@ -89,4 +101,8 @@ export default createReducer<IStore, Action>(initialState)
   .handleAction(setFollows, (state, {payload}) => ({
     ...state,
     follows: payload,
+  }))
+  .handleAction(selectUser, (state, {payload}) => ({
+    ...state,
+    selectedUser: payload,
   }));

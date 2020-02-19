@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {View, ScrollView} from 'react-native';
 import * as Animatable from 'react-native-animatable';

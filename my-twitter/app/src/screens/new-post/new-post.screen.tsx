@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Icon, Image} from 'react-native-elements';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {isEmpty} from 'lodash-es';
 

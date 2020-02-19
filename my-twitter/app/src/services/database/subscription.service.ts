@@ -1,19 +1,20 @@
-import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
-import {SubscriptionTypes, IDbSubscription, IRegisterDbSubscription, IDBDocument} from 'models/firebase.model';
+import {firestore, QuerySnapshot, DocumentChangeType} from 'services/firebase';
 import {each} from 'lodash-es';
-import {convertRawtoObject} from '../core/core.service';
+
+import {SubscriptionTypes, IDbSubscription, IRegisterDbSubscription, IDBDocument} from 'models/firebase.model';
+import {convertRawtoObject} from 'services/core/core.service';
 
 export const subscriptions: {
   [alias: string]: IDbSubscription;
 } = {};
 
 interface IMutation {
-  type: FirebaseFirestoreTypes.DocumentChangeType;
+  type: DocumentChangeType;
   doc: any;
 }
 
 const getMutationSubsr = (callback: (mutationList: IMutation[]) => void) => (
-  snapshot: FirebaseFirestoreTypes.QuerySnapshot,
+  snapshot: QuerySnapshot,
   error?: Error,
 ) => {
   if (error) {
@@ -34,21 +35,6 @@ const getMutationSubsr = (callback: (mutationList: IMutation[]) => void) => (
   });
   docMutationList.length && callback(docMutationList);
 };
-
-// const getSubscr = (callback: (docList: IDBDocument[]) => void) => (snapshot: FirebaseFirestoreTypes.QuerySnapshot) => {
-//   callback(
-//     snapshot.docs.map(docMeta => {
-//       const doc: IDBDocument = convertRawtoObject({
-//         ...docMeta.data(),
-//         id: docMeta.id,
-//       });
-//       return {
-//         ...doc,
-//         created: doc.created || new Date(),
-//       };
-//     }),
-//   );
-// };
 
 export const registerDbSubscriber = ({alias, path, type, callback, filter}: IRegisterDbSubscription) => {
   let unsubscribe;

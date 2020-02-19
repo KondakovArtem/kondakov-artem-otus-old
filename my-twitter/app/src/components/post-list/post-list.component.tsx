@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {FlatList, StyleProp, ViewStyle, View, RefreshControl} from 'react-native';
+import {FlatList, StyleProp, ViewStyle, View, RefreshControl, StyleSheet} from 'react-native';
 import {Divider, Text} from 'react-native-elements';
 
 import {IPost} from 'models/post.model';
@@ -11,18 +11,24 @@ export interface IProps {
   emptyText?: string;
 }
 
+const styles = StyleSheet.create({
+  emptyContainer: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  emptyText: {color: '#e0e0e0', fontSize: 40},
+  contentContainer: {minHeight: '100%'},
+});
+
 export interface IHandlers {
   onSelectItem?(item: IPost): void;
 }
 
 const keyExtractor = ({id}: IPost) => id;
-const renderItem = (item: IPost, {onSelectItem}: IHandlers) => {
+const renderItem = (item: IPost) => {
   return <Post key={item.id}>{item}</Post>;
 };
 
 const EmptyComponent: FC = ({children}) => (
-  <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    <Text style={{color: '#e0e0e0', fontSize: 40}}>{children}</Text>
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>{children}</Text>
   </View>
 );
 
@@ -36,7 +42,7 @@ export const PostListComponent: FC<IProps & IHandlers> = ({list = [], onSelectIt
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefresh(true)} />}
       data={list}
       keyExtractor={keyExtractor}
-      contentContainerStyle={{minHeight: '100%'}}
+      contentContainerStyle={styles.contentContainer}
       ListEmptyComponent={<EmptyComponent>{emptyText}</EmptyComponent>}
       renderItem={renderItemWithHandlers}
       initialNumToRender={10}

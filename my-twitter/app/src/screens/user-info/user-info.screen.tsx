@@ -10,16 +10,17 @@ import {
   UserProfileComponent,
 } from 'components/user-profile/user-profile.component';
 
-export const UserProfileScreen = connect<IComponentProps, IComponentHandlers, {}, IConfiguredStore>(
-  ({authData, users}) => {
-    const {info = {}, userUid} = authData;
-    const {follows = [], followers = []} = users;
+export const UserInfoScreen = connect<IComponentProps, IComponentHandlers, {}, IConfiguredStore>(
+  ({users, authData}) => {
+    const {userUid: curUserUid} = authData;
+    const {selectedUser, userInfoMap} = users;
+    const {userUid, postUid} = selectedUser;
+    const info = (userInfoMap[userUid] || {}) as IUserInfo;
     return {
-      ...(info as IUserInfo),
+      ...info,
+      canEdit: curUserUid === userUid,
       userUid,
-      followsCount: follows.length,
-      followersCount: followers.length,
-      canEdit: true,
+      avatarUid: postUid,
     };
   },
   {

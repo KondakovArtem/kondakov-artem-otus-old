@@ -39,6 +39,7 @@ export interface IProps {
 
 export interface IHandlers {
   onLongPress?(post: IPost): void;
+  onClickAvatar?(post: IPost): void;
 }
 
 interface IContentProps {
@@ -86,8 +87,8 @@ const PostContent: FC<IContentProps> = ({children, author}) => {
   );
 };
 
-export const PostComponent: FC<IProps & IHandlers> = ({children, authorData, onLongPress, deleting}) => {
-  const {author} = children;
+export const PostComponent: FC<IProps & IHandlers> = ({children, authorData, onLongPress, deleting, onClickAvatar}) => {
+  const {author, id} = children;
 
   const longPress = () => onLongPress && onLongPress(children);
 
@@ -99,13 +100,19 @@ export const PostComponent: FC<IProps & IHandlers> = ({children, authorData, onL
       }
     : {};
 
+  const clickAvatar = () => onClickAvatar && onClickAvatar(children);
+
   return (
     <Animatable.View {...animationProps}>
       <ListItem
         onLongPress={longPress}
         containerStyle={styles.container}
         titleStyle={styles.title}
-        leftAvatar={<AvatarContainer>{author}</AvatarContainer>}
+        leftAvatar={
+          <AvatarContainer uid={`${id}_${author}`} onPress={clickAvatar}>
+            {author}
+          </AvatarContainer>
+        }
         title={<PostContent author={authorData}>{children}</PostContent>}
         bottomDivider
       />

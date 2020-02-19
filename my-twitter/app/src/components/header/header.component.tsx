@@ -1,5 +1,4 @@
 import React, {FC, ReactElement} from 'react';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import {Header} from 'react-native-elements';
 import {StyleSheet, StyleProp, ViewStyle} from 'react-native';

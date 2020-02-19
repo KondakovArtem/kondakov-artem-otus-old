@@ -1,4 +1,4 @@
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import {DocumentChangeType} from 'services/firebase';
 
 export interface IPost {
   id: string;
@@ -12,6 +12,6 @@ export interface IPost {
 }
 
 export interface IPostMutation {
-  type: FirebaseFirestoreTypes.DocumentChangeType;
+  type: DocumentChangeType;
   doc: IPost;
 }

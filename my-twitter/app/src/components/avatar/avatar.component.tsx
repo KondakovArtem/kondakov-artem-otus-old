@@ -2,7 +2,6 @@ import React, {FC, useEffect, useState} from 'react';
 import {Avatar} from 'react-native-elements';
 import {StyleSheet} from 'react-native';
 import {uniqueId} from 'lodash-es';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
 import {getStorageFileUrl} from 'services/database/database.service';

@@ -4,7 +4,6 @@ import 'react-navigation-magic-move';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider as ReduxProvider} from 'react-redux';
 import {Provider as PaperProvider} from 'react-native-paper';
-//@ts-ignore;
 import * as MagicMove from 'react-native-magic-move';
 
 import {NavigationContainer} from 'containers/navigation/navigation.container';

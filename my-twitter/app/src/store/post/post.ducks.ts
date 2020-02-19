@@ -139,7 +139,7 @@ export const reducer = createReducer<IStore, Action>(initialState)
   .handleAction(setFollowPosts, (state, {payload}) => ({
     ...state,
     followPosts: payload,
-    followPostCount: Math.min(initialState.followPostCount, payload.length),
+    followPostCount: Math.max(initialState.followPostCount, payload.length),
   }))
   .handleAction(appendToDeletingPost, (state, {payload}) => ({
     ...state,

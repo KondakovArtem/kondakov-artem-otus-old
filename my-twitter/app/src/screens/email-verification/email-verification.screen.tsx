@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {connect} from 'react-redux';
 import {Text, Card, Button} from 'react-native-elements';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 import * as Animatable from 'react-native-animatable';
 import {View, StyleSheet} from 'react-native';

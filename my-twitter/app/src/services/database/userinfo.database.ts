@@ -1,5 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import {firestore, auth} from 'services/firebase';
 
 import {withAuth} from 'services/database/database.service';
 import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
@@ -33,7 +32,6 @@ export const createUserInfo = withAuth(async (uid, userInfo: Partial<IUserInfo>)
 export const updateUserInfo = withAuth(async (uid, userInfo: Partial<IUserInfo>) => {
   const docRef = firestore().doc(DBPaths.USERINFO({uid}));
   await firestore().runTransaction(async transaction => {
-    // const snapshotData = (await transaction.get(docRef)).data() as IUserInfo;
     return transaction.update(docRef, {
       ...userInfo,
       email: auth().currentUser?.email,

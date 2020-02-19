@@ -5,10 +5,18 @@ import {ThunkAction} from 'store';
 import {IUserInfo, IUserInfoMutation, IDBFollows, IDBFollowersMutation} from 'models/user.model';
 import {navUtils} from 'services/navigation/navigation.service';
 import {onDbUsersChanged} from 'services/database/userinfo.database';
-import {FOLLOW_SCREEN} from 'models/navigation.model';
+import {FOLLOW_SCREEN, USER_INFO_SCREEN} from 'models/navigation.model';
 import {toggleFollowDb, onDbFollowsChanged, onDbFollowersChanged} from 'services/database/follows.database';
 import {Actions as postActions} from 'store/post/post.actions';
-import {mutateUsers, mutateFollowers, setFollows, setSearchFollows, setSearch} from 'store/users/users.ducks';
+import {
+  mutateUsers,
+  mutateFollowers,
+  setFollows,
+  setSearchFollows,
+  setSearch,
+  selectUser,
+} from 'store/users/users.ducks';
+import {IPost} from 'models/post.model';
 
 export const Actions = {
   init: (): ThunkAction => async (dispatch, getStore) => {
@@ -55,5 +63,14 @@ export const Actions = {
   },
   toggleFollow: (userUid: string) => async () => {
     await toggleFollowDb(userUid);
+  },
+  showUserInfo: ({id, author}: IPost): ThunkAction => dispatch => {
+    dispatch(
+      selectUser({
+        userUid: author,
+        postUid: `${id}_${author}`,
+      }),
+    );
+    navUtils.navigate(USER_INFO_SCREEN);
   },
 };

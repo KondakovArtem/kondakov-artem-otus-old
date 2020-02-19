@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import {Text, SocialIcon} from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// @ts-ignore
 import * as MagicMove from 'react-native-magic-move';
 
 import {IConfiguredStore} from 'store';

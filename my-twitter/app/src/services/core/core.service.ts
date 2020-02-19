@@ -1,9 +1,9 @@
 import {useRef, useEffect} from 'react';
-import {isArray, isObject, each} from 'lodash-es';
-import firestore from '@react-native-firebase/firestore';
-import {differenceInSeconds} from 'date-fns';
-import {round} from 'lodash-es';
 import {Platform} from 'react-native';
+import {Timestamp} from 'services/firebase';
+
+import {isArray, isObject, each, round} from 'lodash-es';
+import {differenceInSeconds} from 'date-fns';
 
 export const usePrevious = <T extends {}>(value: T) => {
   const ref = useRef<T>();
@@ -35,7 +35,7 @@ export const timeStampToDate = (timeStamp: any): Date | undefined => {
 };
 
 export const convertRawtoObject = (data: any) => {
-  if (data instanceof firestore.Timestamp) {
+  if (data instanceof Timestamp) {
     return timeStampToDate(data);
   }
   if (isArray(data)) {

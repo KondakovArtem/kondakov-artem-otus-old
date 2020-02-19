@@ -8,6 +8,7 @@ import {
 import {IConfiguredStore} from 'store';
 import {IPost} from 'models/post.model';
 import {Actions as postActions} from 'store/post/post.actions';
+import {Actions as usersActions} from 'store/users/users.actions';
 
 export interface IOwnProps {
   children: IPost;
@@ -28,5 +29,6 @@ export const Post = connect<IComponentProps, IComponentHandlers, IOwnProps & IOw
   },
   {
     onLongPress: postActions.deletePostConfirm,
+    onClickAvatar: usersActions.showUserInfo,
   },
 )(PostComponent);

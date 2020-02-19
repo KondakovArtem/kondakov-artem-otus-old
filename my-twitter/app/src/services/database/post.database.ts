@@ -1,10 +1,10 @@
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import {max} from 'lodash-es';
+import {firestore, auth} from 'services/firebase';
 
 import {withAuth} from 'services/database/database.service';
 import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
 import {IPost, IPostMutation} from 'models/post.model';
-import {getDbSubscriber, registerDbSubscriber} from './subscription.service';
+import {getDbSubscriber, registerDbSubscriber} from 'services/database/subscription.service';
 
 export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
   const docRef = firestore().doc(DBPaths.POST({id}));
@@ -44,8 +44,9 @@ export const deleteDBPost = withAuth(
   },
 );
 
-export const onDbUserPostChanged = (count: number = 10, callback: (info: IPostMutation[]) => void) => {
+export const onDbUserPostChanged = (count: number, callback: (info: IPostMutation[]) => void) => {
   if (!getDbSubscriber('userPosts')) {
+    count = max([50, count]) as number;
     const {currentUser} = auth();
     const {uid} = currentUser || {};
     registerDbSubscriber({
@@ -64,11 +65,12 @@ export const onDbUserPostChanged = (count: number = 10, callback: (info: IPostMu
 };
 
 export const onDbFollowsPostChanged = (
-  count: number = 10,
+  count: number,
   ids: string[] = [],
   callback: (info: IPostMutation[]) => void,
 ) => {
   if (!getDbSubscriber('followPosts')) {
+    count = max([50, count]) as number;
     registerDbSubscriber({
       alias: 'followPosts',
       path: DBPaths.POSTS(),

@@ -1,22 +1,32 @@
-import React, {FC} from 'react';
-import {View, TouchableNativeFeedback} from 'react-native';
-import {Button} from 'react-native-elements';
-// @ts-ignore
+import React, {FC, useState} from 'react';
+import {View, StyleSheet} from 'react-native';
 import * as MagicMove from 'react-native-magic-move';
 
 import {headerBackground, COMMON_DURATION} from 'constants/theme';
 import {AvatarContainer} from 'containers/avatar/avatar.container';
+import {RoundButton} from 'components/round-button/round-button.component';
 
 export interface IProps {
   mode?: string;
+  canEdit?: boolean;
   userUid: string;
+  avatarUid?: string;
 }
 
 export interface IHandlers {
-  takeAvatar(): void;
+  takeAvatar?(): void;
   onEditUserProfile?(): void;
   onSaveUserProfile?(): void;
 }
+
+const styles = StyleSheet.create({
+  container: {height: 120, overflow: 'hidden'},
+  background: {height: 60, backgroundColor: headerBackground},
+  elementContainer: {flexDirection: 'row', justifyContent: 'space-between'},
+  avatarPositioner: {position: 'relative', top: -50, left: 20},
+  avatarContainer: {borderWidth: 4, borderColor: 'white'},
+  buttonContainer: {position: 'relative', top: -53, right: 20, zIndex: 1},
+});
 
 export const HeaderProfileComponent: FC<IHandlers & IProps> = ({
   takeAvatar,
@@ -24,49 +34,44 @@ export const HeaderProfileComponent: FC<IHandlers & IProps> = ({
   mode = 'edit',
   onSaveUserProfile,
   userUid,
+  avatarUid,
+  canEdit,
 }) => {
+  // чтобы задать значение только при инициализации компонента
+  const [avatarInitedUid] = useState(avatarUid || 'logo');
+
   return (
     <MagicMove.View
       id={'header'}
       transition={MagicMove.Transition.morph}
       duration={COMMON_DURATION}
-      style={{height: 120, overflow: 'hidden'}}>
-      <View style={{height: 60, backgroundColor: headerBackground}}></View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={{position: 'relative', top: -50, left: 20}}>
+      style={styles.container}>
+      <View style={styles.background} />
+      <View style={styles.elementContainer}>
+        <View style={styles.avatarPositioner}>
           <AvatarContainer
-            uid="logo"
+            uid={avatarInitedUid}
             size={90}
-            containerStyle={{borderWidth: 4, borderColor: 'white'}}
-            showEditButton={true}
+            containerStyle={styles.avatarContainer}
+            showEditButton={canEdit}
             onPress={takeAvatar}>
             {userUid}
           </AvatarContainer>
         </View>
-        <View style={{position: 'relative', top: -53, right: 20, zIndex: 1}}>
-          {mode === 'edit' && (
-            <Button
-              type="outline"
-              icon={{type: 'material-community', name: 'pencil-outline', color: 'white'}}
-              containerStyle={{zIndex: 1}}
-              buttonStyle={{borderRadius: 40, borderColor: 'white', borderWidth: 2}}
-              titleStyle={{color: 'white'}}
-              title="Change Profile"
-              background={TouchableNativeFeedback.Ripple('white', true)}
-              onPress={onEditUserProfile}></Button>
-          )}
-          {mode === 'save' && (
-            <Button
-              type="outline"
-              icon={{type: 'material-community', name: 'pencil-outline', color: 'white'}}
-              containerStyle={{zIndex: 1}}
-              buttonStyle={{borderRadius: 40, borderColor: 'white', borderWidth: 2}}
-              titleStyle={{color: 'white'}}
-              title="Save Profile"
-              background={TouchableNativeFeedback.Ripple('white', true)}
-              onPress={onSaveUserProfile}></Button>
-          )}
-        </View>
+        {canEdit && (
+          <View style={styles.buttonContainer}>
+            {mode === 'edit' && (
+              <RoundButton onPress={onEditUserProfile} icon={'pencil-outline'}>
+                Change Profile
+              </RoundButton>
+            )}
+            {mode === 'save' && (
+              <RoundButton onPress={onSaveUserProfile} icon={'pencil-outline'}>
+                Save Profile
+              </RoundButton>
+            )}
+          </View>
+        )}
       </View>
     </MagicMove.View>
   );
