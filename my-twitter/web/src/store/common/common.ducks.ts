@@ -9,7 +9,7 @@ export interface IStore {
   screen: string;
   inited: boolean;
 }
-const initialState: IStore = {
+export const initialState: IStore = {
   screen: '',
   inited: false,
 };

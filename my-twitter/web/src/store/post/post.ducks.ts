@@ -34,7 +34,7 @@ export interface IStore {
   };
 }
 
-const initialState: IStore = {
+export const initialState: IStore = {
   userPosts: [],
   postToDelete: [],
   userPostCount: 50,
@@ -97,7 +97,7 @@ export default createReducer<IStore, Action>(initialState)
   }))
   .handleAction(appendFollowPosts, (state, {payload}) => ({
     ...state,
-    followPosts: uniqBy([...state.followPosts, ...payload], ({id}) => id),
+    followPosts: uniqBy([...state.followPosts, ...payload], ({id}) => id).sort(sortPost),
   }))
   .handleAction(setNewPostPhoto, (state, {payload}) => ({
     ...state,

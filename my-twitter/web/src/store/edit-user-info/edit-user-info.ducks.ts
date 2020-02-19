@@ -10,7 +10,7 @@ export interface IStore extends IModifiableUserInfo {
   showAvatarEditor: boolean;
 }
 
-const initialState: IStore = {
+export const initialState: IStore = {
   showAvatarEditor: false,
   name: '',
   about: '',
@@ -29,7 +29,7 @@ export const SET_LOCATION = '@editUserInfo/SET_LOCATION';
 export const SET_WEBSITE = '@editUserInfo/SET_WEBSITE';
 export const SET_BIRTHDATE = '@editUserInfo/SET_BIRTHDATE';
 export const FILL_EDIT_USER_INFO = '@editUserInfo/FILL_EDIT_USER_INFO';
-export const SET_SHOW_AVATAR_EDITOR = '@editUserInfo/SET_SHOW_AVATAR_EDITOR'
+export const SET_SHOW_AVATAR_EDITOR = '@editUserInfo/SET_SHOW_AVATAR_EDITOR';
 
 export const setName = createAction(SET_NAME, (v: string) => v)();
 export const setLocation = createAction(SET_LOCATION, (v: string) => v)();

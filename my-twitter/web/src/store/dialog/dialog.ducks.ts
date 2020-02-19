@@ -13,7 +13,7 @@ export interface IStore {
   dialogs: IModalDialog[];
 }
 
-const initialState: IStore = {
+export const initialState: IStore = {
   dialogs: [],
 };
 
@@ -27,7 +27,7 @@ export const removeDialog = createAction(REMOVE_DIALOG, (dialog: IModalDialog) =
 /////////////////////////////////////////////
 /// REDUCERS
 /////////////////////////////////////////////
-export const reducer = createReducer<IStore, Action>(initialState)
+export default createReducer<IStore, Action>(initialState)
   .handleAction(signOutClear, () => ({
     ...initialState,
   }))

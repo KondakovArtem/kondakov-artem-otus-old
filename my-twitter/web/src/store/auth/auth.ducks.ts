@@ -19,7 +19,7 @@ export interface IStore {
   };
 }
 
-const initialState: IStore = {
+export const initialState: IStore = {
   userUid: '',
   info: undefined,
   login: {
@@ -48,7 +48,7 @@ export const APPEND_ERROR_MESSAGE = '@auth/APPEND_ERROR_MESSAGE';
 export const CLEAR_ERROR_MESSAGE = '@auth/CLEAR_ERROR_MESSAGE';
 
 export const fillUserInfo = createAction(FILL_USER_INFO, (data: {userUid?: string; info?: IUserInfo}) => data)();
-export const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
+export const signOutClear = createAction(SIGN_OUT_CLEAR)();
 export const setAvatar = createAction(SET_AVATAR, (avatar: string) => avatar)();
 export const setPassword = createAction(SET_PASSWORD, (v: string) => v)();
 export const setRepeatPassword = createAction(SET_REPEAT_PASSWORD, (v: string) => v)();
@@ -56,7 +56,7 @@ export const setUsername = createAction(SET_USERNAME, (v: string) => v)();
 export const toggleShowPassword = createAction(TOGGLE_SHOW_PASSWORD, (v?: boolean) => v)();
 export const setFetching = createAction(SET_FETCHING, (v: boolean) => v)();
 export const appendInputError = createAction(APPEND_ERROR_MESSAGE, v => v)();
-export const clearInputError = createAction(CLEAR_ERROR_MESSAGE, () => {})();
+export const clearInputError = createAction(CLEAR_ERROR_MESSAGE)();
 
 /////////////////////////////////////////////
 /// REDUCERS

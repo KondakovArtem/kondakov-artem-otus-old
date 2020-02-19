@@ -23,7 +23,7 @@ export interface IStore {
   followers: string[];
 }
 
-const initialState: IStore = {
+export const initialState: IStore = {
   search: '',
   searchFollows: [],
   userInfoMap: {},
@@ -34,7 +34,7 @@ const initialState: IStore = {
 ///////////////////////////////////////
 // Actions
 ///////////////////////////////////////
-export const signOutClear = createAction(SIGN_OUT_CLEAR, () => {})();
+export const signOutClear = createAction(SIGN_OUT_CLEAR)();
 export const setSearch = createAction(SET_SEARCH, (v: string) => v)();
 export const setSearchFollows = createAction(SET_SEARCH_FOLLOWS, (v: IUserInfo[]) => v)();
 export const mutateUsers = createAction(MUTATE_USERS, (v: IUserInfoMutation[]) => v)();

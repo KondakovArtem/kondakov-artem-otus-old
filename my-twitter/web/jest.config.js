@@ -3,6 +3,7 @@ const path = require('path');
 const esModules = ['lodash-es'].join('|');
 
 module.exports = {
+  clearMocks: true,
   roots: ['<rootDir>/src'],
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'],
   setupFiles: [
@@ -32,5 +33,4 @@ module.exports = {
       compiler: 'ttypescript',
     },
   },
-  clearMocks: true,
 };
