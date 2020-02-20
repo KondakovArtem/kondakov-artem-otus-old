@@ -8,6 +8,8 @@ import {
   toggleLikeDbPost,
   onDbFollowsPostChanged,
   deleteDBPost,
+  getDBUserPosts,
+  getDBFollowPosts,
 } from 'services/database/post.database';
 import {takePhoto} from 'services/photo/photo.service';
 import {uploadImage} from 'services/database/database.service';
@@ -26,6 +28,7 @@ import {
   deletePost,
   removeFromDeletingPost,
   setNewPostPhoto,
+  setRefreshingUserPost,
 } from 'store/post/post.ducks';
 
 /////////////////////////////////////////
@@ -50,9 +53,30 @@ export const Actions = {
       });
     }
   },
-  fetchMoreUserPosts: () => async () => {
-    // dispatch(appendUserPosts(await getUserPosts()));
+  fetchUserPost: (): ThunkAction => async (dispatch, getStore) => {
+    dispatch(setRefreshingUserPost(true));
+    const {post} = getStore();
+    const {userPostCount} = post;
+    try {
+      const postList = await getDBUserPosts(userPostCount);
+      dispatch(mutateUserPosts(postList.map(doc => ({type: 'modified', doc} as IPostMutation))));
+    } catch (e) {}
+    dispatch(setRefreshingUserPost(false));
   },
+
+  fetchFollowPost: (): ThunkAction => async (dispatch, getStore) => {
+    dispatch(setRefreshingUserPost(true));
+    const {post, users} = getStore();
+    const {follows} = users;
+    const {followPostCount} = post;
+    try {
+      const postList = await getDBFollowPosts(followPostCount, follows);
+      dispatch(mutateFollowPosts(postList.map(doc => ({type: 'modified', doc} as IPostMutation))));
+    } catch (e) {}
+    dispatch(setRefreshingUserPost(false));
+  },
+
+
   createNewPost: (data: Partial<IPost>) => async () => {
     await createNewPost(data);
   },
@@ -114,3 +138,5 @@ export const Actions = {
     await toggleLikeDbPost(id);
   },
 };
+
+export default Actions;

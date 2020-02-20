@@ -16,7 +16,7 @@ import {
   AppNavAliases,
   LOADING_SCREEN,
 } from 'models/navigation.model';
-import {delay} from 'services/core/core.service';
+import {delay, showErrorMessage} from 'services/core/core.service';
 import {FirebaseError} from 'models/firebase.model';
 import {navUtils} from 'services/navigation/navigation.service';
 import {takeAvatar} from 'services/photo/photo.service';
@@ -173,10 +173,10 @@ const Actions = {
   },
   signInGoogle: (): ThunkAction => async dispatch => {
     dispatch(setFetching(true));
-    GoogleSignin.configure({
-      webClientId: GOOGLE_WEB_CLIENT_ID,
-    });
     try {
+      GoogleSignin.configure({
+        webClientId: GOOGLE_WEB_CLIENT_ID,
+      });
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut();
       const data = await GoogleSignin.signIn();
@@ -192,15 +192,21 @@ const Actions = {
         avatar: picture,
       });
     } catch (error) {
+      let errorMessage = '';
+
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
+        errorMessage = 'Authorization already in progress';
         // operation (f.e. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        errorMessage = 'Google Play service is not available';
         // play services not available or outdated
       } else {
+        errorMessage = `${error.code} - ${error.message}`;
         // some other error happened
       }
+      showErrorMessage(errorMessage);
     }
     dispatch(setFetching(false));
   },

@@ -15,6 +15,7 @@ export const MUTATE_USER_POSTS = '@post/MUTATE_USER_POSTS';
 export const MUTATE_FOLLOW_POSTS = '@post/MUTATE_FOLLOW_POSTS';
 export const APPEND_TO_DELETING_POST = '@post/APPEND_TO_DELETING_POST';
 export const REMOVE_FROM_DELETING_POST = '@post/REMOVE_FROM_DELETING_POST';
+export const REFRESH_USER_POSTS = '@post/REFRESH_USER_POSTS';
 export const DELETE = '@post/DELETE';
 
 ///////////////////////////////////////
@@ -24,9 +25,11 @@ export const DELETE = '@post/DELETE';
 export interface IStore {
   userPosts: IPost[];
   userPostCount: number;
+  userPostRefreshing: boolean;
   postToDelete: string[];
   followPosts: IPost[];
   followPostCount: number;
+  followPostRefreshing: boolean;
   newPost: {
     text: string;
     imagePath: string;
@@ -38,8 +41,10 @@ const initialState: IStore = {
   userPosts: [],
   postToDelete: [],
   userPostCount: 50,
+  userPostRefreshing: false,
   followPosts: [],
   followPostCount: 50,
+  followPostRefreshing: false,
   newPost: {
     text: '',
     imagePath: '',
@@ -63,6 +68,7 @@ export const mutateFollowPosts = createAction(MUTATE_FOLLOW_POSTS, (v: IPostMuta
 export const appendToDeletingPost = createAction(APPEND_TO_DELETING_POST, (v: string) => v)();
 export const removeFromDeletingPost = createAction(REMOVE_FROM_DELETING_POST, (v: string) => v)();
 export const deletePost = createAction(DELETE, (v: IPost) => v)();
+export const setRefreshingUserPost = createAction(REFRESH_USER_POSTS, (v: boolean) => v)();
 
 const sortPost = (a: IPost, b: IPost) => {
   return a.createdAt.getTime() < b.createdAt.getTime() ? 1 : -1;
@@ -153,4 +159,8 @@ export const reducer = createReducer<IStore, Action>(initialState)
     ...state,
     userPosts: state.userPosts.filter(({id}) => payload.id !== id),
     followPosts: state.followPosts.filter(({id}) => payload.id !== id),
+  }))
+  .handleAction(setRefreshingUserPost, (state, {payload}) => ({
+    ...state,
+    userPostRefreshing: payload,
   }));

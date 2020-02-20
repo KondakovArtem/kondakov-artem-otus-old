@@ -2,7 +2,7 @@ import {firestore, QuerySnapshot, DocumentChangeType} from 'services/firebase';
 import {each} from 'lodash-es';
 
 import {SubscriptionTypes, IDbSubscription, IRegisterDbSubscription, IDBDocument} from 'models/firebase.model';
-import {convertRawtoObject} from 'services/core/core.service';
+import {convertRawtoObject, showErrorMessage} from 'services/core/core.service';
 
 export const subscriptions: {
   [alias: string]: IDbSubscription;
@@ -18,7 +18,8 @@ const getMutationSubsr = (callback: (mutationList: IMutation[]) => void) => (
   error?: Error,
 ) => {
   if (error) {
-    console.log(error);
+    showErrorMessage(error.message);
+    return;
   }
   const docMutationList: IMutation[] = snapshot.docChanges().map(({doc: docMeta, type}) => {
     const doc: IDBDocument = convertRawtoObject({

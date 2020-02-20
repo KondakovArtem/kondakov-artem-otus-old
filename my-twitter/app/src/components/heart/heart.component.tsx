@@ -62,9 +62,6 @@ export const HeartComponent: FC<IProps & IHandlers> = ({children: likes, userUid
       const frames = isLike() ? [30, 116] : [0, 0];
       lottieRef.current.play(...frames);
     }
-    return () => {
-      console.log('destroy');
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [likes]);
 

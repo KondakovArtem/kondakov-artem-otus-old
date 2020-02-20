@@ -11,10 +11,6 @@ export const statusBarProps: StatusBarProps = {
 };
 
 export const commonStyles = StyleSheet.create({
-  headerLogoContainer: {
-    paddingLeft: 10,
-    paddingRight: 6,
-  },
   input: {
     fontWeight: '100',
     paddingLeft: 0,

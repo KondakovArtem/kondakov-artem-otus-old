@@ -4,42 +4,53 @@ import * as MagicMove from 'react-native-magic-move';
 
 import {IConfiguredStore} from 'store';
 import authActions from 'store/auth/auth.actions';
+import postActions from 'store/post/post.actions';
 import {HeaderComponent} from 'components/header/header.component';
 import {navUtils} from 'services/navigation/navigation.service';
 import {USER_PROFILE_SCREEN} from 'models/navigation.model';
 import {PostListComponent} from 'components/post-list/post-list.component';
 import {IPost} from 'models/post.model';
 import {UserAvatar} from 'containers/user-avatar/user-avatar.container';
-import {commonStyles} from 'constants/theme';
 
 interface IProps {
   userPosts: IPost[];
+  userPostRefreshing: boolean;
 }
 interface IHandlers {
   signOut(): void;
   toUserProfile(): void;
+  onUserPostRefresh(): void;
 }
 
-export const MainScreenComponent: FC<IProps & IHandlers> = ({toUserProfile, userPosts}) => (
+export const MainScreenComponent: FC<IProps & IHandlers> = ({
+  toUserProfile,
+  userPosts,
+  userPostRefreshing,
+  onUserPostRefresh,
+}) => (
   <MagicMove.Scene>
-    <HeaderComponent
-      leftContainerStyle={commonStyles.headerLogoContainer}
-      leftComponent={<UserAvatar onPress={toUserProfile} uid="logo" />}>
-      Main
-    </HeaderComponent>
-    <PostListComponent id="userPostList" list={userPosts} emptyText={'Post something'} />
+    <HeaderComponent leftComponent={<UserAvatar onPress={toUserProfile} uid="logo" />}>Main</HeaderComponent>
+    <PostListComponent
+      isRefreshing={userPostRefreshing}
+      onRefresh={onUserPostRefresh}
+      id="userPostList"
+      list={userPosts}
+      emptyText={'Post something'}
+    />
   </MagicMove.Scene>
 );
 
 export const MainScreen = connect<IProps, IHandlers, {}, IConfiguredStore>(
   ({post}) => {
-    const {userPosts} = post;
+    const {userPosts, userPostRefreshing} = post;
     return {
       userPosts,
+      userPostRefreshing,
     };
   },
   {
     signOut: authActions.signOut,
     toUserProfile: () => () => navUtils.navigate(USER_PROFILE_SCREEN),
+    onUserPostRefresh: postActions.fetchUserPost,
   },
 )(MainScreenComponent);

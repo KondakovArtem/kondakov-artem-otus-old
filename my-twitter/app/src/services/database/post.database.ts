@@ -1,10 +1,11 @@
-import {max} from 'lodash-es';
+import {max, isEmpty} from 'lodash-es';
 import {firestore, auth} from 'services/firebase';
 
 import {withAuth} from 'services/database/database.service';
 import {DBPaths, SubscriptionTypes} from 'models/firebase.model';
 import {IPost, IPostMutation} from 'models/post.model';
 import {getDbSubscriber, registerDbSubscriber} from 'services/database/subscription.service';
+import {convertRawtoObject} from 'services/core/core.service';
 
 export const toggleLikeDbPost = withAuth(async (uid, id: string) => {
   const docRef = firestore().doc(DBPaths.POST({id}));
@@ -63,6 +64,49 @@ export const onDbUserPostChanged = (count: number, callback: (info: IPostMutatio
     });
   }
 };
+
+export const getDBUserPosts = withAuth(
+  async (uid, count: number): Promise<IPost[]> => {
+    count = max([50, count]) as number;
+    const items = await firestore()
+      .collection(DBPaths.POSTS())
+      .where('author', '==', uid)
+      .where('deleteAt', '==', null)
+      .orderBy('createdAt', 'desc')
+      .limit(count)
+      .get();
+
+    return items.docs.map(docMeta =>
+      convertRawtoObject({
+        ...docMeta.data(),
+        id: docMeta.id,
+      }),
+    );
+  },
+);
+
+export const getDBFollowPosts = withAuth(
+  async (uid, count: number, ids: string[] = []): Promise<IPost[]> => {
+    if (isEmpty(ids)) {
+      return [];
+    }
+    count = max([50, count]) as number;
+    const items = await firestore()
+      .collection(DBPaths.POSTS())
+      .where('author', 'in', [...ids, uid])
+      .where('deleteAt', '==', null)
+      .orderBy('createdAt', 'desc')
+      .limit(count)
+      .get();
+
+    return items.docs.map(docMeta =>
+      convertRawtoObject({
+        ...docMeta.data(),
+        id: docMeta.id,
+      }),
+    );
+  },
+);
 
 export const onDbFollowsPostChanged = (
   count: number,

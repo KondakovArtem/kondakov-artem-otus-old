@@ -25,21 +25,28 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: headerBackground,
   },
-  logoImage: {
-    height: 60,
-    aspectRatio: 1,
-  },
+
   leftContainerStyle: {
-    flexShrink: 1,
+    flex: 1,
+    minHeight: 10,
+    alignItems: 'center',
+    minWidth: 16,
   },
   centerContainerStyle: {
     alignItems: 'flex-start',
     flexGrow: 10,
+    flex: 1,
+    minHeight: 10,
   },
   rightContainerStyle: {
+    flexBasis: 1,
     flexShrink: 1,
+    minHeight: 10,
   },
-
+  logoImage: {
+    height: 40,
+    aspectRatio: 1,
+  },
   centerText: {
     color: 'white',
     paddingLeft: 10,

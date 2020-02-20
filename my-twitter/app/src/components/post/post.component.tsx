@@ -13,7 +13,7 @@ import {IUserInfo} from 'models/user.model';
 import {DELETE_POST_DURATION} from 'constants/theme';
 
 const styles = StyleSheet.create({
-  container: {padding: 10, alignItems: 'flex-start'},
+  container: {padding: 8, paddingVertical: 10, alignItems: 'flex-start'},
   title: {padding: 0, margin: 0},
   titleView: {flexDirection: 'row'},
   titleText: {flexGrow: 1, flexShrink: 1},

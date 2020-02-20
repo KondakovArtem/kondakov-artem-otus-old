@@ -1,5 +1,5 @@
 import {useRef, useEffect} from 'react';
-import {Platform} from 'react-native';
+import {Platform, Alert} from 'react-native';
 import {Timestamp} from 'services/firebase';
 
 import {isArray, isObject, each, round} from 'lodash-es';
@@ -63,4 +63,19 @@ export const getDateAgo = (date: Date) => {
     return `${round(diffSec / 3600)}h`;
   }
   return `${round(diffSec / (3600 * 24))}d`;
+};
+
+export const showErrorMessage = (message: string) => {
+  Alert.alert(
+    'Error',
+    message,
+    [
+      {
+        text: 'OK',
+      },
+    ],
+    {
+      cancelable: false,
+    },
+  );
 };

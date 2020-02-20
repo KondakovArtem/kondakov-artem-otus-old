@@ -10,6 +10,7 @@ export interface IProps {
   style?: StyleProp<ViewStyle>;
   emptyText?: string;
   id: string;
+  isRefreshing: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
 
 export interface IHandlers {
   onSelectItem?(item: IPost): void;
+  onRefresh?(): void;
 }
 
 const keyExtractor = ({id}: IPost) => id;
@@ -37,14 +39,14 @@ const EmptyComponent: FC = ({children}) => (
   </View>
 );
 
-export const PostListComponent: FC<IProps & IHandlers> = ({list = [], id, emptyText}) => {
-  const [refreshing, setRefresh] = useState(false);
+export const PostListComponent: FC<IProps & IHandlers> = ({list = [], id, emptyText, isRefreshing, onRefresh}) => {
+  // const [refreshing, setRefresh] = useState(false);
 
   const renderItemWithHandlers = ({item}: {item: IPost}) => renderItem(item, id);
 
   return (
     <FlatList
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setRefresh(true)} />}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
       data={list}
       keyExtractor={keyExtractor}
       contentContainerStyle={styles.contentContainer}
