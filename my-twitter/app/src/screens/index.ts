@@ -8,3 +8,5 @@ export {NewPostScreen} from 'screens/new-post/new-post.screen';
 export {FollowsScreen} from 'screens/follows/follows.screen';
 export {LoadingScreen} from 'screens/loading/loading.screen';
 export {UserInfoScreen} from 'screens/user-info/user-info.screen';
+export {UserProfileEditScreen} from 'screens/user-profile-edit/user-profile-edit.screen';
+export {AboutScreen} from 'screens/about/about.screen';

@@ -185,12 +185,13 @@ const Actions = {
       const {additionalUserInfo} = await auth().signInWithCredential(credential);
       const {profile} = additionalUserInfo as AdditionalUserInfo;
       const {email, name, picture} = profile as any;
-
-      await createUserInfo({
-        email,
-        name,
-        avatar: picture,
-      });
+      if (additionalUserInfo?.isNewUser) {
+        await createUserInfo({
+          email,
+          name,
+          avatar: picture,
+        });
+      }
     } catch (error) {
       let errorMessage = '';
 

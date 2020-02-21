@@ -1,4 +1,5 @@
 export const NAV_STATE_KEY = 'navState';
+export const NAV_STATE_VERSION = 'navVersion';
 
 // Non Authorized Access
 export type TNavAlias = string;
@@ -18,6 +19,7 @@ export const EXPLORE_SCREEN: TNavAlias = 'explore';
 export const NEW_POST_SCREEN: TNavAlias = 'newPost';
 export const FOLLOW_SCREEN: TNavAlias = 'follows';
 export const USER_INFO_SCREEN: TNavAlias = 'userInfo';
+export const ABOUT_SCREEN: TNavAlias = 'about';
 
 export const NavAliases: TNavAlias[] = [
   AUTH_STACK,
@@ -33,6 +35,7 @@ export const NavAliases: TNavAlias[] = [
   NEW_POST_SCREEN,
   LOADING_SCREEN,
   FOLLOW_SCREEN,
+  ABOUT_SCREEN,
 ];
 
 // Окна приложения
@@ -46,6 +49,7 @@ export const AppNavAliases: TNavAlias[] = [
   TAB_STACK,
   NEW_POST_SCREEN,
   FOLLOW_SCREEN,
+  ABOUT_SCREEN,
 ];
 // Окна требующие авторизации пользователя
-export const AuthNavAliases: TNavAlias[] = [...AppNavAliases, EMAIL_VERIFICATION];
+export const AuthNavAliases: TNavAlias[] = [...AppNavAliases, EMAIL_VERIFICATION, ABOUT_SCREEN];

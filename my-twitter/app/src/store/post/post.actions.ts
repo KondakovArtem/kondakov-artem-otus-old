@@ -30,6 +30,7 @@ import {
   setNewPostPhoto,
   setRefreshingUserPost,
 } from 'store/post/post.ducks';
+import {uuidv4} from 'services/core/core.service';
 
 /////////////////////////////////////////
 // Thunks
@@ -76,7 +77,6 @@ export const Actions = {
     dispatch(setRefreshingUserPost(false));
   },
 
-
   createNewPost: (data: Partial<IPost>) => async () => {
     await createNewPost(data);
   },
@@ -90,7 +90,7 @@ export const Actions = {
     let image;
     try {
       if (!isEmpty(imagePath)) {
-        image = await uploadImage(imagePath, 'stock');
+        image = await uploadImage(imagePath, `stock/${uuidv4()}`);
       }
       await createNewPost({image, text});
     } catch (e) {}

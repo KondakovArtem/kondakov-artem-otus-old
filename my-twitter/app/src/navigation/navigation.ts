@@ -11,6 +11,8 @@ import {
   FollowsScreen,
   LoadingScreen,
   UserInfoScreen,
+  UserProfileEditScreen,
+  AboutScreen,
 } from 'screens';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
@@ -29,10 +31,10 @@ import {
   FOLLOW_SCREEN,
   LOADING_SCREEN,
   USER_INFO_SCREEN,
+  ABOUT_SCREEN,
 } from 'models/navigation.model';
 import {statusBackground} from 'constants/theme';
 import {TabbarIconComponent} from 'components/tabbar-icon/tabbar-icon.component';
-import {UserProfileEditScreen} from 'screens/user-profile-edit/user-profile-edit.screen';
 
 const noHeader = {
   navigationOptions: {
@@ -70,6 +72,13 @@ export const Navigation = createAppContainer(
                 tabBarIcon: props =>
                   TabbarIconComponent({...props, name: 'account-card-details-outline', type: 'material-community'}),
                 title: 'Profile',
+              },
+            },
+            [ABOUT_SCREEN]: {
+              screen: AboutScreen,
+              navigationOptions: {
+                tabBarIcon: props => TabbarIconComponent({...props, name: 'react', type: 'material-community'}),
+                title: 'About',
               },
             },
           },

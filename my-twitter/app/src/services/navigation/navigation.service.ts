@@ -1,7 +1,8 @@
 import {NavigationContainerComponent, NavigationActions, NavigationState, NavigationRoute} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {NAV_STATE_KEY, NavAliases} from 'models/navigation.model';
+import {NAV_STATE_KEY, NavAliases, NAV_STATE_VERSION} from 'models/navigation.model';
+import {NAV_VERSION} from 'constants/common';
 
 let _navigator: NavigationContainerComponent;
 let isNavLoaded = false;
@@ -15,11 +16,18 @@ export const navUtils = {
   persistNavigationState: async (navState: NavigationState) => {
     try {
       await AsyncStorage.setItem(NAV_STATE_KEY, JSON.stringify(navState));
+      await AsyncStorage.setItem(NAV_STATE_VERSION, NAV_VERSION);
     } catch (err) {}
   },
   loadNavigationState: async () => {
     isNavLoaded = false;
+    const version = (await AsyncStorage.getItem(NAV_VERSION)) as string;
+    if (!version || version !== NAV_VERSION) {
+      isNavLoaded = true;
+      return;
+    }
     const jsonString = (await AsyncStorage.getItem(NAV_STATE_KEY)) as string;
+
     let data: any = JSON.parse(jsonString) as NavigationState;
     const savedNavAliases = navUtils.collectNavAliases(data);
     const missingScreenInSaved = savedNavAliases.find(alias => !NavAliases.includes(alias));

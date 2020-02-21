@@ -52,6 +52,7 @@ export const UserProfileEditScreenComponent: FC<IProps & IHandlers> = ({
         onSaveUserProfile={onSaveUserProfile}
         takeAvatar={takeAvatar}
         userUid={userUid}
+        canEdit={true}
       />
       <ScrollView>
         <Animatable.View animation={'zoomIn'} useNativeDriver={true} duration={COMMON_DURATION}>

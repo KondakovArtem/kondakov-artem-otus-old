@@ -10,6 +10,7 @@ import {InputSearchComponent} from 'components/input-search/input-search.compone
 import {IUserInfo} from 'models/user.model';
 import {FollowListComponent} from 'components/follow-list/follow-list.component';
 import {HeaderActionComponent} from 'components/header-action/header-action.component';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface IProps {
   search: string;
@@ -55,7 +56,9 @@ export const FollowsScreenComponent: FC<IProps & IHandlers> = ({
         rightComponent={<InputSearchComponent onChangeText={setSearch}>{search}</InputSearchComponent>}>
         Follows
       </HeaderComponent>
-      <FollowListComponent list={searchFollows} />
+      <ScrollView>
+        <FollowListComponent list={searchFollows} />
+      </ScrollView>
     </MagicMove.Scene>
   );
 };
