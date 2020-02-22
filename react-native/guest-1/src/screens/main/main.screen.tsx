@@ -5,6 +5,7 @@ import {Scene as MagicScene} from 'react-native-magic-move';
 
 import {HeaderContainer} from '@app/container/header/header.container';
 import {GuestList} from '@app/container/guest-list/guest-list.container';
+import {setTestId} from '@app/services/core/core.service';
 
 const GuestListContainer = styled.View`
   flex: 2;
@@ -12,7 +13,7 @@ const GuestListContainer = styled.View`
 `;
 
 export const MainScreen: FC = () => (
-  <MagicScene>
+  <MagicScene {...setTestId('mainScreen')}>
     <HeaderContainer />
     <GuestListContainer>
       <GuestList />

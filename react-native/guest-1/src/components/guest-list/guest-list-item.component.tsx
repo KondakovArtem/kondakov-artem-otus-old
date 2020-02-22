@@ -1,6 +1,6 @@
 import React, {memo, FC} from 'react';
 import {ListItem, CheckBox} from 'react-native-elements';
-import {TouchableOpacity, StyleSheet, TextInput} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import {isEqual} from 'lodash-es';
 import * as Animatable from 'react-native-animatable';
@@ -10,6 +10,7 @@ import {Text as MagicText, Transition, View as MagicView} from 'react-native-mag
 import {IGuest, IGuestMeta} from '@app/model/guest.model';
 import {COMMON_DURATION} from '@app/services/style/style.service';
 import {AvatarComponent} from '../avatar/avatar.component';
+import { setTestId } from '@app/services/core/core.service';
 
 export interface IProps {
   children: IGuest;
@@ -90,18 +91,18 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
   const NameElement = () => {
     return editGuest && editGuest.uid === uid && !editGuest.withDetails ? (
       <EditNameTextInput
+        {...setTestId('guestEditName')}
         placeholder="Enter a new name"
         defaultValue={name}
+        autoFocus={true}
         onEndEditing={onSubmitEditing}
         onSubmitEditing={onSubmitEditing}
-        ref={(ref: TextInput) => {
-          ref?.focus();
-        }}
       />
     ) : (
       <MagicView style={styles.nameContainer} id={`mv_${uid}`} transition={Transition.morph} duration={COMMON_DURATION}>
         <MagicText
           id={`mt_${uid}`}
+          {...setTestId('guestName')}
           style={styles.name}
           transition={Transition.morph}
           duration={COMMON_DURATION}
@@ -126,6 +127,7 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
         subtitle={
           <CheckBox
             title="with partner"
+            {...setTestId('withPartner')}
             checked={withPartner}
             onPress={togglePartner}
             containerStyle={styles.checkBoxContainer}
@@ -133,6 +135,7 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
         }
         leftElement={
           <AvatarComponent
+            {...setTestId('guestAvatar')}
             onLongPress={takeGuestPhoto}
             onPress={selectGuest}
             size={50}
@@ -141,6 +144,7 @@ export const GuestItemComponent: FC<IProps & IHandlers> = ({
           />
         }
         rightIcon={{
+          ...setTestId('removeGuestButton'),
           Component: TouchableOpacity,
           onPress: markDeleteGuest,
           name: 'close',

@@ -50,7 +50,7 @@ export const AvatarComponent: FC<IProps & IHandlers> = ({
     ) : !uri && icon ? (
       <Avatar.Icon style={style} size={size} icon={icon} />
     ) : (
-      <></>
+      undefined
     );
   };
 

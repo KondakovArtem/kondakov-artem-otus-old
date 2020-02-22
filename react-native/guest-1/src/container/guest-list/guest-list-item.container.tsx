@@ -16,14 +16,14 @@ interface IOwnProps {
 }
 
 export const GuestItemContainer = connect<IComponentProps, IComponentHandlers, IOwnProps, IConfiguredStore>(
-  (state, props) => {
+  (state, {children}) => {
     const {guests, common} = state;
     const {userUid} = common;
     const {editGuest, removedUids} = guests;
     return {
       editGuest,
       userUid,
-      children: props.children,
+      children,
       removedUids,
     };
   },

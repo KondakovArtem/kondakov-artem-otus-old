@@ -1,0 +1,37 @@
+module.exports = {
+  preset: 'react-native',
+  setupFiles: ['./test/setup.js'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/android/', '<rootDir>/ios/'],
+  testMatch: ['**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(' +
+      [
+        'react-native-fast-image',
+        'react-native-image-resizer',
+        'react-native-image-crop-picker',
+        'lodash-es',
+        'react-navigation-magic-move',
+        '@react-navigation',
+        'react-navigation',
+        'react-native',
+        'react-native-safe-area-view',
+        'react-native-magic-move',
+        '@react-native-community',
+        '@react-native-firebase',
+        'react-native-splash-screen',
+        'react-native-screens',
+        'react-native-gesture-handler',
+        'react-native-iphone-x-helper',
+        'react-navigation-stack',
+        'react-native-animatable',
+        'react-native-elements',
+        'react-native-status-bar-height',
+        'react-native-vector-icons',
+        'react-native-ratings',
+        'react-native-keyboard-aware-scroll-view',
+        'react-native-google-signin',
+      ].join('|') +
+      ')/)',
+  ],
+};

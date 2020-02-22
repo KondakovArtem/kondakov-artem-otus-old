@@ -1,5 +1,6 @@
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
+import {uniqueId, uniqBy} from 'lodash-es';
 
 import {ActionTypes as commonActionsTypes, Actions as commonActions} from '@app/redux/common/common.ducks';
 import {IGuest, IGuestMeta, IGuestData} from '@app/model/guest.model';
@@ -7,7 +8,7 @@ import {GetStore} from '@app/redux/store';
 import * as db from '@app/services/database/database.service';
 import {NavAliases} from '@app/model/navigation.model';
 import {takePhoto} from '@app/services/photo/photo.service';
-import {uniqueId} from 'lodash-es';
+
 const {GUEST_DETAILS_SCREEN} = NavAliases;
 
 export enum FilterTypes {
@@ -106,18 +107,21 @@ export const Actions = {
 
   initGuest: () => (dispatch: Dispatch, getStore: GetStore) => {
     const userUid = getUserUidFromStore(getStore);
-    Actions.fetchGuests()(dispatch, getStore);
-    return db.subscribeGuestMutation(userUid, {
-      added: (guest: IGuest) => {
-        dispatch(addGuest(guest));
-      },
-      changed: (guest: IGuest) => {
-        dispatch(updateGuest(guest));
-      },
-      removed: (guest: IGuest) => {
-        dispatch(removeGuest(guest));
-      },
-    });
+    const isAuth = commonActions.checkIsAuth()(dispatch, getStore);
+    if (isAuth) {
+      Actions.fetchGuests()(dispatch, getStore);
+      return db.subscribeGuestMutation(userUid, {
+        added: (guest: IGuest) => {
+          dispatch(addGuest(guest));
+        },
+        changed: (guest: IGuest) => {
+          dispatch(updateGuest(guest));
+        },
+        removed: (guest: IGuest) => {
+          dispatch(removeGuest(guest));
+        },
+      });
+    }
   },
   addGuest: (guest: IGuest) => async (dispatch: Dispatch, getStore: GetStore) => {
     guest.withPartner = guest.withPartner || false;
@@ -168,6 +172,12 @@ export const Actions = {
       if (!newName) {
         Actions.removeGuest(guest)(dispatch, getStore);
       } else {
+        dispatch(
+          updateGuest({
+            ...guest,
+            name: newName,
+          }),
+        );
         db.updateGuest(userUid, {
           ...guest,
           name: newName,
@@ -208,7 +218,7 @@ export const reducer = createReducer<IStore, Action>(initialState)
   .handleAction(addGuest, (state, {payload: guest}) => {
     return {
       ...state,
-      list: [...state.list, guest],
+      list: uniqBy([...state.list, guest], ({uid}) => uid),
     };
   })
   .handleAction(removeGuest, (state, {payload: guest}) => {

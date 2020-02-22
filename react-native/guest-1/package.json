@@ -8,7 +8,8 @@
     "ios-build": "react-native run-ios --configuration Release",
     "start": "react-native start --reset-cache",
     "react-devtools": "react-devtools",
-    "test": "jest"
+    "test": "jest",
+    "test_e2e": "jest --config=jest.e2e.config.js"
   },
   "dependencies": {
     "@react-native-firebase/app": "^6.2.0",
@@ -71,7 +72,10 @@
     "prettier-eslint": "^9.0.1",
     "react-devtools": "^3.6.3",
     "react-test-renderer": "16.12.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "wd": "^1.12.1",
+    "wd-android": "^0.1.1",
+    "webdriverio": "^5.18.7"
   },
   "jest": {
     "preset": "react-native",

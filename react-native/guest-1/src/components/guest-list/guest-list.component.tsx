@@ -38,7 +38,7 @@ export const GuestListComponent: FC<IProps & IHandlers> = props => {
 
   useEffect(() => {
     const unsubscribe = onInit && onInit();
-    return () => unsubscribe();
+    return () => unsubscribe && unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
