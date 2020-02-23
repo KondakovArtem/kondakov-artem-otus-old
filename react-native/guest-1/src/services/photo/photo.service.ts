@@ -12,7 +12,7 @@ const options = {
   },
 };
 
-export async function takePhoto(userUid: string, imageSource: string) {
+export const takePhoto = async (userUid: string, imageSource: string) => {
   const response: ImagePickerResponse = await new Promise(resolve => ImagePicker.showImagePicker(options, resolve));
   if (response.didCancel || response.error) {
     return;
@@ -20,4 +20,4 @@ export async function takePhoto(userUid: string, imageSource: string) {
   const ratio = response.width / response.height;
   const resizeResponse = await ImageResizer.createResizedImage(response.uri, 500, 500 / ratio, 'JPEG', 80, 360);
   return await uploadImage(userUid, resizeResponse.uri, imageSource);
-}
+};

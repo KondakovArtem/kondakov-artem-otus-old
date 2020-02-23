@@ -1,11 +1,14 @@
 import React, {FC} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableNativeFeedback} from 'react-native';
 import {Input, Icon} from 'react-native-elements';
 import styled from 'styled-components/native';
 import {connect} from 'react-redux';
+//@ts-ignore;
+import {Scene as MagicScene} from 'react-native-magic-move';
 
 import {Actions as loginAction} from '@app/redux/login/login.ducks';
 import {IConfiguredStore} from '@app/redux/store';
+import {setTestId} from '@app/services/core/core.service';
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -81,44 +84,50 @@ export const LoginScreenComponent: FC<IProps & IHandlers> = props => {
   const {showPassword, toggleShowPassword, username, password, setPassword, setUsername, signIn} = props;
 
   return (
-    <KeyboardAvoidingViewContainer>
-      <LoginScrollView>
-        <LoginTitle>Log In</LoginTitle>
-        <Input
-          {...inputStyleProps}
-          value={username}
-          onChangeText={setUsername}
-          label={'Username or email'}
-          leftIcon={{type: 'ionicons', name: 'person', color: 'white'}}
-        />
-        <Input
-          {...inputStyleProps}
-          onChangeText={setPassword}
-          value={password}
-          label={'Password'}
-          leftIcon={{type: 'ionicons', name: 'lock', color: 'white'}}
-          rightIcon={{
-            type: 'material-community',
-            name: showPassword ? 'eye' : 'eye-off',
-            color: 'white',
-            onPress: () => toggleShowPassword(),
-            underlayColor: 'transparent',
-          }}
-          secureTextEntry={!showPassword}
-        />
-        <LoginButton>
-          <Icon
-            type={'material-community'}
-            name={'arrow-right'}
-            reverse={true}
-            reverseColor={'#29ccea'}
-            raised={true}
-            color={'#A9F2FF'}
-            onPress={signIn}
+    <MagicScene {...setTestId('loginScreen')}>
+      <KeyboardAvoidingViewContainer>
+        <LoginScrollView>
+          <LoginTitle>Log In</LoginTitle>
+          <Input
+            {...inputStyleProps}
+            {...setTestId('username')}
+            value={username}
+            onChangeText={setUsername}
+            label={'Username or email'}
+            leftIcon={{type: 'ionicons', name: 'person', color: 'white'}}
           />
-        </LoginButton>
-      </LoginScrollView>
-    </KeyboardAvoidingViewContainer>
+          <Input
+            {...inputStyleProps}
+            {...setTestId('password')}
+            onChangeText={setPassword}
+            value={password}
+            label={'Password'}
+            leftIcon={{type: 'ionicons', name: 'lock', color: 'white'}}
+            rightIcon={{
+              type: 'material-community',
+              name: showPassword ? 'eye' : 'eye-off',
+              color: 'white',
+              onPress: () => toggleShowPassword(),
+              underlayColor: 'transparent',
+            }}
+            secureTextEntry={!showPassword}
+          />
+          <LoginButton>
+            <Icon
+              {...setTestId('loginButton')}
+              type={'material-community'}
+              name={'arrow-right'}
+              reverse={true}
+              reverseColor={'#29ccea'}
+              raised={true}
+              color={'#A9F2FF'}
+              background={TouchableNativeFeedback.Ripple('white', true)}
+              onPress={signIn}
+            />
+          </LoginButton>
+        </LoginScrollView>
+      </KeyboardAvoidingViewContainer>
+    </MagicScene>
   );
 };
 

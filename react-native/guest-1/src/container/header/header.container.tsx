@@ -8,6 +8,7 @@ import {Actions as guestActions} from '@app/redux/guests/guests.ducks';
 import {HeaderComponent} from '@app/components/header/header.component';
 import {IProps as IComponentProps, IHandlers as IComponentHandlers} from '@app/components/header/header.component';
 import {commonStyles} from '@app/services/style/style.service';
+import {setTestId} from '@app/services/core/core.service';
 
 export const HeaderContainer = connect<IComponentProps, IComponentHandlers, {}, IConfiguredStore>(
   state => {
@@ -24,7 +25,9 @@ export const HeaderContainer = connect<IComponentProps, IComponentHandlers, {}, 
       guestFilter: filter,
       guestTotal,
       titleComponent: () => (
-        <Text style={commonStyles.appBarTitle}>{`Guests list ${guestTotal ? `(${guestTotal})` : ''}`}</Text>
+        <Text style={commonStyles.appBarTitle} {...setTestId('guestCountTitle')}>{`Guests list ${
+          guestTotal ? `(${guestTotal})` : ''
+        }`}</Text>
       ),
     };
   },

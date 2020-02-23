@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import {createReducer, createAction, Action} from 'typesafe-actions';
 import {Dispatch} from 'redux';
+import {Alert} from 'react-native';
 
 import {GetStore} from '@app/redux/store';
 import {ActionTypes as commonActionsTypes, Actions as commonActions} from '@app/redux/common/common.ducks';
@@ -53,7 +54,7 @@ export const Actions = {
       try {
         await auth().signInWithEmailAndPassword(username, password);
       } catch (e) {
-        console.error(e);
+        Alert.alert('Auth error', e.message, [{text: 'OK'}]);
       }
     }
   },

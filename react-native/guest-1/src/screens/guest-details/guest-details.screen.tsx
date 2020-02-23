@@ -91,7 +91,7 @@ export const GuestDetailScreen = connect<IProps, IHandlers, {}, IConfiguredStore
     return {editGuest: editGuest as IGuestMeta};
   },
   {
-    save: guestsActions.updateGuest,
+    save: guestsActions.updateEditGuest,
     cancel: () => commonActions.navigate(NavAliases.MAIN_SCREEN),
     setDetails: guestsActions.setEditDetails,
   },

@@ -3,6 +3,7 @@ import {Input, ButtonGroup} from 'react-native-elements';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
 
 import {HeaderBarComponent} from '@app/components/header-bar/header-bar.component';
+import {setTestId} from '@app/services/core/core.service';
 
 export interface IProps {
   inputValue: string;
@@ -32,6 +33,7 @@ export const HeaderComponent: FC<IProps & IHandlers> = props => {
       <HeaderBarComponent titleComponent={titleComponent} />
       <View>
         <Input
+          {...setTestId('newGuestInput')}
           value={inputValue}
           onChangeText={setInputValue}
           onSubmitEditing={e => {
@@ -40,6 +42,7 @@ export const HeaderComponent: FC<IProps & IHandlers> = props => {
           placeholder="New guest"
           containerStyle={styles.input}
           rightIcon={{
+            ...setTestId('newGuestButton'),
             Component: TouchableOpacity,
             onPress: () => {
               onAddGuest(inputValue);
@@ -52,6 +55,7 @@ export const HeaderComponent: FC<IProps & IHandlers> = props => {
       </View>
       <View>
         <ButtonGroup
+          {...setTestId('filterGroup')}
           selectedIndex={guestFilter}
           selectedTextStyle={styles.buttonFilter}
           onPress={(idx: number) => updateGuestFilter(idx)}

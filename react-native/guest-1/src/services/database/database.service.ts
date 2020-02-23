@@ -45,42 +45,44 @@ export const getGuests = async (userUid: string, filterProps?: any): Promise<IGu
   }));
 };
 
-export const subscribeGuestMutation = (userUid: string, mutateSubscription: IGuestMutateSubscription): Function => {
-  const ref = database().ref(`${Paths.INTITES}/${userUid}`);
-  const {added, changed, removed} = mutateSubscription;
-  // Get a firebase generated key, based on current time
-  const startKey = (ref.push() as any).key;
+export const subscribeGuestMutation = (
+  userUid: string,
+  mutateSubscription: IGuestMutateSubscription,
+): Function | undefined => {
+  if (userUid !== '') {
+    const ref = database().ref(`${Paths.INTITES}/${userUid}`);
+    const {added, changed, removed} = mutateSubscription;
+    // Get a firebase generated key, based on current time
+    // const startKey = (ref.push() as any).key;
 
-  const addedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
-    added({
-      uid: snapshot.key,
-      ...(snapshot.val() as IGuestData),
-    });
-  const changedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
-    changed({
-      uid: snapshot.key,
-      ...(snapshot.val() as IGuestData),
-    });
-  const removedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
-    removed({
-      uid: snapshot.key,
-      ...(snapshot.val() as IGuestData),
-    });
+    const addedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
+      added({
+        uid: snapshot.key,
+        ...(snapshot.val() as IGuestData),
+      });
+    const changedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
+      changed({
+        uid: snapshot.key,
+        ...(snapshot.val() as IGuestData),
+      });
+    const removedFn = (snapshot: FirebaseDatabaseTypes.DataSnapshot) =>
+      removed({
+        uid: snapshot.key,
+        ...(snapshot.val() as IGuestData),
+      });
 
-  // 'startAt' this key, equivalent to 'start from the present second'
-  ref
-    .orderByKey()
-    .startAt(startKey)
-    .on('child_added', addedFn);
-  ref.on('child_changed', changedFn);
-  ref.on('child_removed', removedFn);
+    // 'startAt' this key, equivalent to 'start from the present second'
+    ref.orderByKey().on('child_added', addedFn);
+    ref.on('child_changed', changedFn);
+    ref.on('child_removed', removedFn);
 
-  // Unsubscribe from changes on unmount
-  return () => {
-    ref.off('child_added', addedFn);
-    ref.off('child_changed', changedFn);
-    ref.off('child_removed', removedFn);
-  };
+    // Unsubscribe from changes on unmount
+    return () => {
+      ref.off('child_added', addedFn);
+      ref.off('child_changed', changedFn);
+      ref.off('child_removed', removedFn);
+    };
+  }
 };
 
 export async function getStorageFileUrl(path: string) {
