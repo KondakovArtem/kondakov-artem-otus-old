@@ -150,7 +150,7 @@ export const Actions = {
     commonActions.navigate(NavAliases.MAIN_SCREEN)();
   },
 
-  updateGuest: (editGuest: IGuest) => (dispatch: Dispatch, getStore: GetStore) => {
+  updateGuest: (editGuest: IGuest) => async (dispatch: Dispatch, getStore: GetStore) => {
     const userUid = getUserUidFromStore(getStore);
     const {name, details, withPartner, uid, photoPath} = editGuest as IGuestMeta;
     db.updateGuest(userUid, {uid, name, details, withPartner, photoPath} as IGuestData);
