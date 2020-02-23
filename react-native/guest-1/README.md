@@ -28,4 +28,5 @@ Firebase authorization info
 На IOS - нет
 
 npm run test_e2e
+
 Сделаны тесты на добавление, удаление, редактирование гостя, авторизацию в приложении через Appium
