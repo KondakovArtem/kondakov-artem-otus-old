@@ -8,7 +8,12 @@ import { findCityWeatherByName } from '../../services/api/api.service';
 import { Actions as messageActions} from '../message/message.ducks';
 import { Actions as cityWeatherActions} from '../cityWeather/cityWeather.ducks';
 import { GetStore, SimpleThunkDispatch } from '../store';
-import ActionTypes from './action.types';
+
+export const ActionTypes = {
+    SET_INPUTVALUE: '@search/SET_INPUTVALUE',
+    SET_OPTIONS: '@search/SET_OPTIONS',
+    SET_LOADING: '@search/SET_LOADING'
+}
 
 export interface IStore {
     inputValue: string;

@@ -1,12 +1,15 @@
 import React from 'react';
-import { IWeather } from "../../models/weather.model"
 import { makeStyles, createStyles } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
-import { round } from 'lodash-es';
+import Skeleton from '@material-ui/lab/Skeleton';
+
+import { IWeather } from "../../models/weather.model"
+import { getCelsius, getFlagIcon, getWeatherIcon } from '../../services/utils/utils.service';
 
 interface IProps {
     children: IWeather;
+    onClick?: () => void;
 }
 
 
@@ -20,7 +23,9 @@ const useStyles = makeStyles(() =>
         weatherIcon: {
             background: 'white',
             borderRadius: '50%',
-            boxShadow: '0px 0px 3px #00000033'
+            boxShadow: '0px 0px 3px #00000033',
+            width: "50px",
+            height: "50px"
         },
         body: {
             flexGrow: 1,
@@ -56,30 +61,48 @@ const NoBrake = (props: { children: any }) => {
 export const CityWeatherInfo: React.FunctionComponent<IProps> = (props: IProps) => {
 
     const classes = useStyles(props);
-    const { children: {
+    const { children: weather, onClick } = props;
+
+    // create skeleton if not data
+    if (!weather) {
+        return (
+            <div className={classes.root}>
+                <Skeleton variant="circle" width={50} height={50}></Skeleton>
+                <div className={classes.body}>
+                    <div>
+                        <div className={classes.name} style={{ width: 'calc(100% - 20px)' }}>
+                            <Skeleton variant="rect" width="100%" height={24} />
+                        </div>
+                    </div>
+                    <div>
+                        <div className={classes.telemetry} style={{ width: 'calc(100% - 20px)' }}>
+                            <Skeleton variant="rect" width="100%" height={40} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const {
         main: { temp, temp_max, temp_min, pressure },
         clouds: { all: cloudsAll },
         wind: { speed },
         name,
         sys: { country },
         weather: [{ description, icon }]
-    } } = props;
-
-    function getCelsius(temp: number) {
-        return round((temp - 273.15), 2)
-    }
-
+    } = weather;
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} onClick={() => (onClick && onClick())}>
             <img className={classes.weatherIcon}
-                src={`http://openweathermap.org/img/wn/${icon}@2x.png`} width="50" height="50"
+                src={getWeatherIcon(icon)}
             />
             <div className={classes.body}>
                 <div>
                     <div className={classes.name}>
                         <Typography>{name}, {country}</Typography>
-                        <img className={classes.flag} src={`https://www.countryflags.io/${country}/shiny/24.png`} />
+                        <img className={classes.flag} src={getFlagIcon(country)} />
                         <Typography className={classes.description} variant="caption">{description}</Typography>
                     </div>
                 </div>

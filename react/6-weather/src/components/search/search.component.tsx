@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { RenderInputParams } from '@material-ui/lab/Autocomplete';
+
 import { IWeather } from '../../models/weather.model';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -112,7 +113,6 @@ export const SearchComponent: React.FunctionComponent<IProps> = (props: IProps &
                 includeInputInList
                 freeSolo
                 options={options}
-                // disableOpenOnFocus
                 classes={{
                     inputRoot: classes.inputRoot
                 }}

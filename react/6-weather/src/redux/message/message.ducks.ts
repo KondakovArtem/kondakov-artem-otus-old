@@ -3,8 +3,10 @@ import { createReducer, createAction, Action } from 'typesafe-actions';
 import { IMessage, IMessageData } from "../../models/message.model";
 import { uniqueId } from 'lodash-es';
 
-import ActionTypes from './action.types';
-
+export const ActionTypes = {
+    ADD: '@message/ADD',
+    REMOVE: '@message/REMOVE' 
+}
 export type IStore = IMessage[];
 
 const initialState: IStore = [];

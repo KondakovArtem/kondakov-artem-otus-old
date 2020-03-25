@@ -1,21 +1,33 @@
 import { createReducer, createAction, Action } from 'typesafe-actions';
-import { IWeather } from '../../models/weather.model';
+import { IWeather, IForecast } from '../../models/weather.model';
 import { Actions as messageActions } from '../message/message.ducks';
 import { Dispatch } from 'redux';
 import { GetStore, IConfiguredStore, SimpleThunkAction } from '../store';
 import api from '../../services/api/api.service';
-import ActionTypes from './action.types';
+import { getCelsius } from '../../services/utils/utils.service';
+import Moment from 'moment';
+
+
+export const ActionTypes = {
+    ADD: '@cityWeather/ADD',
+    REMOVE: '@cityWeather/REMOVE',
+    HIDE: '@cityWeather/HIDE',
+    INIT: '@cityWeather/INIT',
+    SET_FORECAST: '@cityWeather/SET_FORECAST'
+}
 
 
 export type IStore = {
     items: IWeather[];
     hiddenItems: IWeather[];
+    forecast: IForecast;
 }
 
 
 const initialState: IStore = {
     items: [],
-    hiddenItems: []
+    hiddenItems: [],
+    forecast: null
 };
 
 const STORAGE_KEY = 'cityIds';
@@ -32,6 +44,7 @@ const add = createAction(ActionTypes.ADD, cityWeather => cityWeather)<IWeather>(
 const remove = createAction(ActionTypes.REMOVE, cityWeather => cityWeather)<IWeather>();
 const hide = createAction(ActionTypes.HIDE, cityWeather => cityWeather)<IWeather>();
 const init = createAction(ActionTypes.INIT, cityWeathers => cityWeathers)<IWeather[]>();
+const setForecast = createAction(ActionTypes.SET_FORECAST, forecast => forecast)<IForecast>();
 
 export const Actions = {
     add: (cityWeather: IWeather): SimpleThunkAction => {
@@ -58,6 +71,26 @@ export const Actions = {
                 dispatch(init(data.list || []));
             })()
         }
+    },
+    getForecast: (id: number) => async (dispatch: Dispatch) => {
+        dispatch(setForecast(null));
+        
+        const [weatherReponse, forecastReponse] = await Promise.all([
+            api.getCityWeatherByIds([id]),
+            api.getForecastById(id)
+        ])
+
+        // debugger;
+        const forecast: IForecast = {
+            weather: weatherReponse.list[0],
+            tempChart: forecastReponse && forecastReponse.list ? forecastReponse.list.map((item) => {
+                return {
+                    date: Moment(item.dt* 1000).format('DD.MM HH:00'),
+                    temp: getCelsius(item.main.temp),
+                }
+            }) : []
+        }
+        dispatch(setForecast(forecast));
     }
 }
 
@@ -91,5 +124,12 @@ export const reducer = createReducer<IStore, Action>(initialState)
         return {
             ...state,
             items: [...cityWeathers]
+        }
+    })
+    .handleAction(setForecast, (state, action) => {
+        const {payload: forecast} = action;
+        return {
+            ...state,
+            forecast
         }
     })

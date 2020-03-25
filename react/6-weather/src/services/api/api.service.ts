@@ -1,4 +1,4 @@
-import {IWeatherResponse} from "../../models/weather.model";
+import {IWeatherResponse, IForecastResponse} from "../../models/weather.model";
 
 function queryParams(params) {
     return Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&');
@@ -16,7 +16,6 @@ const COMMON_OPTIONS: RequestInit = {
     referrer: 'no-referrer', // no-referrer, *client
 }
 
-
 export async function findCityWeatherByName(q: string) {
     const response = await fetch(`/api/city/find?${
         queryParams({q})
@@ -24,7 +23,6 @@ export async function findCityWeatherByName(q: string) {
     const data: IWeatherResponse = await response.json();
     return data;
 }
-
 
 export async function getCityWeatherByIds(ids: number[]) {
     const response = await fetch(`/api/city/group?${
@@ -34,8 +32,16 @@ export async function getCityWeatherByIds(ids: number[]) {
     return data;
 }
 
+export async function getForecastById(id: number) {
+    const response = await fetch(`/api/city/forecast?${
+        queryParams({id})
+    }`, COMMON_OPTIONS);
+    const data: IForecastResponse = await response.json();
+    return data;
+}
 
 export default ({
     getCityWeatherByIds,
-    findCityWeatherByName
+    findCityWeatherByName,
+    getForecastById
 })

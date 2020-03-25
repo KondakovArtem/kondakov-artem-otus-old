@@ -1,21 +1,13 @@
 import { connect } from 'react-redux';
 
 import { IConfiguredStore } from '../../redux/store';
-import { IMessage } from '../../models/message.model';
-import { MessageComponent } from '../../components/message/message.component';
+import { MessageComponent, IProps as IComponentProps, IHandlers as IComponentHandlers } from '../../components/message/message.component';
 import { Actions as messageActions } from '../../redux/message/message.ducks';
 
 
-interface IProps {
-    messages: IMessage[];
-}
 
-interface IHandlers {
-    onCloseMessage: (message: IMessage) => void;
-}
-
-export const MessageContainer = connect<IProps, IHandlers>(
-    function mapStateToProps({messages}: IConfiguredStore): IProps {
+export const MessageContainer = connect<IComponentProps, IComponentHandlers>(
+    function mapStateToProps({messages}: IConfiguredStore): IComponentProps {
         return { messages }
     },
     {
