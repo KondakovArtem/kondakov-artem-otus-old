@@ -1,38 +1,54 @@
-import React from "react";
-import { FlatList, View, Text } from 'react-native';
-import styled from "styled-components/native";
+import React, {useEffect, FC} from 'react';
+import {FlatList, View, StyleSheet, Text} from 'react-native';
 
-import { IGuest } from "../../model/guest";
-import { GuestItemContainer } from "../../container/guest-list/guest-list-item.container";
+import {IGuest} from '@app/model/guest.model';
+import {GuestItemContainer} from '@app/container/guest-list/guest-list-item.container';
 
 export interface IProps {
   list: IGuest[];
 }
 
-const NorRecordWrapper = styled.View`
-  flex: 1;
-  justify-content:center;
-  align-items:center;
-`;
+export interface IHandlers {
+  onInit: () => Function;
+}
 
-const NoRecordText = styled.Text`
-  color: #f2f2f2;
-  font-size: 30px;
-`
+const styles = StyleSheet.create({
+  noRecordWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRecordText: {
+    color: '#f2f2f2',
+    fontSize: 30,
+  },
+});
 
-export const GuestListComponent: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { list } = props;
+const keyExtractor = (item: IGuest) => item.uid;
+const renderItem = ({item}: {item: IGuest}) => <GuestItemContainer>{item}</GuestItemContainer>;
+
+export const ListEmptyComponent = () => (
+  <View style={styles.noRecordWrapper}>
+    <Text style={styles.noRecordText}>No records</Text>
+  </View>
+);
+
+export const GuestListComponent: FC<IProps & IHandlers> = props => {
+  const {list, onInit} = props;
+
+  useEffect(() => {
+    const unsubscribe = onInit && onInit();
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-
-    list.length ?
-      (<FlatList
-        data={list}
-        keyExtractor={item => item.uid}
-        renderItem={({ item }) => <GuestItemContainer>{item}</GuestItemContainer>}
-      />) : 
-      (<NorRecordWrapper>
-        <NoRecordText>Нет записей</NoRecordText>
-      </NorRecordWrapper>)
+    <FlatList
+      data={list}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      initialNumToRender={10}
+      ListEmptyComponent={ListEmptyComponent}
+    />
   );
-}
+};
