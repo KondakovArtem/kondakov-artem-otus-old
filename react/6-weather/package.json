@@ -67,7 +67,7 @@
     "eslint": "^6.6.0",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "html-webpack-template": "^6.2.0",
     "http-proxy-middleware": "^0.20.0",
     "jest": "^24.9.0",
@@ -75,7 +75,7 @@
     "ttypescript": "1.5.7",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.9.0"
   }
 }
